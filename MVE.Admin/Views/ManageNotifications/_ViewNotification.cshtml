@@ -1,0 +1,139 @@
+﻿@model MVE.Admin.ViewModels.Notifications.ManageNotificationViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "Notification Details" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    .imgsize {
+        height: 148px;
+        width: 190px;
+    }
+
+    .col-sm-4, .col-sm-8 {
+        padding: 8px;
+        border: 1px solid lightgray;
+    }
+
+    .col-sm-4 {
+        padding-top: 15px;
+        background-color: #d3d3d35c;
+    }
+
+    #viewplanedholiday tr td:nth-child(2) {
+        white-space: normal;
+        width: 63%;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <partial name="_ModalHeader" model="headerModel" />
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body quality-box-set">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (string.IsNullOrEmpty(Model.FileName))
+                        {
+
+
+                        //<img class="img-responsive" target="_blank" style="width:190px; height:148px" src="/Admin/images/upload-image.png" />
+                            <img class="img-responsive" target="_blank" style="width:190px; height:148px" src="@(SiteKeys.Domain+"/images/upload-image.png")" />
+
+                        }
+                        else
+                        {
+                            <img class="imgsize" target="_blank" src="@SiteKeys.Domain@Model.FileName" href="@SiteKeys.Domain@Model.FileName" />
+                        }
+                    </div>
+                </div>
+                <br>
+
+               
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="viewplanedholiday">
+
+                                <tbody>
+
+                                    <tr>
+                                        <td> <label class="bold">Name</label></td>
+                                        <td> @Model.Name</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td> <label class="bold">Phone No.</label></td>
+                                        <td>
+                                            @if (Model.MobilePhone != null)
+                                            {
+                                                @Model.MobilePhone
+
+                                            }
+
+                                            else
+
+                                            {
+                                                @("--")
+
+                                            }
+                                        </td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td> <label class="bold">Email</label></td>
+                                        <td> @Model.Email</td>
+                                    </tr>
+
+
+
+                                    <tr>
+                                        <td> <label class="bold">Title</label></td>
+                                        <td> @Model.Title</td>
+                                    </tr>
+
+
+                                    <tr>
+                                        <td> <label class="bold">Description</label></td>
+                                        <td><label> @Model.Description </label></td>
+                                    </tr>
+
+                                </tbody>
+
+                            </table>
+
+
+                            @*<div class="row">
+                            <div class="col-sm-4">
+                            <label class="bold">Title</label>
+                            </div>
+                            <div class="col-sm-8">
+                            <input type="text" id="" class="form-control" value="@Model.Title" placeholder="" readonly="">
+
+                            </div>
+                            </div>
+                            <div class="row ">
+                            <div class="col-sm-4">
+                            <label class="bold">Description</label>
+                            </div>
+                            <div class="col-sm-8">
+                            <textarea rows="3" class="form-control ckeditor" placeholder="" autocomplete="off" readonly="">@Html.Raw(Model.Description)</textarea>
+                            </div>
+                            </div>*@
+
+
+                        </div>
+                  
+            </div>
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+}

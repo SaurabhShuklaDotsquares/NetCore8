@@ -1,0 +1,748 @@
+﻿@model TCP.Web.ViewModels.ListingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Listing Package";
+    var pkgid = Context.Request.Query["pkgid"].ToString() != "" ? Context.Request.Query["pkgid"].ToString() : "0";
+
+    var queryString = Context.Request.QueryString.ToString() != "" ? Context.Request.QueryString.ToString() : "";
+    queryString = queryString == "" ? "" : queryString.Split('?')[1];
+
+    //queryString= queryString.IndexOf("&curentPage=") == -1 ? "&curentPage=" : "";
+}
+@section Styles{
+    @* <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/css/bootstrap-slider.min.css" rel="stylesheet"> *@
+
+}
+
+<div class="inner-hd-block">
+    <div class="container text-center">
+        @* <h1>Best Place In @Model.RegionName</h1> *@
+        @Html.Raw(!string.IsNullOrWhiteSpace(Model.BestPlace)?@Model.BestPlace:"<h1> Best Holiday packages as per your preference</h1>")
+        @if (ViewBag.v_destination != null)
+        {
+            <p id="totalresults">Showing @Model.totalItem Results for Country: @ViewBag.v_destinationName, Duration: @ViewBag.v_duration Days, Budget: @ViewBag.v_budgetTitle</p>
+        }
+        else if (ViewBag.v_duration != null)
+        {
+            <p id="totalresults">Showing @Model.totalItem Results  for Duration: @ViewBag.v_duration Days</p>
+        }
+        else if (ViewBag.v_budget != null)
+        {
+            <p id="totalresults">Showing @Model.totalItem Results for Budget: @ViewBag.v_budgetTitle</p>
+        }
+        else if (ViewBag.v_isCruseIncluded != null)
+        {
+            <p id="totalresults">Showing @Model.totalItem Results for Cruise</p>
+        }
+        else
+        {
+            <p id="totalresults">Showing @Model.totalItem Results</p>
+        }
+
+    </div>
+</div>
+<div class="listing-block-outer">
+    <input type="hidden" id="hfCurrentPageIndex" name="currentPageIndex" />
+    <input type="hidden" id="hdnbudget" name="hdnbudget" value="@ViewBag.v_budget" />
+    <input type="hidden" id="hdndestination" name="hdndestination" value="@ViewBag.v_destination" />
+    <input type="hidden" id="hdnduration" name="hdnduration" value="@ViewBag.v_duration" />
+    <input type="hidden" id="hdncategory" name="hdncategory" value="@ViewBag.v_category" />
+    <input type="hidden" id="hdnreqid" name="hdnreqid" value="@ViewBag.v_reqid" />
+    <input type="hidden" id="hdnregionId" name="hdnregionId" value="@ViewBag.v_regionId" />
+    <input type="hidden" id="hdnisCruseIncluded" name="hdnisCruseIncluded" value="@ViewBag.v_isCruseIncluded" />
+    <input type="hidden" id="hdnpkgid" name="hdnpkgid" value="@ViewBag.v_pkgid" />
+    <input type="hidden" id="hdncurentPage" name="hdncurentPage" value="@ViewBag.v_curentPage" />
+    <input type="hidden" id="hdnpageSize" name="hdnpageSize" value="@ViewBag.v_pageSize" />
+
+    <input type="hidden" id="hddurationfilterval" name="hddurationfilterval" value="@ViewBag.v_durationVal" />
+    <input type="hidden" id="hdinclusionfilterval" name="hdinclusionfilterval" value="@ViewBag.v_hdinclusionVal" />
+    <input type="hidden" id="hdratingfilterval" name="hdratingfilterval" value="@ViewBag.v_hdratingVal" />
+    <input type="hidden" id="hdcountryfilterval" name="hdcountryfilterval" value="@ViewBag.v_countryVal" />
+    <input type="hidden" id="hddirectionfilterval" name="hddirectionfilterval" value="@ViewBag.v_hdDirectionVal" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 wd1">
+                <h3 class="selectReset d-flex align-items-center justify-content-between">Select Filters <a class="btnReset" id="btnReset">Reset <img src="@SiteKeys.Domain/images/reset-icon.png" /></a></h3>
+                @if (ViewBag.v_destination == null)
+                {
+                    <div class="accordion-block">
+                        <a class="filter-btn" data-toggle="collapse" href="#filter5" role="button" aria-expanded="true" aria-controls="filter5">
+                            By Country
+                        </a>
+                        <div class="collapse show" id="filter5">
+                            <ul class="chk-list duration-checkbox">
+                                @if (Model != null && Model.CountryList != null && Model.CountryList.Count > 0)
+                                {
+                                    <li>
+                                        <label class="customcheckBox">
+                                            &nbsp; All
+                                            <input type="checkbox" id="country_all">
+                                            <span class="checkmarkhd"></span>
+                                        </label>
+                                    </li>
+
+                                    string countryValues = ViewBag.v_countryVal == null ? "" : ViewBag.v_countryVal;
+                                    foreach (var item in Model.CountryList)
+                                    {
+                                        <li>
+                                            <label class="customcheckBox" id="listing-country-@item.Value">
+                                                @Html.CheckBox("countryfilter", countryValues.Split(',').Contains(item.Value.ToString()), new { @class = "countryfilter", @value = item.Value })&nbsp;&nbsp;@item.Text
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                @if (ViewBag.v_duration == null)
+                {
+                    <div class="accordion-block">
+                        <a class="filter-btn" data-toggle="collapse" href="#filter1" role="button" aria-expanded="true" aria-controls="filter1">
+                            By Duration
+                        </a>
+                        <div class="collapse show" id="filter1">
+                            <ul class="chk-list duration-checkbox">
+                                @*<label class="customcheckBox" id="listing-duration-@item.Id" href="@domain/Listing/Index?duration=@item.Id">*@
+                                @if (Model != null && Model.DurationList != null && Model.DurationList.Count > 0)
+                                {
+                                    @*<li>
+                            <label class="customcheckBox select-allDuration-checkbox">
+                            All Duration
+                            <input type="checkbox" id="select-allDuration-checkbox">
+                            <span class="checkmarkhd"></span>
+                            </label>
+                            </li>*@
+                                    @*@foreach (var item in Model.DurationList)
+                            {
+                            <li>
+                            <label class="customcheckBox" id="listing-duration-@item.Id">
+                            @item.Name
+                            <input type="checkbox" class="duration-checkbox durationfilter" data-id="@item.Id" value="@item.Id">
+                            @Html.CheckBox("durationfilter", new { @class = "durationfilter", @value = item.Id })&nbsp;&nbsp;@item.Name
+                            <span class="checkmarkhd"></span>
+                            </label>
+                            </li>
+                            }*@
+                                    <li>
+                                        <label class="customcheckBox">
+                                            &nbsp; All
+                                            <input type="checkbox" id="duration_all">
+                                            <span class="checkmarkhd"></span>
+                                        </label>
+                                    </li>
+                                    string durationValues = ViewBag.v_durationVal == null ? "" : ViewBag.v_durationVal;
+                                    foreach (var item in Model.DurationList)
+                                    {
+                                        <li>
+                                            <label class="customcheckBox" id="listing-duration-@item.Id">
+                                                @Html.CheckBox("durationfilter", durationValues.Split(',').Contains(item.Id.ToString()), new { @class = "durationfilter", @value = item.Id })&nbsp;&nbsp;@item.Name
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+                <div class="accordion-block">
+                    <a class="filter-btn" data-toggle="collapse" href="#filter2" role="button" aria-expanded="true" aria-controls="filter2">
+                        By Price
+                    </a>
+                    <div class="collapse show" id="filter2">
+                        <div class="range-slider-box dis-block clearfix">
+                            @*  <div class="slider slider-horizontal" id=""><div class="slider-track"><div class="slider-track-low" style="left: 0px; width: 0%;"></div><div class="slider-selection" style="left: 0%; width: 100%;"></div><div class="slider-track-high" style="right: 0px; width: 0%;"></div></div><div class="tooltip tooltip-main top" role="presentation" style="left: 50%;"><div class="tooltip-arrow"></div><div class="tooltip-inner">1253 : 7253</div></div><div class="tooltip tooltip-min top" role="presentation" style="left: 0%;"><div class="tooltip-arrow"></div><div class="tooltip-inner">1253</div></div><div class="tooltip tooltip-max top" role="presentation" style="left: 100%;"><div class="tooltip-arrow"></div><div class="tooltip-inner">7253</div></div><div class="slider-handle min-slider-handle round" role="slider" aria-valuemin="1253" aria-valuemax="7253" style="left: 0%;" aria-valuenow="1253" tabindex="0"></div><div class="slider-handle max-slider-handle round" role="slider" aria-valuemin="1253" aria-valuemax="7253" style="left: 100%;" aria-valuenow="7253" tabindex="0"></div></div><input id="ex2" type="text" class="span2" data-slider-min="1253" data-slider-max="7253" data-slider-step="5" data-slider-value="[1253,7253]" style="display: none;" data-value="1253,7253" value="1253,7253">*@
+                            @*  <b class="b-lt"><span>Min</span>AUD$1253</b> <b class="b-rt"><span>Max</span>AUD$7253</b> *@
+
+                            <input id="budget-range" type="text" data-slider-min="@Model.LowestPrice" data-slider-max="@Model.HighestPrice" data-slider-value="@ViewBag.v_PriceRange" />
+                            <span id="budget-range-value">Budget: $@Model.MinPrice - $@Model.MaxPriceFront</span>
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-block">
+                    <a class="filter-btn" data-toggle="collapse" href="#filter3" role="button" aria-expanded="true" aria-controls="filter3">
+                        By Hotel Rating
+                    </a>
+                    <div class="collapse show" id="filter3">
+                        <ul class="chk-list">
+                            @if (Model != null && Model.HotelRatings != null && Model.HotelRatings.Count > 0)
+                            {
+                                <li>
+                                    <label class="customcheckBox">
+                                        &nbsp; All
+                                        <input type="checkbox" id="rating_all">
+                                        <span class="checkmarkhd"></span>
+                                    </label>
+                                </li>
+                                string ratingValues = ViewBag.v_hdratingVal == null ? "" : ViewBag.v_hdratingVal;
+                                foreach (var item in Model.HotelRatings)
+                                {
+                                    @if (item.Id != 6)
+                                    {
+                                        <li>
+                                            <label class="customcheckBox togetfilteredValues" id="rate_@item.Id" href="@domain/Listing/Index?noofRating=@item.Id">
+                                                @Html.CheckBox("ratingfilter", ratingValues.Split(',').Contains(item.Id.ToString()), new { @class = "ratingfilter", @value = item.Id })&nbsp;&nbsp;
+                                                @for (int i = 1; i < 6; i++)
+                                                {
+                                                    if (item.Id >= i)
+                                                    {
+
+                                                        <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                                    }
+                                                    else
+                                                    {
+                                                        <i class="fa fa-star " aria-hidden="true"></i>
+                                                    }
+                                                }
+                                                <small>(@item.Name)</small>
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        </li>
+                                    }
+                                }
+                                @*foreach (var item in Model.HotelRatings)
+                            {
+                            <li>
+                            <label class="customcheckBox togetfilteredValues" id="rate_@item.Id" href="@domain/Listing/Index?noofRating=@item.Id">
+                            @if (item.Id != 6)
+                            {
+                            for (int i = 1; i < 6; i++)
+                            {
+                            if (item.Id >= i)
+                            {
+
+                            <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                            }
+                            else
+                            {
+                            <i class="fa fa-star " aria-hidden="true"></i>
+                            }
+                            }
+                            <small>(@item.Name)</small>
+                            }
+                            else
+                            {
+                            @item.Name
+                            }
+
+                            <input type="checkbox">
+                            <span class="checkmarkhd"></span>
+                            </label>
+                            </li>
+                            }*@
+                            }
+
+
+                        </ul>
+                    </div>
+                </div>
+                @if (ViewBag.v_isCruseIncluded == null)
+                {
+                    <div class="accordion-block">
+                        <a class="filter-btn" data-toggle="collapse" href="#filter4" role="button" aria-expanded="true" aria-controls="filter4">
+                            By Inclusions
+                        </a>
+                        <div class="collapse show" id="filter4">
+                            <ul class="chk-list">
+                                @if (Model != null && Model.PackageInclusionslst != null && Model.PackageInclusionslst.Count > 0)
+                                {
+                                    <li>
+                                        <label class="customcheckBox">
+                                            &nbsp; All
+                                            <input type="checkbox" id="inclusion_all">
+                                            <span class="checkmarkhd"></span>
+                                        </label>
+                                    </li>
+                                    string inclusionValues = ViewBag.v_hdinclusionVal == null ? "" : ViewBag.v_hdinclusionVal;
+                                    foreach (var item in Model.PackageInclusionslst)
+                                    {
+                                        <li>
+                                            <label class="customcheckBox" id="inclusion_@item.Id">
+                                                @Html.CheckBox("inclusionfilter", inclusionValues.Split(',').Contains(item.Id.ToString()), new { @class = "inclusionfilter", @value = item.Id })&nbsp;&nbsp;@item.Name
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+                @if (ViewBag.v_regionId == null)
+                {
+                    <div class="accordion-block">
+                        <a class="filter-btn" data-toggle="collapse" href="#filter6" role="button" aria-expanded="true" aria-controls="filter6">
+                            By Directions
+                        </a>
+                        <div class="collapse show" id="filter6">
+                            <ul class="chk-list">
+                                @if (Model != null && Model.PackageDirectionlst != null && Model.PackageDirectionlst.Count > 0)
+                                {
+                                    <li>
+                                        <label class="customcheckBox">
+                                            &nbsp; All
+                                            <input type="checkbox" id="direction_all">
+                                            <span class="checkmarkhd"></span>
+                                        </label>
+                                    </li>
+                                    string directionValues = ViewBag.v_hdDirectionVal == null ? "" : ViewBag.v_hdDirectionVal;
+                                    foreach (var item in Model.PackageDirectionlst)
+                                    {
+                                        <li>
+                                            <label class="customcheckBox" id="direction_@item.Value">
+                                                @Html.CheckBox("directionfilter", directionValues.Split(',').Contains(item.Value.ToString()), new { @class = "directionfilter", @value = item.Value })&nbsp;&nbsp;@item.Text
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        </li>
+                                    }
+
+                                }
+                            </ul>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+            <div class="col-md-9 wd2 loading-card-block">
+                @*<h3>Find the top most visited countries in Europe</h3>*@
+                <h3></h3><br />
+                <div class="loading" id="front_loaderPrice" style="display:none;">Loading&#8230;</div>
+                <div id="productresultdata">
+                    @if (Model != null && Model.PackagesList != null)
+                    {
+
+                        <partial name="~/Views/Listing/_ListingPackage.cshtml" model="@Model" />
+
+
+                    }
+
+                </div>
+               
+
+
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<script>
+    function PagerClick(index) {
+        document.getElementById("hfCurrentPageIndex").value = index;
+        // document.forms[0].submit();
+    }
+
+    function showSliderVal() {
+
+        getsearchdata("filter");
+    }
+   
+
+</script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+
+
+    $(document).ready(function () {
+        $('#select-allDuration-checkbox').change(function () {
+            var isChecked = $(this).prop('checked');
+            $('.duration-checkbox').prop('checked', isChecked);
+        });
+
+        $('.duration-checkbox').change(function () {
+            if (!$(this).prop('checked')) {
+                $('#select-allDuration-checkbox').prop('checked', false);
+            } else {
+                if ($('.duration-checkbox:checked').length === $('.duration-checkbox').length - 1) {
+                    $('#select-allDuration-checkbox').prop('checked', true);
+                }
+            }
+        });
+    });
+
+    $(document).ready(function () {
+        // Initialize the budget range slider
+        $jq("#budget-range").slider();
+
+
+        // Get the initial range values
+        var initialRange = $jq("#budget-range").slider("getValue");
+
+        // Update the URL with the initial range
+        //updateURL(initialRange);
+
+        //// Update the URL when the range changes
+        //$("#budget-range").on("slide", function (slideEvt) {
+        //    //alert(1);
+        //    //updateURL(slideEvt.value);
+        //});
+        // $("#budget-range").on("change", function (slideEvt) {
+        //    //alert(2);
+        //    //updateURL(slideEvt.value);
+        //});
+
+
+
+        //function updateURL(range) {
+
+        //    // Your domain and path
+        //    var domain = "https://yourdomain.com";
+        //    var path = "/Listing/Index";
+
+        //    // Create the budget query parameter
+        //    var budgetQueryParam = "?budget=" + range[0] + "-" + range[1];
+
+        //    // Construct the full URL
+        //    var fullURL = domain + path + budgetQueryParam;
+
+        //    // Update the displayed range value
+        //    $("#budget-range-value").text("Budget Range: AUD$" + range[0] + " - AUD$" + range[1]);
+
+        //    // Update the URL in the browser
+        //    window.history.pushState(null, null, fullURL);
+        //}
+
+        $jq(document).off("change", "#budget-range").on("change", "#budget-range", function (event) {
+            $jq('#productresultdata').html('');
+            $jq('#totalresults').html('Waiting for result....');
+            $jq('#front_loaderPrice').show();
+            getsearchdata("priceFilter");
+
+        });
+    });
+
+    $(".durationfilter").click(function () {
+
+        var values = $('input:checkbox:checked.durationfilter').map(function () {
+            return this.value;
+        }).get();
+
+        if ($('.durationfilter:checked').length == $('.durationfilter').length) {
+            $('#duration_all').prop('checked', true);
+        } else {
+            $('#duration_all').prop('checked', false);
+        }
+
+        //var $box = $(this);
+        //if ($box.is(":checked")) {
+        //    var group = "input:checkbox[name='" + $box.attr("name") + "']";
+        //    $(group).prop("checked", false);
+        //    $box.prop("checked", true);
+        //} else {
+        //    $box.prop("checked", false);
+        //}
+
+        //var values = $('input:checkbox:checked.areafilter').val();
+        $("#hddurationfilterval").val(values);
+        getsearchdata("filter");
+    });
+    $('#duration_all').on('click', function () {
+        if (this.checked) {
+            $('.durationfilter').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.durationfilter').each(function () {
+                this.checked = false;
+            });
+        }
+
+        var values = $('input:checkbox:checked.durationfilter').map(function () {
+            return this.value;
+        }).get();
+
+        $("#hddurationfilterval").val(values);
+        getsearchdata("filter");
+
+    });
+
+    $(".inclusionfilter").click(function () {
+
+        var values = $('input:checkbox:checked.inclusionfilter').map(function () {
+            return this.value;
+        }).get();
+
+        if ($('.inclusionfilter:checked').length == $('.inclusionfilter').length) {
+            $('#inclusion_all').prop('checked', true);
+        } else {
+            $('#inclusion_all').prop('checked', false);
+        }
+
+        $("#hdinclusionfilterval").val(values);
+        getsearchdata("filter");
+    });
+    $('#inclusion_all').on('click', function () {
+        if (this.checked) {
+            $('.inclusionfilter').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.inclusionfilter').each(function () {
+                this.checked = false;
+            });
+        }
+
+        var values = $('input:checkbox:checked.inclusionfilter').map(function () {
+            return this.value;
+        }).get();
+
+        $("#hdinclusionfilterval").val(values);
+        getsearchdata("filter");
+
+    });
+
+
+    $(".countryfilter").click(function () {
+
+        var values = $('input:checkbox:checked.countryfilter').map(function () {
+            return this.value;
+        }).get();
+
+        if ($('.countryfilter:checked').length == $('.countryfilter').length) {
+            $('#country_all').prop('checked', true);
+        } else {
+            $('#country_all').prop('checked', false);
+        }
+
+        $("#hdcountryfilterval").val(values);
+        getsearchdata("filter");
+    });
+    $('#country_all').on('click', function () {
+        if (this.checked) {
+            $('.countryfilter').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.countryfilter').each(function () {
+                this.checked = false;
+            });
+        }
+
+        var values = $('input:checkbox:checked.countryfilter').map(function () {
+            return this.value;
+        }).get();
+
+        $("#hdcountryfilterval").val(values);
+        getsearchdata("filter");
+
+    });
+
+    $(".ratingfilter").click(function () {
+
+        var values = $('input:checkbox:checked.ratingfilter').map(function () {
+            return this.value;
+        }).get();
+
+        if ($('.ratingfilter:checked').length == $('.ratingfilter').length) {
+            $('#rating_all').prop('checked', true);
+        } else {
+            $('#rating_all').prop('checked', false);
+        }
+
+        $("#hdratingfilterval").val(values);
+        getsearchdata("filter");
+    });
+    $('#rating_all').on('click', function () {
+        if (this.checked) {
+            $('.ratingfilter').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.ratingfilter').each(function () {
+                this.checked = false;
+            });
+        }
+
+        var values = $('input:checkbox:checked.ratingfilter').map(function () {
+            return this.value;
+        }).get();
+
+        $("#hdratingfilterval").val(values);
+        getsearchdata("filter");
+
+    });
+
+
+    $(".directionfilter").click(function () {
+
+        var values = $('input:checkbox:checked.directionfilter').map(function () {
+            return this.value;
+        }).get();
+
+        if ($('.directionfilter:checked').length == $('.directionfilter').length) {
+            $('#direction_all').prop('checked', true);
+        } else {
+            $('#direction_all').prop('checked', false);
+        }
+
+        $("#hddirectionfilterval").val(values);
+        getsearchdata("filter");
+    });
+    $('#direction_all').on('click', function () {
+        if (this.checked) {
+            $('.directionfilter').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.directionfilter').each(function () {
+                this.checked = false;
+            });
+        }
+
+        var values = $('input:checkbox:checked.directionfilter').map(function () {
+            return this.value;
+        }).get();
+
+        $("#hddirectionfilterval").val(values);
+        getsearchdata("filter");
+
+    });
+
+
+
+
+    //$(document).off("mouseup", ".range-slider-box").on("mouseup", ".range-slider-box", function () {
+
+    //    getsearchdata("filter");
+    //})
+
+
+
+    // $(document).off("change", "#budget-range").on("change", "#budget-range", function (event) {
+
+    //    getsearchdata("filter");
+    //})
+
+
+    $(document).off("click", ".paginglogic").on("click", ".paginglogic", function () {
+        var data = $(this).data('indexcurrentpage');
+        $("#hdncurentPage").val(data);
+        getsearchdata("filterpaging");
+    });
+
+    $(".btnReset").click(function () {
+        location.reload();
+    });
+
+    //var _courty = $("#hdcountryfilterval").val();
+    //if (_courty == "") {
+    //    $('#country_all').trigger('click');
+    //}
+    //$('#country_all').trigger('click');
+    //var _durton = $("#hddurationfilterval").val();
+    //if (_durton == "") {
+    //    $('#duration_all').trigger('click');
+    //}
+    //var _ratings = $("#hdratingfilterval").val();
+    //if (_ratings == "") {
+    //    $('#rating_all').trigger('click');
+    //}
+    //var _inclns = $("#hdinclusionfilterval").val();
+    //if (_inclns == "") {
+    //    $('#inclusion_all').trigger('click');
+    //}
+
+    //$('#country_all').trigger('click');
+    //$('#duration_all').trigger('click');
+    //$('#rating_all').trigger('click');
+    //$('#inclusion_all').trigger('click');
+
+    function getsearchdata(values) {
+
+        var ispaging = false;
+        if (values == "filterpaging") {
+            values = 'filter';
+            ispaging = true;
+        }
+        //Price Filter
+        var isPriceFilter = false;
+        if (values == "priceFilter") {
+            values = 'filter';
+            isPriceFilter = true;
+        }
+
+        var _budget = ($("#hdnbudget").val() == "" || $("#hdnbudget").val() == undefined) ? "" : "?budget=" + $("#hdnbudget").val();
+        var _destination = ($("#hdndestination").val() == "" || $("#hdndestination").val() == undefined) ? "" : (_budget == "" ? "?" : "&") + "destination=" + $("#hdndestination").val();
+        var _duration = ($("#hdnduration").val() == "" || $("#hdnduration").val() == undefined) ? "" : ((_budget == "" && _destination == "") ? "?" : "&") + "duration=" + $("#hdnduration").val();
+        var _category = ($("#hdncategory").val() == "" || $("#hdncategory").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "") ? "?" : "&") + "category=" + $("#hdncategory").val();
+        var _reqid = ($("#hdnreqid").val() == "" || $("#hdnreqid").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "") ? "?" : "&") + "reqid=" + $("#hdnreqid").val();
+        var _regionId = ($("#hdnregionId").val() == "" || $("#hdnregionId").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "") ? "?" : "&") + "regionId=" + $("#hdnregionId").val();
+        var _IsCruseIncluded = ($("#hdnisCruseIncluded").val() == "" || $("#hdnisCruseIncluded").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "") ? "?" : "&") + "IsCruseIncluded=" + $("#hdnisCruseIncluded").val();
+        var _pkgid = ($("#hdnpkgid").val() == "" || $("#hdnpkgid").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "") ? "?" : "&") + "pkgid=" + $("#hdnpkgid").val();
+
+        var _type = ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "") ? "?" : "&") + "searchType=" + values;
+        var _curentPage = ($("#hdncurentPage").val() == "" || $("#hdncurentPage").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _type == "") ? "?" : "&") + "curentPage=" + $("#hdncurentPage").val();
+        var _pageSize = ($("#hdnpageSize").val() == "" || $("#hdnpageSize").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _type == "" && _curentPage == "") ? "?" : "&") + "pageSize=" + $("#hdnpageSize").val();
+
+
+        var _durationVal = ($("#hddurationfilterval").val() == "" || $("#hddurationfilterval").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "") ? "?" : "&") + "durationVal=" + $("#hddurationfilterval").val();
+        var _inclusionVal = ($("#hdinclusionfilterval").val() == "" || $("#hdinclusionfilterval").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "" && _durationVal == "") ? "?" : "&") + "inclusionVal=" + $("#hdinclusionfilterval").val();
+        var _ratingVal = ($("#hdratingfilterval").val() == "" || $("#hdratingfilterval").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "" && _durationVal == "" && _inclusionVal == "") ? "?" : "&") + "ratingVal=" + $("#hdratingfilterval").val();
+
+        var _priceRange = ($("#budget-range").val() == "" || $("#budget-range").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "" && _durationVal == "" && _inclusionVal == "" && _ratingVal == "") ? "?" : "&") + "priceRange=" + $("#budget-range").val();
+        var _countryVal = ($("#hdcountryfilterval").val() == "" || $("#hdcountryfilterval").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "" && _durationVal == "" && _inclusionVal == "" && _ratingVal == "" && _priceRange == "") ? "?" : "&") + "countryVal=" + $("#hdcountryfilterval").val();
+        var _directionVal = ($("#hddirectionfilterval").val() == "" || $("#hddirectionfilterval").val() == undefined) ? "" : ((_budget == "" && _destination == "" && _duration == "" && _category == "" && _reqid == "" && _regionId == "" && _IsCruseIncluded == "" && _pkgid == "" && _curentPage == "" && _pageSize == "" && _type == "" && _durationVal == "" && _inclusionVal == "" && _ratingVal == "" && _priceRange == "" && _countryVal == "") ? "?" : "&") + "directionVal=" + $("#hddirectionfilterval").val();
+
+        var _pricerangevalues = $("#budget-range").val();
+
+        if (_pricerangevalues != undefined && _pricerangevalues != null && _pricerangevalues != '') {
+            var array = _pricerangevalues.split(',');
+
+            $('#budget-range-value').text('Budget: $' + array[0] + ' - $' + array[1] + '');
+
+        }
+
+        //$('#totalresults').html('Showing ' + $('#hdnDynamicTotalItem').val() + ' Results');
+        $('#totalresults').html('Waiting for result....');
+        if (isPriceFilter == false) {
+            $('#front_loader').show();
+        }
+        var url = '@(SiteKeys.Domain + "/Listing/GetProductListByFilter")' + _budget + _destination + _duration + _category + _reqid + _regionId + _IsCruseIncluded + _pkgid + _type + _durationVal + _inclusionVal + _ratingVal + _priceRange + _countryVal + _directionVal;
+        if (ispaging) {
+            url = '@(SiteKeys.Domain + "/Listing/GetProductListByFilter")' + _budget + _destination + _duration + _category + _reqid + _regionId + _IsCruseIncluded + _pkgid + _type + _curentPage + _durationVal + _inclusionVal + _ratingVal + _priceRange + _countryVal + _directionVal;
+        }
+
+
+
+        $.get(url, function (data) {
+
+            $('#productresultdata').html(data);
+            if (isPriceFilter == false) {
+                $('#front_loader').hide();
+            }
+            $('#front_loaderPrice').hide();
+            $('#totalresults').html('Showing ' + $('#hdnDynamicTotalItem').val() + ' Results');
+
+        });
+        //$("#report-loading").show();
+        //location.href = '@(SiteKeys.Domain + "/Listing/Index")' + _budget + _destination + _duration + _category + _reqid + _regionId + _IsCruseIncluded + _pkgid + _type + _durationVal + _inclusionVal + _ratingVal + _priceRange;
+        // $("#report-loading").show();
+    }
+</script>
+
+
+
+@section Scripts{
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/11.0.2/bootstrap-slider.min.js"></script>
+    <script type='text/javascript'>
+        var $jq = jQuery.noConflict(true);
+    </script>
+}
+

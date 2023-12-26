@@ -1,0 +1,217 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using TCP.Core.Code.LIBS;
+@inject IConfiguration configuration;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    @* <meta name="viewport" content="width=device-width, initial-scale=1.0" user-scalable="0" /> *@
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    @* <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" /> *@
+
+    <link rel="stylesheet" href="~/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/css/owl.carousel.min.css">
+    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/css/responsive.css">
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/css/datepicker/jquery-ui.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+
+    <style>
+        .alert.alert-danger.alert-dismissable {
+            position: absolute;
+            top: 0;
+            z-index: 99999999999999;
+            width: 100%;
+            background: rgba(217, 92, 92, .95);
+            color: white;
+        }
+
+        .alert.alert-success.alert-dismissable {
+            position: absolute;
+            top: 0;
+            z-index: 99999999999999;
+            width: 100%;
+            background: rgba(91, 189, 114, .95);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="loading" id="front_loader">Loading&#8230;</div>
+        @await Html.PartialAsync("_Header")
+        <div class="content-wrapper">
+            <partial name="~/Views/Shared/_Notification.cshtml" />
+            @RenderBody()
+        </div>
+
+        @await Html.PartialAsync("_Footer")
+
+    </div>
+
+    <!-- Login Popup -->
+    <div class="modal fade custom-popup" id="login-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                @* <partial name="~/Views/Account/_Login.cshtml" /> *@
+            </div>
+        </div>
+    </div>
+    <!-- Login Popup -->
+    <!-- Register Popup -->
+    <div class="modal fade custom-popup" id="register-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                @* <partial name="~/Views/Account/_Register.cshtml" /> *@
+
+            </div>
+
+        </div>
+    </div>
+    <!-- Register Popup -->
+    <!-- Forgot Popup -->
+    <div class="modal fade custom-popup" id="forgotpassword-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+
+        </div>
+    </div>
+    <!-- Forgot Popup -->
+    <!-- planmyholiday Popup -->
+    <div class="modal fade custom-popup custom-popup-big" id="modal-add-edit-planmyholiday" tabindex="-1" role="dialog" aria-labelledby="modal-add-edit-planmyholiday-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+    <!-- planmyholiday Popup -->
+    <!-- Customisable & Get Quote Popup -->
+    <div class="modal fade custom-popup" id="modal-add-edit-customquote" tabindex="-1" role="dialog" aria-labelledby="modal-add-edit-customquote-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Us Popup -->
+    <div class="modal fade custom-popup" id="contactus-popup" tabindex="-1" role="dialog" aria-labelledby="contactus-popup-label" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">                
+            </div>
+        </div>
+    </div>
+
+    @*   <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script> *@
+    @* <script src="~/js/site.js" asp-append-version="true"></script> *@
+    @await Html.PartialAsync("_ScriptData")
+
+    @*  <script src="js/jquery-3.3.1.min.js"></script>
+
+    <script src="~/lib/bootstrap/dist/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
+
+    @* <script src="~/lib/jquery/jquery-3.3.1.min.js"></script> *@
+    <script src="~/js/bootstrap.bundle.js"></script>
+    <script src="~/js/iphone-menu.js" asp-append-version="true"></script>
+    <script src="~/js/owl.carousel.min.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.flexslider.js"></script>
+    <script src="~/js/custom.js" asp-append-version="true"></script>
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+    <script src="~/lib/admin-lte/js/adminlte.min.js" asp-append-version="true"></script>
+    <script src="~/js/global.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/datepicker/jquery-ui.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+
+
+<script>
+
+    $(document).ready(function () {
+        var urldomainpart = "@SiteKeys.Domain";
+        urldomainpart = urldomainpart + "/Home/GetThemeViewData";
+        //  $("#front_loader").hide();
+        var themetxt = $('#theme-heading').text();
+        var header_ul_home = $(".navigation-left").find("#header-ul-home");
+        $.ajax({
+            url: urldomainpart,
+            type: 'GET',
+            success: function (result) {
+                var header_ul_home = $(".navigation-left").find("#header-ul-home");
+                header_ul_home.empty();
+                $.each(result, function (index, item) {
+                    var link = "@SiteKeys.Domain" + "/Listing/Index?category=" + item.shortName;
+                    header_ul_home.append($("<li><a href='" + link + "'>" + item.name + "</a></li>"));
+                });
+                $("#front_loader").hide();
+            },
+            error: function (result) {
+                $("#front_loader").hide();
+                Global.ShowMessage(result.errorMessage == undefined ? "undefined request" : result.errorMessage, Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+        //------GetGeneralSieSettings-----------------------
+         $.ajax({
+            url: "@SiteKeys.Domain" + "/Home/GetGeneralSieSettings",
+            type: 'GET',
+            success: function (result) {
+
+                $("#header-supportmobile").text(result.supportMobile);
+                $("#header-supportemail").text(result.supportEmail);
+                $("#footer-supportemail").attr("href", "mailto:" + result.supportEmail);
+               
+                $("#footer-supportmobile").text(result.supportMobile);
+                $("#footer-supportemail").text(result.supportEmail);
+                $("#footer-supportemail").attr("href", "mailto:" + result.supportEmail);
+
+                $("#header-logo").attr("src", result.logoImageName);
+                $("#footer-logo").attr("src", result.logoImageName);
+            },
+            error: function (result) {
+                $("#front_loader").hide();
+                Global.ShowMessage(result.errorMessage == undefined ? "undefined request" : result.errorMessage, Global.MessageType.Error);
+            }
+        });
+
+        //Arvind
+        var url = "";
+        $.ajax({
+            url: "@SiteKeys.Domain" + '/Account/CheckUserStatus',
+            type: 'POST',
+            success: function (result) {
+                
+                if (result.isSuccess == false) {
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                //Global.ShowMessage(result.data == null ? "Undefiend request" : Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+    })
+
+</script>
+

@@ -1,0 +1,63 @@
+﻿@model TCP.Core.Models.LoginViewModel
+@using TCP.Core.Code.LIBS;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewData["Title"] = "Log in";
+}
+<div id="loginMessageDiv" class="text-center alert alert-danger alert-dismissable" style="display:none">
+    <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+</div>
+<form method="post" asp-controller="Account" asp-action="Login" id="form-signIn">
+    <div class="row no-gutters">
+        <div class="col-md-6">
+            <div class="bg-block text-center">
+                <h3>Welcome to</h3>
+                <img src="@Model.LogoImageNameDark" alt="">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-block">
+                <button type="button" id="login-close-btn" class="close" data-dismiss="modal" aria-label="Close"><img src="@SiteKeys.Domain/images/close-btn.png" alt=""></button>
+                <h2>Sign In</h2>
+                <div class="form-group">
+                    <label class="req">Email</label>
+                    <input asp-for="Email" type="email" class="form-control email-icon" placeholder="Enter Your Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Password</label>
+                    <div class="lgnscrn">
+                        <input asp-for="Password" type="password" class="form-control password_id lock-icon" placeholder="Enter Your Password">
+                        <i class="fa fa-eye-slash toggle_pwd" style="margin-top: 15px;"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-6 align-items-center">
+                        <label class="customcheckBox">
+                            Remember Me
+                            <input type="checkbox" asp-for="RememberMe">
+                            <span class="checkmarkhd"></span>
+                        </label>
+                    </div>
+                    <div class="col-md-6 align-items-center text-right">
+                        <a oncontextmenu="return false" id="forgotpassword_btn" asp-action="ForgotPassword" asp-controller="Account" data-toggle="modal" data-target="#forgotpassword-popup" class="frg-btn">Forgot Password?</a>
+                    </div>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn-custom">Sign In</button>
+                </div>
+                <div class="form-group text-center"><img src="@SiteKeys.Domain/images/sep-img.jpg" alt=""></div>
+                <div class="form-group text-center m-0">Not a member, Please <a oncontextmenu="return false" id="register_btn" asp-action="Register" asp-controller="Account" data-toggle="modal" data-target="#register-popup" class="frg-btn">Sign Up</a></div>
+            </div>
+        </div>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/account/account-index.js" asp-append-version="true"></script>
+
+<script>
+    function yourFunction() {
+        alert('sssssssssss');
+    }
+</script>

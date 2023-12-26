@@ -1,0 +1,20 @@
+﻿@using MVE.Core.Models.Others;
+@{
+    var model = ViewData["NotificationModel"] as Notification;
+    if (model == null)
+    {
+        if (TempData["NotificationModel"] != null)
+        {
+            model = Newtonsoft.Json.JsonConvert.DeserializeObject<Notification>(TempData["NotificationModel"].ToString());
+        }
+    }
+}
+
+@if (model != null)
+{
+    <div class="alert alert-@(model.Type.ToString().ToLower()) alert-dismissable">
+        <button aria-hidden="true" data-dismiss="alert" class="close" type="button">×</button>
+        @(model.Message)
+    </div>
+}
+

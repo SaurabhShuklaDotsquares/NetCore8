@@ -1,0 +1,277 @@
+﻿@using MVE.Admin.ViewModels
+@using System.Linq;
+@{
+    List<MenuViewModel> Model = new List<MenuViewModel>();
+
+    Model = MenuViewModel.MenuItems != null ? MenuViewModel.MenuItems.ToList() : new List<MenuViewModel>();
+    var identity = (System.Security.Claims.ClaimsIdentity)User.Identity;
+    if ((identity?.FindFirst("userPermissions")?.Value) != null && identity?.Claims?.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Role)?.Value != RoleType.Administrator.GetEnumDescription())
+    {
+        string permissionIds = identity?.FindFirst("userPermissions")?.Value;
+        long[] permissionIdsObj = Newtonsoft.Json.JsonConvert.DeserializeObject<long[]>(permissionIds);
+        Model = Model.Where(x => permissionIdsObj.Contains(x.PermissionId)).ToList();
+    }
+    var mainMenu = Model.GroupBy(x => x.MenuName).Select(x => x.FirstOrDefault()).ToList();
+    bool hasSubMenu = false;
+}
+
+<script>
+    if ('@(MenuViewModel.MenuItems == null)' == 'True' || '@(MenuViewModel.MenuItems != null && MenuViewModel.MenuItems.Count == 0)' == 'True') {
+        window.location.href = '@SiteKeys.Domain' + "/account/signout";
+    }
+</script>
+
+<!-- Main Sidebar Container -->
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+    <!-- Brand Logo -->
+    <a href="/Admin/Dashboard/Index" class="brand-link">
+        <img src="@SiteKeys.Domain/images/logo.png"
+             alt="Travel"
+             class="brand-image"
+             style="opacity: 4" />
+        <span class="brand-text font-weight-light" style="font-weight:600 !important; color:white;"></span><br/>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <!-- Sidebar user (optional) -->
+
+        <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+            <div class="image">
+                @if (CurrentUser != null && CurrentUser.ImageName != null)
+                {
+                    <img src="@CurrentUser.ImageName.Replace("/images/","/Admin/images/")" class="img-circle elevation-2" alt="User Image" />
+                }
+                else
+                {
+                    <img src="@CurrentUser.ImageName" class="img-circle elevation-2" alt="User Image" />
+                }
+            </div>
+            <div class="info">
+                <h7 style="color: gainsboro" class="d-block">@(!string.IsNullOrEmpty(CurrentUser.FullName) ? CurrentUser.FullName : "")</h7>
+            </div>
+        </div>
+
+        <!-- Sidebar Menu -->
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <!-- Add icons to the links using the .nav-icon class
+                with font-awesome or any other icon font library -->
+                <li class="nav-item">
+                    <a href="/Admin/Dashboard/Index" class="nav-link">
+                        <i class="nav-icon fa fa-dashboard"></i>
+                        <p>
+                            Dashboard
+                        </p>
+                    </a>
+                </li>
+                @foreach (var item in mainMenu)
+                {
+                    hasSubMenu = Model.Count(x => x.MenuName == item.MenuName && !string.IsNullOrEmpty(item.SubMenuName)) > 0;
+                    <li class="nav-item @(hasSubMenu?"has-treeview":"")">
+                        <a href="@(hasSubMenu?"#":SiteKeys.Domain+"/"+item.MenuUrl)" class="nav-link">
+                            <i class="nav-icon @(item.MenuIcon)"></i>
+                            <p>
+                                @item.MenuName
+                                @if (hasSubMenu)
+                                {
+                                    <i class="right fa fa-angle-left"></i>
+                                }
+                            </p>
+                        </a>
+                        @if (hasSubMenu)
+                        {
+                            <ul class="nav nav-treeview">
+                                @foreach (var subMenu in Model.Where(x => x.MenuName == item.MenuName && !string.IsNullOrEmpty(item.SubMenuName)).ToList())
+                                {
+                                    <li class="nav-item">
+                                        <a href="@SiteKeys.Domain/@subMenu.MenuUrl" class="nav-link @Html.IsActive(subMenu.MenuUrl)">
+                                            <i class="@subMenu.SubMenuIcon nav-icon"></i>
+                                            <p>@subMenu.SubMenuName</p>
+                                        </a>
+                                    </li>
+                                }
+                            </ul>
+                        }
+                    </li>
+                }
+                
+               @* <li class="nav-item has-treeview">
+                    <a href="#" class="nav-link">
+                        <i class="nav-icon fa fa-users"></i>
+                        <p>
+                            Manage Enquiries
+                            <i class="right fa fa-angle-left"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview">
+                        <li class="nav-item">
+                            <a href="/Admin/ManageEnqCustomPkg/Index" class="nav-link ">
+                                <i class="fa fa-sticky-note nav-icon"></i>
+                                <p>Customize Package</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="/Admin/ManageEnqCustomPkg/PlanHolidayPkgIndex" class="nav-link ">
+                                <i class="fa fa-soccer-ball-o nav-icon"></i>
+                                <p>Plan My Holiday</p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>*@
+                @* <li class="nav-item has-treeview">
+                <a href="#" class="nav-link">
+                <i class="nav-icon fa fa-users"></i>
+                <p>
+                User Management
+                <i class="right fa fa-angle-left"></i>
+                </p>
+                </a>
+                <ul class="nav nav-treeview">
+                <li class="nav-item">
+                <a href="/Admin/UserRole/Index" class="nav-link ">
+                <i class="fa fa-user-secret nav-icon"></i>
+                Roles
+                </a>
+                </li>
+                <li class="nav-item">
+                <a href="/Admin/AdminUser/Index" class="nav-link ">
+                <i class="fa fa-user-circle nav-icon"></i>
+                Admin Users
+                </a>
+                </li>
+                </ul>
+                </li>*@
+
+             @*   <li class="nav-item">
+                    <a href="/Admin/Package/Index" class="nav-link">
+                        <i class="nav-icon fa fa-gift"></i>
+                        <p>
+                            Packages
+                        </p>
+                    </a>
+                </li>*@
+
+               @* <li class="nav-item">
+                    <a href="/Admin/AdminUser/ChangePassword" class="nav-link">
+                        <i class="nav-icon fa fa-unlock"></i>
+                        <p>
+                            Change Password
+                        </p>
+                    </a>
+                </li>*@
+                @*<li class="nav-item">
+                    <a href="/Admin/AccomodationType/Index" class="nav-link">
+                        <i class="nav-icon fa fa-unlock"></i>
+                        <p>
+                            Accomodation Type
+                        </p>
+                    </a>
+                </li>*@
+              @*  <li class="nav-item">
+                    <a href="/Admin/Theme/Index" class="nav-link">
+                        <i class="nav-icon fa fa-area-chart"></i>
+                        <p>
+                            Manage Category
+                        </p>
+                    </a>
+                </li>*@
+             @* <li class="nav-item">
+                    <a href="/Admin/Country/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Countries
+                        </p>
+                    </a>
+                </li>*@
+               @* <li class="nav-item">
+                    <a href="/Admin/HotelAmenity/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Hotel Amenities
+                        </p>
+                    </a>
+                </li>*@
+               @* <li class="nav-item">
+                    <a href="/Admin/ManageHolidayQuestionier/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Holiday Questionier
+                        </p>
+                    </a>
+                </li>*@
+                @*<li class="nav-item">
+                    <a href="/Admin/ActivityIncExc/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Inclusion/Exclusion
+                        </p>
+                    </a>
+                </li>*@
+               @* <li class="nav-item">
+                    <a href="/Admin/ManageDestinationGuide/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Destination Manager
+                        </p>
+                    </a>
+                </li>*@
+                @*<li class="nav-item">
+                    <a href="/Admin/ManageContactUs/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Contact Us
+                        </p>
+                    </a>
+                </li>
+               <li class="nav-item">
+                    <a href="/Admin/ManageRating/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Rating & Reviews
+                        </p>
+                    </a>
+                </li>
+                 <li class="nav-item">
+                    <a href="/Admin/ManageReport/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Report
+                        </p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="/Admin/ManageBooking/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Bookings
+                        </p>
+                    </a>
+                </li>
+              
+                <li class="nav-item">
+                    <a href="/Admin/ManageNotifications/Index" class="nav-link">
+                        <i class="nav-icon fa fa-globe"></i>
+                        <p>
+                            Manage Notifications
+                        </p>
+                    </a>
+                </li>*@
+           
+                <li class="nav-item">
+                    <a href="/Admin/Account/signout" class="nav-link">
+                        <i class="nav-icon fa fa-power-off"></i>
+                        <p>
+                            Logout
+                        </p>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+</aside>
+
+

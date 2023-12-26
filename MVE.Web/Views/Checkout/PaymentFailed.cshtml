@@ -1,0 +1,35 @@
+﻿@using TCP.Core.Code.LIBS;
+@{
+    ViewData["Title"] = "PaymentFailed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="inner-hd-block">
+    <div class="container text-center">
+        <h1>Checkout</h1>
+    </div>
+</div>
+
+<div class="checkout-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <div class="checkout-block-left">
+                    <div class="checkout-packages">
+                        <div class="checkout-packages-inst">
+                            <h3>Failed</h3>
+                            <h3>Unfortunately payment was rejected.</h3>
+                            <p>Click Button to redirected to the main page .</p>
+                            <a href="@SiteKeys.Domain" class="btn-custom text-center">Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+</script>

@@ -1,0 +1,74 @@
+﻿@model MVE.Admin.ViewModels.UserRoleViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = String.Format("{0} Role", string.IsNullOrEmpty(Model.Id) ? "Add" : "Edit") };
+}
+
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <form asp-action="AddEdit" asp-controller="UserRole" id="frm-add-edit-role">
+                <partial name="_ModalHeader" model="headerModel" />
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="PreInitialRoleName" />
+                <div id="validation-summary"></div>
+                <div class="modal-body box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">Name<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="Name" class="form-control" placeholder="Name" autocomplete="off" maxlength="100" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                      
+                        <div class="col-5 action-view-popup">
+                            <label for="IsActive">Active</label>
+                           @* <label class="switch">
+                                @if (Model.Name == RoleType.Administrator.GetEnumDescription())
+                                {
+                                    <input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" readonly />
+                                }
+                                else
+                                {
+                                    <input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" />
+                                }
+                                <span class="slider round"></span>
+                            </label>*@
+
+                            @if (Model.Name == RoleType.Administrator.GetEnumDescription())
+                            {
+                                @*<input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" readonly />*@
+                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                    <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                                    <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                                </div>
+                            }
+                            else
+                            {
+                                @*<input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" />*@
+                                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                    <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit">
+                                    <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                                    </div>
+                            }
+                        </div>
+                        <div class="col-7">
+                        </div>
+                    </div>
+
+                </div>
+                <partial name="_ModalFooter" model="new ModalFooter { }" />
+            </form>
+
+        </div>
+    </div>
+</section>
+

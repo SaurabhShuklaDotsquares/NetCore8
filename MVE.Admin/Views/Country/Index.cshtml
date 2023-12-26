@@ -1,0 +1,119 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.CountryViewModel
+@{
+    ViewData["Title"] = "Country";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Country</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Country</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <partial name="_Notification" />
+        <input type="hidden" asp-for="Id" />
+
+        <div id="countryMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">
+                                <option value="" selected="selected">All</option>
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                       @*  <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrStartDate" placeholder="Start Date" class="form-control fltrSDate" />
+                            </div>
+                        </div>
+                        <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrEndDate" placeholder="End Date" class="form-control fltrEDate" />
+                            </div>
+                        </div> *@
+                    </div>
+                </div>
+                <div class="card-tools">
+                    <a oncontextmenu="return false" id="AddEditCountry" data-toggle="modal" asp-action="AddEditCountry" asp-controller="Country" data-target="#modal-add-edit-country" class="btn btn-block bg-gradient-success">
+                        <i class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+            <table id="grid-country-details" class="table table-bordered custom-grid-table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Country ID</th>
+                        <th width="2%">S.No.</th>
+                        <th width="15%">Image</th>
+                        <th width="25%">Name</th>
+                        <th width="20%" style="padding-left: 30px;">Created Date</th>
+                        <th width="10%">Status</th>
+                        <th width="20%">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</section>
+
+
+
+
+@{
+    var addEditcountryModel = new Modal { ID = "modal-add-edit-country", AreaLabeledId = "modal-add-edit-country-label", Size = ModalSize.Medium };
+    var viewcountryModel = new Modal { ID = "modal-view-country", AreaLabeledId = "modal-view-country-label", Size = ModalSize.Medium };
+    var viewvisaguidecountryModel = new Modal { ID = "modal-view-visaguide", AreaLabeledId = "modal-view-visaguide-label", Size = ModalSize.XLarge };
+    var deletecountryModel = new Modal { ID = "modal-delete-country", AreaLabeledId = "modal-delete-country-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="addEditcountryModel" />
+<partial name="_Modal" model="deletecountryModel" />
+<partial name="_Modal" model="viewcountryModel" />
+<partial name="_Modal" model="viewvisaguidecountryModel" />
+@section scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/country/country-index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+     
+   
+}

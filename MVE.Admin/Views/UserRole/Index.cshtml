@@ -1,0 +1,88 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.UserRoleViewModel
+@{
+    ViewData["Title"] = "Manage Role";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Role</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/Admin/UserRole/Index">Manage Sub-Admin</a></li>
+                    <li class="breadcrumb-item active">Role</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <partial name="_Notification" />
+        @*<partial name="_Notification" />*@
+
+        <input type="hidden" asp-for="RoleType" />
+
+        <div id="roleMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="card-tools">
+                <a oncontextmenu="return false" id="AddEdit" data-toggle="modal" asp-action="AddEdit" asp-controller="UserRole" data-target="#modal-add-edit-role" class="btn btn-block bg-gradient-success">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="grid-user-role-details" class="table table-bordered custom-grid-table table-condensed">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th width="2%">S.No.</th>                       
+                        <th width="40%">Name</th>
+                        <th width="15%" style="padding-left: 30px;">Created Date</th>
+                        <th width="5%">Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+
+@{
+    var addEditRoleModel = new Modal { ID = "modal-add-edit-role", AreaLabeledId = "modal-add-edit-role-label", Size = ModalSize.Medium };
+    var addEditPermissionModel = new Modal { ID = "modal-add-edit-permission", AreaLabeledId = "modal-add-edit-permission-label", Size = ModalSize.Large };
+    var deleteRoleModel = new Modal { ID = "modal-delete-role", AreaLabeledId = "modal-delete-role-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="addEditRoleModel" />
+<partial name="_Modal" model="addEditPermissionModel" />
+<partial name="_Modal" model="deleteRoleModel" />
+@section scripts{
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/custom/userrole/index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+
+}

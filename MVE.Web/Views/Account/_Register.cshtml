@@ -1,0 +1,74 @@
+﻿@model TCP.Core.Models.RegisterViewModel
+@using TCP.Core.Code.LIBS;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+@{
+    ViewData["Title"] = "Sign Up";
+}
+
+
+<form method="post" asp-controller="Account" asp-action="Register" id="form-signUP">
+
+    <div class="row no-gutters">
+        <div class="col-md-6">
+            <div class="bg-block text-center">
+                <h3>Welcome to</h3>
+                <img src="@Model.LogoImageNameDark" alt="">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-block">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="@SiteKeys.Domain/images/close-btn.png" alt=""></button>
+                <h2>Sign Up</h2>
+                <div class="form-group">
+                    <label class="req">Name</label>
+                    <input type="text" asp-for="FullName" class="form-control name-icon" placeholder="Enter Your Full Name">
+                    <span asp-validation-for="FullName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Email</label>
+                    <input asp-for="Email" type="email" class="form-control email-icon" placeholder="Enter Your Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label>Phone No.</label>
+                    <input type="text" asp-for="MobilePhone"  maxlength="16" oninput="this.value=this.value.replace(/[^0-9+]/g,'');" class="form-control ph-icon" placeholder="Enter Your Phone No">
+                    <span asp-validation-for="MobilePhone" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Password</label>
+                    <div class="lgnscrn">
+                        <input asp-for="Password" type="password" class="form-control password_id lock-icon " placeholder="Enter Password">
+                        <i class="fa fa-eye-slash toggle_pwd" style="margin-top: 15px;"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger"></span>
+
+                </div>
+                <div class="form-group">
+                    <label class="req">Confirm Password</label>
+                    <div class="lgnscrn">
+                        <input type="password" asp-for="ConfirmPassword" class="form-control lock-icon" placeholder="Re Enter Password">
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+                <div class="form-group row">
+                    <div class="col-md-12 align-items-center">
+                        <label class="customcheckBox">
+                        
+                            <p>Agree with <a href="/privacy-policy" class="frg-btn" target="_blank">Privacy Policy</a> and <a href="/terms-condition" class="frg-btn" target="_blank">T&C</a></p>
+
+                            <input type="checkbox" asp-for="Terms_Conditions">
+                            <span class="checkmarkhd"></span>
+                        </label>
+                        <span asp-validation-for="Terms_Conditions" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group text-center m-0">
+                    <button type="submit" class="btn-custom">Sign Up</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/account/account-index.js" asp-append-version="true"></script>

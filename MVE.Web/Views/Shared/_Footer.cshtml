@@ -1,0 +1,113 @@
+﻿@using TCP.Core.Code.LIBS;
+
+
+<footer class="footer">
+    <div class="container">
+        <div class="footer-top">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="footer-about">
+                        <div class="logo"><img id="footer-logo" src="@SiteKeys.Domain/images/logo.png" alt="logo"></div>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Quick Links</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="footer-links">
+                                <ul>
+                                    <li><a href="/about-us">About Us</a></li>
+                                    <li>
+                                        <a href="javascript:void(0);" id="foot-destguide-anchor">Destination Guide</a>
+
+                                    </li>
+
+                                    <li>
+                                        <a href="javascript:void(0);" id="foot-visa-anchor">Visa Guide</a>
+                                    </li>
+                                    <li><a href="javascript:void(0);"  id="foot-planholidaybtn">Plan My Holiday</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="footer-links">
+                                <ul>
+                                    @if (CurrentFrontUser.Id > 0)
+                                    {
+                                        <li><a href="#" id="mybooking-anchor">Booking History</a></li>
+                                        <li><a href="#" id="myprofile-anchor">My Profile</a></li>
+                                        <li><a href="/Dashboard/Index">Link to the Dashboard</a></li>
+                                    }
+
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="footer-contact">
+                        <h4>Connect with us</h4>
+                        <span>
+                            <i><img src="@SiteKeys.Domain/images/footer-phone-icon.png" alt="phone-icon"></i>
+                            <a id="footer-supportmobile" href="jovascript:void(0)">+00 123 4567 89</a>
+                        </span>
+                        <span>
+                            <i><img src="@SiteKeys.Domain/images/footer-email-icon.png" alt="email-icon"></i>
+                            <a id="footer-supportemail" href="mailto:">example@email.com</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <span class="footer-bottom">Copyright© @DateTime.Now.Year. All rights reserved. <a href="/terms-condition" target="_blank">Terms & Conditions</a> | <a href="/privacy-policy" target="_blank">Privacy Policy</a></span>
+    </div>
+</footer>
+<script>
+
+    $(document).ready(function () {
+
+        $(".dest-visa-li").on("click", function () {
+            $(".header-medial-left .nav-open").addClass("destinationmodalshow")
+        })
+
+        $(".closebtn-cls").on("click", function () {
+            $(".header-medial-left .nav-open").removeClass("destinationmodalshow")
+        })
+
+        $(".visa-guide-li").on("click", function () {
+            $(".header-medial-left .nav-open").addClass("visaguidemodalshow")
+        })
+        $(".closebtn-cls1").on("click", function () {
+            $(".header-medial-left .nav-open").removeClass("visaguidemodalshow")
+        })
+
+        $("#mybooking-anchor").click(function () {
+            localStorage.setItem("MenulinkKey", "mybooking");
+            window.location.href = "/Dashboard/Index";
+
+        });
+
+        $("#myprofile-anchor").click(function () {
+            localStorage.setItem("MenulinkKey", "myprofile")
+            window.location.href = "/Dashboard/Index";
+        });
+
+        $("#foot-destguide-anchor").click(function () {
+            $('#head-destguide-anchor').trigger('click');
+            return false;
+        });
+
+        $("#foot-visa-anchor").click(function () {
+            $('#head-visa-anchor').trigger('click');
+            return false;
+        });
+        $("#foot-planholidaybtn").click(function () {
+            $('#planholiday_btn').trigger('click');
+            return false;
+        });
+    })
+</script>

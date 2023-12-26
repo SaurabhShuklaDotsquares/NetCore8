@@ -1,0 +1,241 @@
+﻿@model MVE.Admin.ViewModels.GeneralSiteSettingViewModel
+@{
+    ViewData["Title"] = "Manage";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                @*<h1>Settings</h1>*@
+                <div id="settingMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Settings</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box">
+                    <div class="card dashboardDatatables">
+                        <div class="card-body">
+                            <p class="form-sub-heading">
+                                <strong>Settings</strong>
+                            </p>
+                            <form class="form-horizontal" asp-action="Manage" asp-controller="Settings" id="frm-setting" enctype="multipart/form-data">
+                                <input type="hidden" asp-for="Id" />
+                                <div id="validation-summary"></div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="SiteName">Site Name</label>
+                                                <input asp-for="SiteName" class="form-control" placeholder="Site Name" type="text" maxlength="50" />
+                                                <span asp-validation-for="SiteName" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="SupportEmail">Support Email Address</label>
+                                                <input asp-for="SupportEmail" class="form-control" placeholder="Support Email Address" type="email" maxlength="200" />
+                                                <span asp-validation-for="SupportEmail" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="SupportMobile">Support Mobile Number</label>
+                                                <input type="text" asp-for="SupportMobile" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control hotelphonevalidation" placeholder="Support Mobile Number" autocomplete="off" maxlength="16" />
+                                                <span asp-validation-for="SupportMobile" class="text-danger" id="mobilenumber"></span>
+                                                @*
+                                                <input asp-for="SupportMobile" class="form-control" placeholder="Support Mobile Number" type="text" maxlength="20" />
+                                                *@
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="AdminPageLimit">Admin Page Limit</label>
+                                                <input asp-for="AdminPageLimit" class="form-control" placeholder="Admin Page Limit" type="number" maxlength="5" />
+                                                <span asp-validation-for="AdminPageLimit" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="ApplyTaxPercentHeading1">Heading 1</label>
+                                                <input asp-for="ApplyTaxPercentHeading1" class="form-control" placeholder="Heading 1" type="text" maxlength="50" />
+                                                <span asp-validation-for="ApplyTaxPercentHeading1" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="ApplyTaxPercent1">Tax 1(%)</label>
+                                                <input asp-for="ApplyTaxPercent1" class="form-control" placeholder="0%" type="number" maxlength="2" />
+                                                <span asp-validation-for="ApplyTaxPercent1" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="ApplyTaxPercentHeading2">Heading 2</label>
+                                                <input asp-for="ApplyTaxPercentHeading2" class="form-control" placeholder="Heading 2" type="text" maxlength="50" />
+                                                <span asp-validation-for="ApplyTaxPercentHeading2" class="text-danger"></span>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="ApplyTaxPercent2">Tax 2(%)</label>
+                                                <input asp-for="ApplyTaxPercent2" class="form-control" placeholder="0%" type="number" maxlength="2" />
+                                                <span asp-validation-for="ApplyTaxPercent2" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="DiscountPercent">Discount(%)</label>
+                                                <input asp-for="DiscountPercent" class="form-control" placeholder="0%" type="number" maxlength="2" />
+                                                <span asp-validation-for="DiscountPercent" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Is Discount(%)</label>
+                                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                                    <input type="checkbox" asp-for="IsApplyDiscountPercent" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                                                    <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label for="DiscountPercent">Discount Amount</label>
+                                                <input asp-for="DiscountFix" class="form-control" placeholder="0" type="number" maxlength="5" />
+                                                <span asp-validation-for="DiscountFix" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Is Discount Amount</label>
+                                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                                    <input type="checkbox" asp-for="IsApplyDiscountFix" class="custom-control-input" id="customDiscountFix" readonly>
+                                                    <label class="custom-control-label" for="customDiscountFix"></label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label for="Address">Address</label>
+
+                                                <textarea asp-for="Address" class="form-control" rows="3" placeholder="Address ..."></textarea>
+                                                @* <input asp-for="Address" class="form-control" placeholder="Address" type="text"/>*@
+                                                <span asp-validation-for="Address" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label for="File">Select Website Logo<span class="required">*</span></label><br />
+                                                    <span style="font-size:12px;">(File size maximum limit should be 5MB)</span>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    @if (string.IsNullOrEmpty(Model.LogoImageName))
+                                                    {
+                                                        <img class="imgsize" id="imgCategory" target="_blank" src="@(SiteKeys.Domain+"/images/upload-image.png")" width=100&amp height=80&amp />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="imgsize" id="imgCategory" target="_blank" src="@SiteKeys.Domain@Model.LogoImageName" href="@SiteKeys.Domain@Model.LogoImageName" width=100&amp height=80&amp />
+                                                    }
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group log-inp astric">
+                                                        <input asp-for="File" type="file" id="theme_file" class="form-control" onchange="AllowFileExtension(this)" accept="image/*" />
+                                                        <span asp-validation-for="File" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label for="FileDark">Select Website Dark Logo<span class="required">*</span></label><br />
+                                                    <span style="font-size:12px;">(File size maximum limit should be 5MB)</span>
+                                                </div>
+
+                                                <div class="col-md-12">
+                                                    @if (string.IsNullOrEmpty(Model.LogoImageNameDark))
+                                                    {
+                                                        <img class="imgsize" id="imgCategoryDark" target="_blank" src="@(SiteKeys.Domain+"/images/upload-image.png")" width=100&amp height=80&amp />
+                                                    }
+                                                    else
+                                                    {
+                                                        <img class="imgsize" id="imgCategoryDark" target="_blank" src="@SiteKeys.Domain@Model.LogoImageNameDark" href="@SiteKeys.Domain@Model.LogoImageNameDark" width=100&amp height=80&amp />
+                                                    }
+                                                </div>
+                                                <div class="col-md-12">
+                                                    <div class="form-group log-inp astric">
+                                                        <input asp-for="FileDark" type="file" id="theme_file_dark" class="form-control" onchange="AllowFileExtension(this)" accept="image/*" />
+                                                        <span asp-validation-for="FileDark" class="text-danger"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="text-align:right;">
+                                            <button class="btn btn-success" id="btn_submit" type="submit">
+                                                Submit
+                                            </button>
+                                            <a href="/Admin/Dashboard/Index" class="btn btn-default ml-1">Cancel</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+            <!-- left column -->
+
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@section scripts{
+    <script src="~/js/custom/GeneralSettings/index.js" asp-append-version="true"></script>
+}

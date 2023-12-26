@@ -1,0 +1,179 @@
+﻿@model TCP.Web.ViewModels.MyBookingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = null;
+}
+
+<div class="dashboard-col">
+    <div class="total-card-block">
+        <div class="row">
+            <div class="col-md-12 col-lg-4 col-xl-4">
+                <div class="total-card sky-blue-bg text-center">
+                    <span class="count">159</span>
+                    <p>Total Bookings</p>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 col-xl-4">
+                <div class="total-card green-bg text-center">
+                    <span class="count">$7894</span>
+                    <p>TOTAL Spent</p>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-4 col-xl-4">
+                <div class="total-card blue-bg customize-card">
+                    <i class="customize-card-icon"><img src="images/icon12.png" alt="img1"></i>
+                    <div class="customize-card-text d-flex align-items-center justify-content-between">
+                        <span><strong>Customize</strong> Package Request</span>
+                        <i><img src="images/arrow1.png" alt="img1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bookings-block-dashboard">
+        <h4>Upcoming Bookings</h4>
+        <p><strong>S. No :</strong> 1234</p>
+        <div class="row">
+            <div class="col-md-12 col-lg-6 col-xl-6">
+                <div class="book-card d-flex">
+                    <div class="book-card-img"><img src="images/img11.jpg" alt="img1"></div>
+                    <div class="book-info">
+                        <span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>
+                        <div class="book-package">
+                            <span>Greece Tour Package</span>
+                            <p>Greece | 5Days & 4Nights</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-6 col-xl-6">
+                <div class="book-card border-left">
+                    <div class="book-info">
+                        <div class="package-head-right">
+                            <span>$7895</span>
+                            <p>per person</p>
+                        </div>
+                        <div class="book-package">
+                            <p>Start Date: 15 Sep, 2023</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <div class="book-card">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                    <button class="btn-custom big-paddding">View All</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="bookings-block-dashboard">
+        <h4>Bookings</h4>
+        <div class="bookings-card-list">
+            <p><strong>S. No :</strong> 1234</p>
+            <div class="row">
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card d-flex">
+                        <div class="book-card-img"><img src="images/img11.jpg" alt="img1"></div>
+                        <div class="book-info">
+                            <span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>
+                            <div class="book-package">
+                                <span>France Tour Package</span>
+                                <p>France | 5Days & 4Nights</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card border-left">
+                        <div class="book-info">
+                            <div class="package-head-right">
+                                <span>$7895</span>
+                                <p>per person</p>
+                            </div>
+                            <div class="book-package">
+                                <p>Start Date: 15 Sep, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <div class="book-card">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bookings-card-list">
+            <p><strong>S. No :</strong> 1234</p>
+            <div class="row">
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card d-flex">
+                        <div class="book-card-img"><img src="images/img11.jpg" alt="img1"></div>
+                        <div class="book-info">
+                            <span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>
+                            <div class="book-package">
+                                <span>Spain Tour Package</span>
+                                <p>Spain | 5Days & 4Nights</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card border-left">
+                        <div class="book-info">
+                            <div class="package-head-right">
+                                <span>$7895</span>
+                                <p>per person</p>
+                            </div>
+                            <div class="book-package">
+                                <p>Start Date: 15 Sep, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <div class="book-card">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bookings-card-list border-0">
+            <p><strong>S. No :</strong> 1234</p>
+            <div class="row">
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card d-flex">
+                        <div class="book-card-img"><img src="images/img11.jpg" alt="img1"></div>
+                        <div class="book-info">
+                            <span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>
+                            <div class="book-package">
+                                <span>Italy Tour Package</span>
+                                <p>Italy | 5Days & 4Nights</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card border-left">
+                        <div class="book-info">
+                            <div class="package-head-right">
+                                <span>$7895</span>
+                                <p>per person</p>
+                            </div>
+                            <div class="book-package">
+                                <p>Start Date: 15 Sep, 2023</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <div class="book-card">
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+                        <button class="btn-custom big-paddding">View All</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

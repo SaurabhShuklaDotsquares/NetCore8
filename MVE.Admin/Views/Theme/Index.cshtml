@@ -1,0 +1,100 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.ThemeViewModel
+@{
+    ViewData["Title"] = "Manage Category";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Category</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Manage Category</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <partial name="_Notification" />
+        <input type="hidden" asp-for="Id" />
+
+        <div id="themeMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+              <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">
+                                <option value="" selected="selected">All</option>
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            <div class="card-tools">
+                <a oncontextmenu="return false" id="AddEditTheme" data-toggle="modal" asp-action="AddEditTheme" asp-controller="Theme" data-target="#modal-add-edit-theme" class="btn btn-block bg-gradient-success">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+            <table id="grid-theme-details" class="table table-bordered custom-grid-table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th width="2%">S.No.</th>
+                        <th width="10%">Image</th>
+                        <th width="20%">Name</th>
+                        <th width="30%">Description</th>
+                        <th width="10%" style="padding-left: 30px;">Created Date</th>
+                        <th width="10%">Status</th>
+                        <th width="20%">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+
+@{
+    var AddEditThemeModel = new Modal { ID = "modal-add-edit-theme", AreaLabeledId = "modal-add-edit-theme-label", Size = ModalSize.Medium };
+    var deleteThemeModel = new Modal { ID = "modal-delete-theme", AreaLabeledId = "modal-delete-theme-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="AddEditThemeModel" />
+<partial name="_Modal" model="deleteThemeModel" />
+@section scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/custom/theme/theme-index.js" asp-append-version="true"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+}

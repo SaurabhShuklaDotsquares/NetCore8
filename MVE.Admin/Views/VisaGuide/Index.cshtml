@@ -1,0 +1,62 @@
+﻿@model MVE.Admin.ViewModels.VisaGuideViewModels
+@using MVE.Core.Models.Others;
+@{
+    ViewData["Title"] = "VisaGuide Manager";
+
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>VisaGuide Manager for : @ViewBag.CountryName</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="dashboard">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a asp-action="index" asp-controller="country">Country</a></li>
+                    <li class="breadcrumb-item active">VisaGuide Manager</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+    <form enctype="multipart/form-data" asp-action="Index" asp-controller="VisaGuide" id="visaGuid-Form">
+        <div class="card">
+            <partial name="_Notification" />
+            <input type="hidden" asp-for="@Model.CountryId" class="form-control ddlFltrCountry">
+            <div class="card-body" id="visa-body">
+            </div>
+            <!-- /.card-body -->
+            <div class="card-footer text-right">
+
+                <a href="/Admin/Country/Index" class="btn btn-default ml-1">Cancel</a>
+
+                <button class="btn btn-info submit" id="submitbtn-id" type="submit">
+                    Submit
+                </button>
+
+            </div>
+            <!-- /.card-footer-->
+        </div>
+        <!-- /.card -->
+    </form>
+</section>
+
+
+@section Scripts{
+    <script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    @* <script src="~/lib/select2/js/select2.js"></script> *@
+    <script src="~/js/custom/visaguide/visa-guide.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+}

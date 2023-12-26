@@ -1,0 +1,83 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@{
+    ViewData["Title"] = "Static Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Static Page</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item">Manage Content</li>
+                    <li class="breadcrumb-item active">Static Page</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <partial name="_Notification" />
+
+
+
+        <div class="card-header">
+            <h3 class="card-title">Page List</h3>
+            @*<a id="addstaticpages" asp-action="Createedit" asp-controller="Static" class="btn btn-primary pull-right">
+            <i class="fa fa-plus"></i> Add New
+            </a>*@
+            @*<div class="pull-right"><a class="btn btn-primary" asp-action="createedit" asp-controller="category">Add New</a></div>*@
+        </div>
+
+
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="grid-staticpage" class="table table-bordered custom-grid-table table-condensed dataTable no-footer">
+                    <thead>
+                        <tr>
+                            <th>Id</th>
+                            <th width="2%">S.No.</th>
+                            <th>Name</th>
+                            <th>Url</th>
+                            <th>Page Title</th>
+                            <th>Meta Keyword</th>
+                            <th>Meta Description</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</section>
+@section scripts{
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/static/static-index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+  }
+
+

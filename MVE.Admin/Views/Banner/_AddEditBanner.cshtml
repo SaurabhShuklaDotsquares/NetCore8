@@ -1,0 +1,76 @@
+﻿@model MVE.Admin.ViewModels.StaticContentBanner.StaticContentBannerViewModels
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = String.Format("{0} Banner", @Model.Id <= 0 ? "Add" : "Edit") };
+}
+
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <div id="validation-summary"></div>
+            <form enctype="multipart/form-data" asp-action="AddEditBanner" asp-controller="Banner" class="" id="bannerForm">
+                <partial name="_ModalHeader" model="headerModel" />
+                <div class="modal-body box-body">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="FileName" />
+                    <div class="form-group">
+                        <span id="validationmsg" class="text-danger"></span>
+
+                        <div class="form-group">
+                            <label asp-for="ImageFor"></label>
+                            @Html.DropDownListFor(model => model.ImageFor,
+                            Enum.GetValues(typeof(ImageFor)).Cast<ImageFor>().Select(e => new SelectListItem
+                            {
+                            Text = e.ToString(),
+                            Value = ((int)e).ToString()
+                            }),
+                            "Select Image Type",
+                            new { @class = "form-control" })
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                @*   <input type="image" asp-for="FileName" src="/Admin/Country/Thumbnail?width=100&amp;height=80&amp;imageFile=@Model.FileName" /> *@
+                                @if (string.IsNullOrEmpty(Model.FileName))
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@(SiteKeys.Domain+"/images/upload-image.png")" width=100&amp height=80&amp />
+                                }
+                                else
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@SiteKeys.Domain@Model.FileName" href="@SiteKeys.Domain/@Model.FileName" width=100&amp height=80&amp />
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input asp-for="FlagImage" type="file" id="banner_file" class="form-control" onchange="AllowFileExtension(this)" />
+                                    <span asp-validation-for="FlagImage" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-5 action-view-popup">
+                            <label asp-for="IsActive">
+                                Status<span class="red-color"></span>
+                            </label>
+                            <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                                <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <partial name="_ModalFooter" model="new ModalFooter { }" />
+            </form>
+
+        </div>
+    </div>
+</section>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+
+

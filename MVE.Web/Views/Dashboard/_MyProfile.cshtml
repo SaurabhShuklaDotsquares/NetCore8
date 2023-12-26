@@ -1,0 +1,71 @@
+﻿@model TCP.Web.ViewModels.MyProfileViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    var domain = @SiteKeys.Domain;
+    Layout = null;
+}
+
+<div class="profile-block">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="personal-tab" data-toggle="tab" href="#personal" role="tab" aria-controls="personal" aria-selected="true">
+                <img src="@domain/images/calendar-icon.png" alt="">
+                <strong>Personal</strong><span>Detail</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="billing-tab" data-toggle="tab" href="#billing" role="tab" aria-controls="billing" aria-selected="false">
+                <img src="@domain/images/billing-dtl-icon.png" alt="">
+                <strong>Billing</strong><span>Detail</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="personal" role="tabpanel" aria-labelledby="personal-tab">
+            <div class="tab-hd">
+                <h4>Personal Detail</h4>
+                <a class="edit-btn" href="javascript:void(0);" id="personal-edit-btn"><i class="fa fa-pencil-alt"></i> Edit</a>
+            </div>
+            <div class="tab-info" id="personal-tabinfo">
+                @* <partial name="~/Views/Dashboard/_PersonalDetail.cshtml" model="@Model.PersonalObj" /> *@
+
+            </div>
+        </div>
+        <div class="tab-pane fade" id="billing" role="tabpanel" aria-labelledby="billing-tab">
+            <div class="tab-hd">
+                <h4>Billing Detail</h4>
+                <a class="edit-btn" href="javascript:void(0);" id="billing-edit-btn"><i class="fa fa-pencil-alt"></i> Edit</a>
+            </div>
+            <div class="tab-info" id="billing-tabinfo">
+                @* <partial name="~/Views/Dashboard/_BillingDetail.cshtml" model="@Model.BillingObj" /> *@
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#personal-tab").click();
+   });
+     $(document).on("click", "#personal-tab", function (event) {
+            SendtoRequest("/Dashboard/PersonalDetail", "personal-tabinfo");
+        });
+        $(document).on("click", "#billing-tab", function (event) {
+            SendtoRequest("/Dashboard/BillingDetail", "billing-tabinfo");
+        });
+
+        $(document).on("click", "#personal-edit-btn", function (event) {
+            SendtoRequest("/Dashboard/PersonalEdit", "personal-tabinfo");
+        });
+        $(document).on("click", "#billing-edit-btn", function (event) {
+            SendtoRequest("/Dashboard/BillingEdit", "billing-tabinfo");
+        });
+
+    function SendtoRequest(url, tabid) {
+        $.get(url, null, function (result) {
+            $("#" + tabid).click();
+            $("#" + tabid).empty();
+            $("#" + tabid).append(result);
+        });
+    }
+
+</script>

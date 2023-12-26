@@ -1,0 +1,145 @@
+﻿@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others;
+@model MVE.Admin.ViewModels.FrontUserViewModel
+@{
+    ViewData["Title"] = "Manage Users";
+}
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+@section Styles{
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage User</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">User</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div id="userMessageDiv" class="alert alert-success alert-dismissable" style="display:none;"> </div>
+    <div class="card">
+       @*  <partial name="_Notification" /> *@
+        <partial name="_Notification" />
+       
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-1">
+                            <input type="text" class="form-control no-maxlength" placeholder="Search by Name,Email,Mobile" autocomplete="off" maxlength="80" id="txtSearchFilter">
+                        </div>
+                        <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrStartDate" placeholder="Start Date" class="form-control fltrSDate" />
+                            </div>
+                        </div>
+                        <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrEndDate" placeholder="End Date" class="form-control fltrEDate" />
+                            </div>
+                        </div>
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">
+                                <option value="" selected="selected">All Users</option>
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                        <div class="prop-col-2">
+                            <button id="btnSearch" class="btn bg-gradient-success"> Search </button>
+                            <button id="btnReset" class="btn btn-info submit"> Reset </button>
+
+                        </div>
+
+                        <div class="prop-col-1" style="flex: 0;margin-left: -7%;">
+                            <form method="post" asp-controller="FrontUser" asp-action="Export">
+                                <input type="hidden" id="requestE" name="requestE" />
+                                <input type="hidden" id="statusE" name="statusE" />
+                                <input type="hidden" id="fStartDateE" name="fStartDateE" />
+                                <input type="hidden" id="fEndDateE" name="fEndDateE" />
+                                <input type="hidden" id="txtSearchFilterE" name="txtSearchFilterE" />
+
+                                <input id="btnExport" type="submit" value="Export" class="btn btn-block bg-gradient-success" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-tools">
+                    <a oncontextmenu="return false" id="AddEditUser" data-toggle="modal" asp-action="AddEditUser" asp-controller="FrontUser" data-target="#modal-add-edit-User" class="btn btn-block bg-gradient-success">
+                        <i class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="gridUsers" class="table table-bordered table-condensed custom-grid-table">
+                    <thead>
+                        <tr>
+                            <th width="5%">S.No.</th>
+                            <th width="10%">Customer ID</th>
+                            <th width="15%">Customer Name</th>
+                            <th width="10%">Customer Image</th>
+                            <th width="10%">Email Address</th>
+                            <th width="10%">Mobile Number</th>
+                            <th width="15%">Address</th>
+                            <th width="15%">Date of Registration</th>
+                            <th width="5%">Status</th>
+                            <th width="5%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+    <input id="hddFrontDomain" name="hddFrontDomain" type="hidden" value="@SiteKeys.FrontDomain" />
+</section>
+
+@{
+    var addEditUserModel = new Modal { ID = "modal-add-edit-User", AreaLabeledId = "modal-add-edit-User-label", Size = ModalSize.Large };
+    var viewuserModel = new Modal { ID = "modal-user-view", AreaLabeledId = "modal-user-view-label", Size = ModalSize.XLarge };
+    var deleteuserModel = new Modal { ID = "modal-delete-user", AreaLabeledId = "modal-delete-user-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="deleteuserModel" />
+<partial name="_Modal" model="viewuserModel" />
+<partial name="_Modal" model="addEditUserModel" />
+
+@section Scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/frontuser/manage-frontusers.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+    <!-- accommodation -->
+}

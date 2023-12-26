@@ -1,0 +1,117 @@
+﻿@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others;
+@model MVE.Admin.ViewModels.AdminUserViewModel
+@{
+    ViewData["Title"] = "Manage Sub-Admin";
+}
+<style>
+    .dataTables_filter {
+        display: none;
+    }
+</style>
+@section Styles{
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Sub-Admin</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="/Admin/AdminUser/Index">Manage Sub-Admin</a></li>
+                    <li class="breadcrumb-item active">User</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <partial name="_Notification" />
+        <div id="userMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-1">
+                            <input type="text" class="form-control no-maxlength" placeholder="search by Name Email" autocomplete="off" maxlength="80" id="txtSearchFilter">
+                        </div>
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">
+                                <option value="" selected="selected">All Users</option>
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                        <div class="prop-col-2">
+                            @Html.DropDownList("UserRoleTypeId", Model.roleDropDownList, "-- Select Role --", new { @class = "form-control ddlFltr" })
+                            @* @Html.DropDownList("UserRoleTypeId", (List<SelectListItem>)ViewBag.RolesListForDropDown, "Role", new { @class = "form-control ddlFltr" })*@
+                        </div>
+                    </div>
+                </div>
+                <div class="card-tools">
+                    @*  <a oncontextmenu="return false" id="AddEdit" data-toggle="modal" asp-action="Manage" asp-controller="AdminUser" data-target="#modal-add-edit-user" class="btn btn-block bg-gradient-success">
+                    <i class="fa fa-plus"></i> Add New
+                    </a>*@
+                    <a href="/Admin/AdminUser/Manage" id="btnAddNew" title="Add new Package" class="btn btn-block bg-gradient-success"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add New</a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="gridUsers" class="table table-bordered table-condensed custom-grid-table">
+                    <thead>
+                        <tr>
+                            <th>Role Id</th>
+                            <th>User ID</th>
+                            <th width="15%">Sub Admin Name</th>
+                            <th width="5%">Role Assigned</th>
+                            <th width="15%">Email Address</th>
+                            <th width="10%">Mobile Number</th>
+                            <th width="25%">Address</th>
+                            <th width="10%" style="padding-left: 26px;">Created On</th>
+                            @*<th width="15%" style="padding-left: 30px;">Last Modified</th>*@
+                            <th width="5%">Status</th>
+                            <th width="15%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+@{
+    var deleteAdminUserModel = new Modal { ID = "modal-delete-adminuser", AreaLabeledId = "modal-delete-adminuser-label", Size = ModalSize.Medium };
+    var viewModel = new Modal { ID = "modal-view", AreaLabeledId = "modal-view-label", Size = ModalSize.Large };
+}
+<partial name="_Modal" model="deleteAdminUserModel" />
+<partial name="_Modal" model="viewModel" />
+
+@section Scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <!-- dataTables -->
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+    <script src="~/js/custom/adminuser/manage-adminusers.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+    <!-- accommodation -->
+}

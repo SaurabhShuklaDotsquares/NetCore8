@@ -1,0 +1,80 @@
+﻿@model TCP.Web.ViewModels.MyNotificationDto
+@using TCP.Core.Code.LIBS;
+@using TCP.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "Notification Details" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    .imgsize {
+        height: 148px;
+        width: 190px;
+    }
+
+</style>
+<section class="content">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    <input type="hidden" asp-for="NotificationId" />
+    <div class="box">
+        <div class="box-body">   
+            <div class="card-body quality-box-set">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (string.IsNullOrEmpty(Model.FileName))
+                        {
+                            <span>No Image</span>
+                        }
+                        else
+                        {
+                            <img class="imgsize" alt="" src="@Model.FileName" />
+                        }
+                    </div>
+                </div>
+                <br>
+                <div class="row border-bottom">
+                    <div class="col-sm-4">
+                        <label class="bold">Type</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <label> @Model.notificationsTypeName </label>
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col-sm-4">
+                        <label class="bold">Date</label>
+                    </div>
+                    <div class="col-sm-8">                       
+                        <label> @Model.CreatedDate </label>
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col-sm-4">
+                        <label class="bold">Title</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <label> @Model.Title </label>
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col-sm-4">
+                        <label class="bold">Description</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <label> @Html.Raw(Model.Description) </label>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@section scripts{
+    <script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+}

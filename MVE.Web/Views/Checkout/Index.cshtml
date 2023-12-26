@@ -1,0 +1,755 @@
+﻿@model TCP.Web.ViewModels.PackageViewModel
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@{
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Review Package";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<div class="inner-hd-block">
+    <div class="container text-center">
+        <h1>Review Package</h1>
+        <p>1. Traveller Detail 2. Package Itinerary &amp; Inclusions</p>
+    </div>
+</div>
+<form method="post" asp-controller="Checkout" asp-action="Index" id="form-proceedPay">
+    <input type="hidden" asp-for="Id" />
+    <div class="checkout-block">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 col-lg-8 col-xl-8">
+                    <div class="checkout-block-left">
+                        <div class="checkout-packages">
+                            <div class="checkout-packages-inst">
+                                @*<h3>Holiday Packages @Model.CountryName</h3>*@
+                                <h3>@Model.Name</h3>
+                                <span class="customizable-hd">@Model.PackageNoOfDays Days &amp; @Model.PackageNoOfNights Nights @*<span class="customizable-tag">Customizable</span>*@</span>
+                                <div class="book-from d-md-flex">
+                                    <span class="book-from-hd">@Model.FromDate<span>@Model.PackageNoOfDays D/@Model.PackageNoOfNights N</span></span>
+                                    <ul class="d-flex">
+                                        <li>@Model.ToDate</li>
+                                        <li>From @Model.CountryName</li>
+                                        @* <li><strong>1 Room</strong> - @Model.NoOfAdults Adults</li> *@
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="itinerary-accordion checkout-accordion" id="accordion">
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#collapseOne">1. Traveller Details</a>
+                                </div>
+                                <div id="collapseOne" class="collapse show" data-parent="#accordion">
+                                    <div class="itinerary-body">
+                                        <div class="traveller-details">
+                                            @*<span class="room-hd"><strong>2 Travellers -</strong> 1 Room | @Model.NoOfAdults Adults</span>*@
+                                            <div class="form-group d-md-flex align-items-center">
+                                                <label class="customcheckBox customcheckradio">
+                                                    I’m Booking For Myself
+                                                    <input type="radio" checked="checked" value="I’m Booking For Myself" asp-for="travellersmodel.BookingFor">
+                                                    <span class="checkmarkhd"></span>
+                                                </label>
+                                                <label class="customcheckBox customcheckradio">
+                                                    I’m Booking for someone else
+                                                    <input type="radio" value="I’m Booking For someone else" asp-for="travellersmodel.BookingFor">
+                                                    <span class="checkmarkhd"></span>
+                                                </label>
+                                            </div>
+
+                                            <div class="travellers-user d-flex">
+                                                <i class="travellers-user-img"><img src="@SiteKeys.ImageDomain/images/user-icon3.png" alt="logo"></i>
+                                                <div class="travellers-user-left">
+                                                    <span>No of Travellers</span>
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <div class="row">
+                                                    <div class="col-xl-4 col-lg-12 col-md-12">
+                                                        <div class="form-group mrgBot">
+                                                            <label>Adults (12+ yrs)</label>
+                                                            <select name="NoOfAdults" asp-for="@Model.NoOfAdults" class="form-control">
+                                                                @foreach (var item in ViewBag.NoOfTravellers)
+                                                                {
+                                                                    if (item != 0) {
+                                                                        <option value="@item">@item</option>
+                                                                    }
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-12 col-md-12">
+                                                        <div class="form-group mrgBot">
+                                                            <label>Infant (0-2yrs)</label>
+                                                            <select name="NoOfInfants" asp-for="@Model.NoOfInfants" class="form-control">
+                                                                @foreach (var item in ViewBag.NoOfTravellers)
+                                                                {
+                                                                    <option value="@item">@item</option>
+                                                                }
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-xl-4 col-lg-12 col-md-12">
+                                                        <div class="form-group mrgBot">
+                                                            <label>Children (2-12yrs)</label>
+                                                            <select name="NoOfChilds" asp-for="@Model.NoOfChilds" class="form-control">
+                                                                @foreach (var item in ViewBag.NoOfTravellers)
+                                                                {
+                                                                    <option value="@item">@item</option>
+                                                                }
+                                                            </select>
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                                    <div class="form-group">
+                                                        <label>Total Price</label>
+                                                        <input type="text" asp-for="PackagePrice" readonly="readonly" class="form-control" placeholder="Enter Total Price">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="traveller-form">
+                                                <span class="enter-hd">Please enter contact details</span>
+                                                <div class="row">
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Name</label>
+                                                            <input type="text" asp-for="travellersmodel.FullName" class="form-control name-icon" placeholder="Enter Your Full Name">
+                                                            <span asp-validation-for="travellersmodel.FullName" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Email</label>
+                                                            <input asp-for="travellersmodel.EmailAddress" type="email" class="form-control email-icon" placeholder="Enter Your Email">
+                                                            <span asp-validation-for="travellersmodel.EmailAddress" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Mobile Code</label>
+                                                            <select class="form-control" asp-for="travellersmodel.CountryCode">
+                                                                <option value="UK(+44)">UK(+44)</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Phone No.</label>
+                                                            <input type="text" asp-for="travellersmodel.MobilePhone" class="form-control" placeholder="Enter Your Phone No">
+                                                            <span asp-validation-for="travellersmodel.MobilePhone" class="text-danger"></span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                                        <span class="enter-hd">Please enter GST details</span>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Select Country</label>
+                                                            <select asp-for="travellersmodel.CountryId" id="CountryId" class="form-control" asp-items="@Model.travellersmodel.CountyList"></select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Select State</label>
+                                                            @* <input type="hidden" asp-for="travellersmodel.StateId" /> *@
+                                                            <select id="StateId" class="form-control" asp-for="travellersmodel.StateId">
+                                                                <option value="0">-- Select --</option>
+                                                                <!-- Options for states will be loaded dynamically -->
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req">Town/City Name </label>
+                                                            <input type="text" asp-for="travellersmodel.City" class="form-control ph-icon" placeholder="Enter Town/City Name" maxlength="50">
+                                                            <span asp-validation-for="travellersmodel.City" class="text-danger"></span>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-4">
+                                                        <div class="form-group">
+                                                            <label class="req"> Postcode/Zip Code</label>
+                                                            <input type="text" asp-for="travellersmodel.ZipCode" class="form-control" placeholder="Enter Postcode/Zip Code" maxlength="10">
+                                                            <span asp-validation-for="travellersmodel.ZipCode" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6 col-lg-6 col-xl-8">
+                                                        <div class="form-group">
+                                                            <label class="req">Address</label>
+                                                            <textarea type="text" asp-for="travellersmodel.Address" class="form-control" placeholder="Enter Address"></textarea>
+                                                            <span asp-validation-for="travellersmodel.Address" class="text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                                        <span class="enter-hd">Please enter Passport No.</span>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="form-group">
+                                                            <label>Passport No.</label>
+                                                            <input type="text" asp-for="travellersmodel.PassportNo" placeholder="Enter Passport No" class="form-control" maxlength="30">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                                        <span class="enter-hd">Special Requests</span>
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                                        <div class="form-group">
+                                                            <label>Special Requests</label>
+                                                            <input type="text" asp-for="travellersmodel.SpecialRequests" placeholder="Enter Special Requests" class="form-control">
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tcs-block">
+                                <span class="tcs-heading"><i><img src="@SiteKeys.ImageDomain/images/pan-icon.png" alt="img1"></i> Please keep your PAN card handy for TCS (Tax collected at Source)</span>
+                                <ul>
+                                    <li>TCS @(Math.Floor(Model.siteSettings?.ApplyTaxPercent2 ?? 0))% has been added to the amount payable for booking international packages.</li>
+                                    <li>In case PAN is not provided, TCS @(Math.Floor(Model.siteSettings?.ApplyTaxPercent2 ?? 0))% will be applicable.</li>
+                                </ul>
+                                <label class="customcheckBox">
+                                    Acknowledgement * : I acknowledge that I have read the above policy &amp; agree to it.
+                                    <input type="checkbox" id="IsAcknowlwdge" asp-for="travellersmodel.IsAcknowlwdge">
+                                    <span class="checkmarkhd"></span>
+                                </label>
+                                <span asp-validation-for="travellersmodel.IsAcknowlwdge" id="IsAcknowlwdge-err" class="text-danger">Please check the Acknowledgement</span>
+
+                                @* <a href="#" class="know-link">Know More</a> *@
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <a class="card-link" data-toggle="collapse" href="#collapseTwo">2. Package Itinerary &amp; Inclusions</a>
+                                </div>
+                                <div id="collapseTwo" class="collapse" data-parent="#accordion">
+                                    <div class="itinerary-body">
+                                        <div class="itinerary-accordion" id="accordion1">
+                                            @if (Model.PackageNoOfDays != null)
+                                            {
+                                                for (int days = 1; days <= Model.PackageNoOfDays; days++)
+                                                {
+                                                    var _NoActivity = new TCP.Dto.PackageDetailDTO();
+                                                    if (Model.IsHotelIncluded)
+                                                    {
+                                                        _NoActivity = Model.PackageDetails.Where(x => x.DayIndex == days).FirstOrDefault();
+                                                    }
+                                                    else
+                                                    {
+                                                        _NoActivity = Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == false).FirstOrDefault();
+                                                    }                                                    
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            @if (_NoActivity == null)
+                                                            {
+                                                                <a class="card-link card-link-arrowhide" data-toggle="collapse" href="#collapseActivity_@days">
+                                                                    Day @days <p style="font-size: 13px;"> &nbsp;(No Activity)</p>
+                                                                </a>
+                                                            }
+                                                            else
+                                                            {
+                                                                <a class="card-link" data-toggle="collapse" href="#collapseActivity_@days">
+                                                                    Day @days
+                                                                </a>
+                                                            }
+                                                            
+                                                        </div>
+                                                        <div id="collapseActivity_@days" class="collapse @(days==1?"show":"")" data-parent="#accordion1">
+                                                            @if (Model.PackageDetails != null && Model.PackageDetails.Count > 0)
+                                                            {
+                                                                var _packagess = Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == true).FirstOrDefault();
+                                                                if (_packagess != null)
+                                                                {
+                                                                    if (Model.IsHotelIncluded)
+                                                                    {
+                                                                        var hotels = _packagess.PackageHotels.FirstOrDefault();
+                                                                        if (hotels != null)
+                                                                        {
+                                                                            <div class="itinerary-body">
+                                                                                <div class="itinerary-detail-card">
+                                                                                    <div class="itinerary-heading">Hotel Details</div>
+                                                                                    <div class="itinerary-card-block d-md-flex">
+                                                                                        <div class="itinerary-card-img">
+                                                                                            <img src="@(hotels.PackageHotelImages!=null&&hotels.PackageHotelImages.Count>0?hotels.PackageHotelImages.FirstOrDefault().FilePath:SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image">
+                                                                                        </div>
+                                                                                        <div class="itinerary-card-left">
+                                                                                            <span class="itinerary-card-heading">@hotels.HotelName</span>
+                                                                                            <span class="loc-heading"><img src="@SiteKeys.ImageDomain/images/location2.png" alt="img1">  @hotels.HotelAddress</span>
+                                                                                            @* <ul>
+                                                                                                <li class="reviews-block">
+                                                                                                    @if (hotels.HotelRating == 1)
+                                                                                                    {
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                    }
+                                                                                                    else if (hotels.HotelRating == 2)
+                                                                                                    {
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                    }
+                                                                                                    else if (hotels.HotelRating == 3)
+                                                                                                    {
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                    }
+                                                                                                    else if (hotels.HotelRating == 4)
+                                                                                                    {
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                    }
+                                                                                                    else if (hotels.HotelRating == 5)
+                                                                                                    {
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                                    }
+                                                                                                </li>
+                                                                                            </ul> *@
+                                                                                            <p>@hotels.HotelDesc</p>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        }
+                                                                    }
+                                                                }
+                                                                foreach (var detail in Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == false))
+                                                                {
+                                                                    <div class="itinerary-body">
+                                                                        <div class="itinerary-detail-card">
+                                                                            <div class="itinerary-heading">Activity Date & Time <span>@detail.ActivityDate @detail.ActivityTime</span></div>
+                                                                            <div class="itinerary-card-block d-md-flex">
+                                                                                <div class="itinerary-card-img">
+                                                                                    <div id="demo" class="carousel slide" data-ride="carousel">
+
+                                                                                        <!-- Indicators -->
+                                                                                        <ul class="carousel-indicators">
+                                                                                            <li data-target="#demo" data-slide-to="0" class="active"></li>
+                                                                                            @if (detail.PackageDetailActivityVideos != null && detail.PackageDetailActivityVideos.Count > 0)
+                                                                                            {
+                                                                                                <li data-target="#demo" data-slide-to="1"></li>
+                                                                                            }
+                                                                                        </ul>
+                                                                                        <!-- The slideshow -->
+                                                                                        <div class="carousel-inner">
+                                                                                            <div class="carousel-item active">
+                                                                                                <img src="@(detail.PackageDetailActivityImages!=null&&detail.PackageDetailActivityImages.Count>0?detail.PackageDetailActivityImages.FirstOrDefault().FilePath:SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image">
+
+                                                                                            </div>
+                                                                                            @if (detail.PackageDetailActivityVideos != null && detail.PackageDetailActivityVideos.Count > 0)
+                                                                                            {
+                                                                                                <div class="carousel-item">
+                                                                                                    <iframe height="235" src="@(detail.PackageDetailActivityVideos.FirstOrDefault().FilePath)"></iframe>
+                                                                                                </div>
+                                                                                            }
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="itinerary-card-left">
+                                                                                    <span class="itinerary-card-heading">@detail.ActivityName</span>
+                                                                                    <span class="loc-heading"><img src="@SiteKeys.ImageDomain/images/location2.png" alt="img1"> @detail.LocationAddress</span>
+
+                                                                                    <div class="meals-block">
+                                                                                        @if (Model.IsMealIncluded)
+                                                                                        {
+                                                                                            if (detail.IsMealIncludedAct)
+                                                                                            {
+                                                                                                <ul>
+                                                                                                    @if (@detail.IsBreakfastAct)
+                                                                                                    {
+                                                                                                        <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="Breakfast"> <span><strong>Breakfast</strong></span></li>
+
+                                                                                                    }
+                                                                                                    @if (@detail.IsLunchAct)
+                                                                                                    {
+                                                                                                        <li><img src="@SiteKeys.ImageDomain/images/meals-icon.png" alt="Lunch"> <span><strong>Lunch</strong></span></li>
+
+                                                                                                    }
+                                                                                                    @if (@detail.IsDinnerAct)
+                                                                                                    {
+                                                                                                        <li><img src="@SiteKeys.ImageDomain/images/dinner.png" alt="Dinner"> <span><strong>Dinner</strong></span></li>
+
+                                                                                                    }
+                                                                                                </ul>
+                                                                                            }
+                                                                                        }
+                                                                                        
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </div>
+
+
+                                                }
+                                            }
+
+
+
+
+                                            @*     @if (Model.PackageDetails != null && Model.PackageDetails.Count > 0)
+                                            {
+                                            var daywiseList = Model.PackageDetails.DistinctBy(x => x.DayIndex).ToList();
+                                            foreach (var dayitem in daywiseList)
+                                            {
+                                            <div class="card">
+                                            <div class="card-header">
+                                            <a class="card-link" data-toggle="collapse" href="#collapsetab_@dayitem.DayIndex">
+                                            Day @dayitem.DayIndex  @(dayitem.DayIndex == 1 ? "- Arrival in " + @Model.CountryName + "" : "")
+                                            </a>
+                                            </div>
+                                            <div id="collapsetab_@dayitem.DayIndex" class="collapse show" data-parent="#accordion1">
+                                            <div class="itinerary-body">
+                                            @if (dayitem != null)
+                                            {
+                                            var activityList = Model.PackageDetails.Where(x => x.DayIndex == dayitem.DayIndex).ToList();
+                                            foreach (var activityitem in activityList)
+                                            {
+                                            if (activityitem.IsHotelIncludedAct == true)
+                                            {
+                                            foreach (var hotelitem in activityitem.PackageHotels)
+                                            {
+                                            <input asp-for="@hotelitem.HotelId" type="hidden" />
+                                            <div class="itinerary-detail-card">
+                                            <div class="itinerary-heading">Activity in @Model.CountryName <span>@activityitem.ActivityTime</span></div>
+                                            <div class="itinerary-card-block d-md-flex">
+                                            <div class="itinerary-card-img">
+                                            @if (hotelitem.PackageHotelImages != null && hotelitem.PackageHotelImages.Count > 0)
+                                            {
+                                            @foreach (var hotelimg in hotelitem.PackageHotelImages)
+                                            {
+                                            <img src="@hotelimg.FilePath" alt="@hotelimg.FileOriginalName">
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <img src="@SiteKeys.Domain@SiteKeys.NoImagePath_Square">
+                                            }
+                                            </div>
+                                            <div class="itinerary-card-left">
+                                            <span class="itinerary-card-heading">@hotelitem.HotelName</span>
+                                            <span class="loc-heading"><img src="@SiteKeys.ImageDomain/images/location2.png" alt="img1"> @activityitem.LocationAddress</span>
+                                            <div class="meals-block">
+                                            <ul>
+                                            @if (@activityitem.IsBreakfastAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="img1"> <span><strong>Breakfast :</strong></span></li>
+
+                                            }
+                                            @if (@activityitem.IsLunchAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/meals-icon.png" alt="img1"> <span><strong>Day Meals</strong></span></li>
+
+                                            }
+                                            @if (@activityitem.IsDinnerAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="img1"> <span><strong>Dinner :</strong> Included at Hotel </span></li>
+
+                                            }
+                                            </ul>
+                                            </div>
+                                            <ul>
+                                            @if (!string.IsNullOrEmpty(@hotelitem.HotelDesc))
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/star.png" alt="star">@hotelitem.HotelDesc</li>
+                                            }
+                                            else
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/star.png" alt="star"> A Disney Good Neighbor Hotel</li>
+                                            <li><img src="@SiteKeys.ImageDomain/images/star.png" alt="star"> Free wireless internet throughout resort</li>
+                                            <li><img src="@SiteKeys.ImageDomain/images/star.png" alt="star"> Free daily breakfast buffet</li>
+                                            }
+
+                                            <li class="reviews-block"><img src="@SiteKeys.ImageDomain/images/star1.png" alt="star"> @hotelitem.HotelRating ( Based on reviews)</li>
+                                            </ul>
+                                            </div>
+                                            </div>
+                                            </div>
+                                            }
+                                            }
+                                            else
+                                            {
+
+                                            <div class="itinerary-detail-card">
+                                            <div class="itinerary-heading">Activity in @activityitem.LocationAddress <span>@activityitem.ActivityTime</span></div>
+                                            <div class="itinerary-card-block d-md-flex">
+
+                                            <div class="itinerary-card-img">
+                                            @if (activityitem.PackageDetailActivityImages != null && activityitem.PackageDetailActivityImages.Count > 0)
+                                            {
+                                            @foreach (var imgitem in activityitem.PackageDetailActivityImages)
+                                            {
+                                            <img src="@imgitem.FilePath" alt="@imgitem.FileOriginalName">
+
+                                            }
+                                            }
+                                            else
+                                            {
+                                            <img src="@SiteKeys.Domain@SiteKeys.NoImagePath_Square">
+                                            }
+                                            </div>
+
+                                            <div class="itinerary-card-left">
+                                            <span class="itinerary-card-heading small-heading">@activityitem.ActivityName</span>
+                                            <div class="meals-block">
+                                            <ul>
+                                            @if (@activityitem.IsBreakfastAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="img1"> <span><strong>Breakfast :</strong></span></li>
+
+                                            }
+                                            @if (@activityitem.IsLunchAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/meals-icon.png" alt="img1"> <span><strong>Day Meals</strong></span></li>
+
+                                            }
+                                            @if (@activityitem.IsDinnerAct)
+                                            {
+                                            <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="img1"> <span><strong>Dinner :</strong></span></li>
+
+                                            }
+                                            </ul>
+                                            </div>
+                                            <p>@Html.Raw(WebUtility.HtmlDecode(@Model.Description))</p>
+                                            </div>
+                                            </div>
+                                            </div>
+
+                                            }
+                                            }
+                                            }
+
+                                            </div>
+                                            </div>
+                                            </div>
+
+                                            }
+                                            }*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <div class="checkout-block-right">
+                        <div class="description-price-col">
+                            <p>GRAND TOTAL - <label id="spPerson">1 Travellers</label><p>(Excluding Infants)</p></p>
+                            <span id="spGrandTotal">$@ViewBag.spGrandTotal</span>
+                            <small>(Inclusive of All Taxes )</small>
+                        </div>
+                        @*    <div class="accordion-block checkout-price-accordion">
+                        <a class="filter-btn" data-toggle="collapse" href="#filter1" role="button" aria-expanded="true" aria-controls="filter1">
+                        Book Now Pay Later
+                        </a>
+                        <div class="collapse show" id="filter1">
+                        <div class="pay-book">
+                        <ol>
+                        <li>
+                        <div class="pay-book-left">
+                        <p>Pay to Book <small>Amount to pay now to reserve</small></p>
+                        </div>
+                        <span class="price-book">$7298</span>
+                        </li>
+                        <li>
+                        <div class="pay-book-left">
+                        <p>Before 12 Sep 2023</p>
+                        </div>
+                        <span class="price-book">$5298</span>
+                        </li>
+                        </ol>
+                        </div>
+                        </div>
+                        </div> *@
+                        <div class="full-amount-block">
+                            <span class="amount-heading">Pay Full Amount Now</span>
+
+                            <div class="accordion-block checkout-price-accordion fare-breakup">
+                                <a class="filter-btn" data-toggle="collapse" href="#filter2" role="button" aria-expanded="true" aria-controls="filter2">
+                                    Fare Breakup
+                                </a>
+                                <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <span class="amount-list-left">Total Basic Cost</span>
+                                    <span class="amount-list-right" id="TotalbasicCost">$@(Model.PackagePriceFront)</span>
+                                    @*<span class="amount-list-right" id="TotalbasicCost">$@(Model.PackagePrice * 1)</span>*@
+                                </div>
+                                <div class="collapse show" id="filter2">
+                                    <span class="travellers-tag" id="TotaltravellersCalculation">$@Model.PackagePriceFront x 1 Travellers</span>
+                                </div>
+                            </div>
+
+
+                            @* <div class="amount-coupon">
+                            <div class="amount-list d-flex align-items-center justify-content-between">
+                            <span class="amount-list-left">Coupon Discount</span>
+                            <span class="amount-list-right">-$@Model.siteSettings?.DiscountFix</span>
+                            </div>
+                            <div class="amount-list d-flex align-items-center justify-content-between">
+                            <span class="amount-coupon-left d-lg-flex align-items-center">
+                            <a href="" class="btn-custom">GRANDOFFER</a>
+                            </span>
+                            <span class="amount-list-right">$@Model.siteSettings?.DiscountFix</span>
+                            </div>
+                            </div> *@
+                            <div class="total-amount">
+                                <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <span class="amount-list-left">Fees &amp; Taxes</span>
+                                    @*<span class="amount-list-right">$40</span>*@
+                                </div>
+                                <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <input type="hidden" id="TaxPercent1" value="@Model.siteSettings?.ApplyTaxPercent1" />
+                                    <span class="amount-list-left">@Model.siteSettings?.ApplyTaxPercentHeading1 @(Model.siteSettings != null ? Convert.ToInt32(Model.siteSettings?.ApplyTaxPercent1) : 0)%</span>
+                                    <span class="amount-list-right" id="spTaxTotal1">$@ViewBag.spTaxTotal1</span>
+                                </div>
+                                <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <input type="hidden" id="TaxPercent2" value="@Model.siteSettings?.ApplyTaxPercent2" />
+                                    <span class="amount-list-left">@Model.siteSettings?.ApplyTaxPercentHeading2 @(Model.siteSettings != null ? Convert.ToInt32(Model.siteSettings?.ApplyTaxPercent2) : 0)%</span>
+                                    <span class="amount-list-right" id="spTaxTotal2">$@ViewBag.spTaxTotal2</span>
+                                </div>
+                               @* <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <span class="amount-list-left">@Model.siteSettings?.ApplyTaxPercentHeading1 @Model.siteSettings?.DiscountPercent%</span>
+                                    <span class="amount-list-right">$@Model.siteSettings?.ApplyTaxPercent1</span>
+                                </div>
+                                <div class="amount-list d-flex align-items-center justify-content-between">
+                                    <span class="amount-list-left">@Model.siteSettings?.ApplyTaxPercentHeading2 @Model.siteSettings?.DiscountPercent%</span>
+                                    <span class="amount-list-right">$@Model.siteSettings?.ApplyTaxPercent2</span>
+                                </div>*@
+                            </div>
+                            <div class="proceed-pay">
+                                <button class="btn-custom w-100">Proceed To Pay</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+
+<script src="~/js/custom/checkout/checkout-index.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+
+        $("#NoOfChilds").change(function () {
+            //alert($(this).val());
+            var price = $('#PackagePrice').val();
+            var persons='';
+            var totalPrice = 0;
+            if (price != "") {
+                var onepersonprice = parseFloat(price);
+                var adults = $('#NoOfAdults :selected').val();
+                var child = $('#NoOfChilds :selected').val();
+                var totaladults = 0;
+                var totalchilds = 0;
+                var totaladultsAndChild = 0;
+                if (adults != "") {
+                    totaladults = parseInt(adults);
+                }
+                if (child != "") {
+                    totalchilds = parseInt(child);
+                }
+                totaladultsAndChild = totaladults + totalchilds;
+                totalPrice = onepersonprice * totaladultsAndChild;
+
+                persons = totaladultsAndChild + ' Travellers';
+                $("#TotaltravellersCalculation").html('$' + onepersonprice + ' x ' + persons);
+            }
+                        
+            $("#spPerson").html(persons);
+           // $("#TotalbasicCost").html('$' + parseFloat(totalPrice).toFixed(2));
+            $("#TotalbasicCost").html('$' + Number(totalPrice));
+
+            var _taxPercent1 = $('#TaxPercent1').val();
+            //GST
+            var GSTAmount = ((parseFloat(totalPrice) * parseFloat(_taxPercent1)) / 100);
+            $("#spTaxTotal1").html('$' + parseFloat(GSTAmount).toFixed(2));
+
+             var _taxPercent2 = $('#TaxPercent2').val();
+            //TCS
+            var TCSAmount = ((parseFloat(totalPrice) * parseFloat(_taxPercent2)) / 100);
+            $("#spTaxTotal2").html('$' + parseFloat(TCSAmount).toFixed(2));
+
+            var NetAmount = parseFloat(totalPrice) + GSTAmount + TCSAmount;
+
+            $("#spGrandTotal").html('$' + parseFloat(NetAmount).toFixed(2));
+            //var total = parseFloat(totalPrice).toFixed(2);
+            //alert(total);
+        });
+        $("#NoOfAdults").change(function () {
+            var price = $('#PackagePrice').val();
+            var persons = '';
+            var totalPrice = 0;
+            if (price != "") {
+                var onepersonprice = parseFloat(price);
+                var adults = $('#NoOfAdults :selected').val();
+                var child = $('#NoOfChilds :selected').val();
+                var totaladults = 0;
+                var totalchilds = 0;
+                var totaladultsAndChild = 0;
+                if (adults != "") {
+                    totaladults = parseInt(adults);
+                }
+                if (child != "") {
+                    totalchilds = parseInt(child);
+                }
+                totaladultsAndChild = totaladults + totalchilds;
+                totalPrice = onepersonprice * totaladultsAndChild;
+
+                persons = totaladultsAndChild + ' Travellers';
+
+                $("#TotaltravellersCalculation").html('$' + onepersonprice + ' x ' + persons);
+            }
+            
+            $("#spPerson").html(persons);
+            //$("#TotalbasicCost").html('$' +parseFloat(totalPrice).toFixed(2));
+            
+            $("#TotalbasicCost").html('$' + Number(totalPrice));
+            
+             var _taxPercent1 = $('#TaxPercent1').val();
+            //GST
+            var GSTAmount = ((parseFloat(totalPrice) * parseFloat(_taxPercent1)) / 100);
+            $("#spTaxTotal1").html('$' + parseFloat(GSTAmount).toFixed(2));
+
+             var _taxPercent2 = $('#TaxPercent2').val();
+            //TCS
+            var TCSAmount = ((parseFloat(totalPrice) * parseFloat(_taxPercent2)) / 100);
+            $("#spTaxTotal2").html('$' + parseFloat(TCSAmount).toFixed(2));
+
+            var NetAmount = parseFloat(totalPrice) + GSTAmount + TCSAmount;
+
+            $("#spGrandTotal").html('$' + parseFloat(NetAmount).toFixed(2));
+
+            //var total = parseFloat(totalPrice).toFixed(2);
+            //alert(total);
+        });
+    });
+</script>

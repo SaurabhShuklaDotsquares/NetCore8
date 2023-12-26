@@ -1,0 +1,62 @@
+﻿@model MVE.Admin.ViewModels.AdminPersonalDetailsViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "User Details" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    #viewquery tr td:last-child {
+        white-space: normal;
+        width: 63%;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <partial name="_ModalHeader" model="headerModel" />
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped" id="viewquery">
+                            <tbody>
+                                @*<tr>
+                                    <td> <label class="bold">Role Name:</label></td>
+
+                                    <td>@Model.RoleName</td>
+                                </tr>*@
+                                <tr>
+                                    <td> <label class="bold">Full Name:</label></td>
+
+                                    <td>@Model.FullName</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Email Address:</label></td>
+
+                                    <td>@Model.Email</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Mobile Number:</label></td>
+
+                                    <td>@Model.MobileNo</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Address:</label></td>
+
+                                    <td>@Model.Address</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

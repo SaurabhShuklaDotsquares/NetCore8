@@ -1,0 +1,36 @@
+﻿@model TCP.Web.ViewModels.PaymentSuccessViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    ViewData["Title"] = "PaymentSuccess";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="inner-hd-block">
+    <div class="container text-center">
+        <h1>Checkout</h1>
+    </div>
+</div>
+
+<div class="checkout-block">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 col-lg-12 col-xl-12">
+                <div class="checkout-block-left">
+                    <div class="checkout-packages">
+                        <div class="checkout-packages-inst">
+                            <span><strong>Booking No.:</strong> @Model.BookingId</span>  &nbsp; &nbsp; &nbsp; &nbsp;
+                            <span><strong>Booking Date:</strong> @Model.Date</span>
+                            <h3>@Model.Message</h3>    
+                            <a href="@SiteKeys.Domain" class="btn-custom text-center">Home</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {       
+        $("#header_main").addClass("inner-header");
+    });
+</script>

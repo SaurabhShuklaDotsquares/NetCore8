@@ -1,0 +1,93 @@
+﻿@model MVE.Admin.ViewModels.FrontUserViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "User Details" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    .imgsize {
+        height: 103px;
+        width: 115px;
+    }
+
+    #viewplanedholiday tr td:nth-child(2) {
+        white-space: normal;
+        width: 63%;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <partial name="_ModalHeader" model="headerModel" />
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="viewplanedholiday">
+                                <tbody>
+
+                                    <tr>
+                                        <td> <label class="bold">User ID</label></td>
+                                        <td> @Model.Id</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">Full User Name</label></td>
+                                        <td> @Model.FirstName &nbsp; @Model.LastName</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">Email Address</label></td>
+                                        <td> @Model.Email</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">Mobile Number</label></td>
+                                        <td> @Model.MobilePhone</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">User Image</label></td>
+                                        <td><img src="@SiteKeys.FrontDomain/uploads/users/@Model.ImageName" style="height:70px;width:70px;" onerror="this.src='/Admin/images/upload-image.png';" /> </td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">User Address</label></td>
+                                        <td> @Model.Address</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">Total User Bookings</label></td>
+                                        <td>@Model.TotalBookings</td>
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">User Status</label></td>
+                                        @if (@Model.IsActive == true)
+                                        {
+                                            <td>Active </td>
+                                        }
+                                        else
+                                        {
+                                            <td>In-active </td>
+                                        }
+                                    </tr>
+                                    <tr>
+                                        <td> <label class="bold">User Date of Registration</label></td>
+                                        <td> @Model.CreationOn.ToShortDateString()</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+    </div>
+</section>
+

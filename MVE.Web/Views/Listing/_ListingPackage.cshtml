@@ -1,0 +1,240 @@
+﻿@*@model List<PackageListViewModel>*@
+@model TCP.Web.ViewModels.ListingViewModel
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@using TCP.Web.ViewModels;
+
+@{
+    Layout = null;
+    var domain = @SiteKeys.Domain;
+    var queryString = Context.Request.QueryString.ToString() != "" ? Context.Request.QueryString.ToString() : "";
+    queryString = queryString == "" ? "" : queryString.Split('?')[1];
+}
+
+<div class="row">
+    <input type="hidden" id="hdnDynamicTotalItem" name="hdnDynamicTotalItem" value="@(Model.totalItem)" />
+    @if (Model.PackagesList != null && Model.PackagesList.Count > 0)
+    {
+
+        foreach (var item in Model.PackagesList)
+        {
+
+            <div class="col-md-4" id="pkgitem-div-@item.PackageId">
+                <div class="package-card listing-card">
+                    <div class="package-img">
+                        <a href="@SiteKeys.Domain/package/@item.PackageUrl" title="@item.PackageName">
+                            <img src="@(string.IsNullOrEmpty(item.FilePath)?(SiteKeys.Domain+"/Images/no-pic.png"):item.FilePath)" alt="@item.PackageName">
+                        </a>
+                    </div>
+                    <div class="package-info">
+                        <div class="rating-block">
+                            @{
+                                if (@item.Rating == 1)
+                                {
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    //@item.Rating
+                                }
+                                else if (@item.Rating == 2)
+                                {
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    //@item.Rating
+                                }
+                                else if (@item.Rating == 3)
+                                {
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    // @item.Rating
+                                }
+                                else if (@item.Rating == 4)
+                                {
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    //@item.Rating
+                                }
+                                else if (@item.Rating == 5)
+                                {
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    <i class="fa fa-star yellow-clr" aria-hidden="true"></i>
+                                    // @item.Rating
+                                }
+                            }
+
+
+                        </div>
+                        <div class="package-head-left">
+                            <h4><a href="@SiteKeys.Domain/package/@item.PackageUrl" title="@item.PackageName">@item.PackageName</a></h4>
+                            <p>@item.PackageNoOf_DaysNight</p>
+                        </div>
+                        @*<p>Lorem ipsum dolor sit amet, consectet elit.Ut rutrum viverra sapien eu</p>*@
+                        <p>@Html.Raw(item.PkgDesc)</p>
+                        <div class="card-btm-info">
+                            <div class="package-head-right">
+                                @*<span>$@(Math.Floor(item.PackagePrice))</span>*@
+                                <span>$@item.PackagePriceFront</span>
+                                <p>per person</p>
+                            </div>
+                            <div class="amenities-right">
+                                <ul>
+                                    @if (item.IsHotelIncluded)
+                                    {
+                                        <li><img src="@SiteKeys.ImageDomain/images/hotel.png" alt=""></li>
+                                    }
+                                    @if (item.IsMealIncluded)
+                                    {
+                                        <li><img src="@SiteKeys.ImageDomain/images/food.png" alt=""></li>
+                                    }
+                                    @if (item.IsTransferIncluded)
+                                    {
+                                        <li><img src="@SiteKeys.Domain/images/transfers-icon.png" alt=""></li>
+                                    }
+                                    @if (item.IsTransportIncluded)
+                                    {
+                                        <li><img src="@SiteKeys.Domain/images/transports-icon.png" alt=""></li>
+                                    }
+                                    @if (item.IsCruseIncluded)
+                                    {
+                                        <li><img src="@SiteKeys.Domain/images/cruise-icon.png" alt=""></li>
+                                    }
+                                </ul>
+                                @*<span>1000 Kms</span>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    }
+    else
+    {
+        
+        <div class="col-md-12">
+            <div class="package-card listing-card">
+                <div class="package-info">
+                    <div class="card-btm-info">
+                        <p>No Data Found</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+
+</div>
+
+
+
+@{
+
+    if (Model.PackagesList != null && Model.PackagesList.Count > 0)
+    {
+
+        Decimal getRemainderVal = Decimal.Remainder(Model.totalItem, 6);
+        if (getRemainderVal > 0)
+        {
+            <div class="pagination-outer">
+                <ul class="pagination">
+                    @{
+                        if (Model.CurrentPageIndex == 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex-1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                        }
+                    }
+
+                    @for (int i = 0; i <= (Model.totalItem / 6); i++)
+                    {
+                        var pageUrl = ViewBag.URLs;
+                        @if ((@i + 1) != Model.CurrentPageIndex)
+                        {
+                            {
+                                //queryString = queryString.IndexOf("&curentPage=") == -1 ? "&curentPage=" + (i + 1) : "";
+                                queryString = "&curentPage=" + (i + 1);
+                            }
+                            @*<li class="page-item"><a class="page-link" href="@domain/Listing/Index?@queryString">@(i + 1)</a></li>*@
+                            //<li class="page-item"><a class="page-link paginglogic" data-targetvalue="@(i + 1)">@(i + 1)</a></li>
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                        }
+                    }
+                    @{
+                        var countTotl = Model.totalItem / 6;
+                        if ((countTotl + 1) == Model.CurrentPageIndex)
+                        {
+                            <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex+1)">Next <i class="fa fa-angle-right"></i></a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+        else
+        {
+            <div class="pagination-outer">
+                <ul class="pagination">
+                    @{
+                        if (Model.CurrentPageIndex == 1)
+                        {
+                            <li class="page-item disabled">
+                                <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex-1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                        }
+                    }
+
+                    @for (int i = 0; i < (Model.totalItem / 6); i++)
+                    {
+                        var pageUrl = ViewBag.URLs;
+                        @if ((@i + 1) != Model.CurrentPageIndex)
+                        {
+                            {
+                                //queryString = queryString.IndexOf("&curentPage=") == -1 ? "&curentPage=" + (i + 1) : "";
+                                queryString = "&curentPage=" + (i + 1);
+                            }
+                            @*<li class="page-item"><a class="page-link" href="@domain/Listing/Index?@queryString">@(i + 1)</a></li>*@
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                        }
+                    }
+                    @{
+                        var countTotl = Model.totalItem / 6;
+                        if ((countTotl) == Model.CurrentPageIndex)
+                        {
+                            <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                        }
+                        else
+                        {
+                            <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex+1)">Next <i class="fa fa-angle-right"></i></a></li>
+                        }
+                    }
+                </ul>
+            </div>
+        }
+    }
+}

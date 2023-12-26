@@ -1,0 +1,91 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.Notifications.ManageNotificationViewModel
+@{
+    ViewData["Title"] = "Notifications";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Notifications</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active"> Notifications</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <div id="countryMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                   @* <div class="row">
+                        <div class="prop-col-4">
+
+                            @Html.DropDownList("notificationDropdown", (List<SelectListItem>)ViewBag.Notification, "-Select-", new { @class = "form-control btn btn-info btn-sm ddlFltr",@id="notificationType" })
+
+                        </div>
+                    </div>*@
+                </div>
+                @*<a href="/Admin/ManageNotifications/SendNotification" target="_blank">Send Notification <i class="fa fa-send-o" style="font-size:30px;color:red"></i></a>*@
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="grid-notifications-details" class="table table-bordered custom-grid-table table-condensed">
+                    <thead>
+                        <tr>
+                            <th> ID</th>
+                            <th width="5%">S.No.</th>
+                            <th width="25%">Image</th>
+                            <th width="30%">Title</th>
+                            <th width="15%">Notification Type</th>
+                            <th width="10%">Created Date</th>
+                            <th width="20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+</section>
+
+@{
+
+    var viewnotificationModel = new Modal { ID = "modal-view-notification", AreaLabeledId = "modal-view-country-label", Size = ModalSize.Large };
+
+}
+<partial name="_Modal" model="viewnotificationModel" />
+@section scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/ProfileNotification/profile-notification-index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+
+
+}

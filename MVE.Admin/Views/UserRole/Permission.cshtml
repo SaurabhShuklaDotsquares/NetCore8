@@ -1,0 +1,130 @@
+﻿@model MVE.Admin.ViewModels.RolePermissionViewModel
+@{
+    ViewData["Title"] = "Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .tbldatacenter {
+        text-align: center;
+    }
+
+    .tblCheckbox {
+        transform: scale3d(1.5, 1.5, 1.5);
+    }
+
+    .tblRolePermission th {
+        font-size: 18px;
+    }
+
+    .tblModules {
+        font-weight: bold;
+    }
+</style>
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Permission (@Model.RoleName)</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Permission</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="card">
+        <form asp-action="Permission" asp-controller="UserRole" id="frm-add-edit-permission">
+            <div class="card-body">
+                <partial name="_Notification" />
+                <div id="permissionMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+                <input type="hidden" asp-for="RoleId" />
+                <input type="hidden" asp-for="RoleName" />
+                @*                <input type="hidden" asp-for="PermissionSelectedIds" />*@
+                <div class="box">
+                    <div class="box-body">
+                        @*<div id="jstreediv"></div>*@
+
+                        <table class="table table-bordered custom-grid-table table-condensed dataTable no-footer tblRolePermission">
+                            <thead>
+                                <tr>
+                                    <th width="20%">Module</th>
+                                    <th width="20%" class="tbldatacenter">List</th>
+                                    <th width="20%" class="tbldatacenter">Create/Edit</th>
+                                    @*<th width="20%" class="tbldatacenter">Edit</th>*@
+                                    <th width="20%" class="tbldatacenter">Delete</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if (Model.RolePermissionList != null)
+                                {
+                                    @for (var i = 0; i < Model.RolePermissionList.Count(); i++)
+                                    {
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].RolePageId" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].OrderIndex" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].PageName" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].PageUrl" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].IsActive" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].RoleId" />
+                                        <input type="hidden" asp-for="@Model.RolePermissionList[i].RoleName" />
+                                        <tr>
+                                            <td class="tblModules">@Model.RolePermissionList[i].PageName</td>
+                                            <td class="tbldatacenter tblCheckbox">@Html.CheckBoxFor(x => x.RolePermissionList[i].IsReadOnly)</td>
+                                            <td class="tbldatacenter tblCheckbox">@Html.CheckBoxFor(x => x.RolePermissionList[i].IsCreate)</td>
+                                            @*<td class="tbldatacenter tblCheckbox">@Html.CheckBoxFor(x => x.RolePermissionList[i].IsEdit)</td>*@
+                                            <td class="tbldatacenter tblCheckbox">@Html.CheckBoxFor(x => x.RolePermissionList[i].IsDelete)</td>
+                                           @* <td class="tbldatacenter">
+                                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                                    <input type="checkbox" class="custom-control-input" id="customSwitch3">
+                                                    <label class="custom-control-label" for="customSwitch3"></label>
+                                                </div>
+                                            </td>*@
+
+                                            @*<td><input type="checkbox" asp-for="@Model.RolePermissionList[i].IsReadOnly" name="@Model.RolePermissionList[i].IsReadOnly"></td>
+                                    <td><input type="checkbox" asp-for="@Model.RolePermissionList[i].IsCreate" name="@Model.RolePermissionList[i].IsCreate"></td>
+                                    <td><input type="checkbox" asp-for="@Model.RolePermissionList[i].IsEdit" name="@Model.RolePermissionList[i].IsEdit"></td>
+                                    <td><input type="checkbox" asp-for="@Model.RolePermissionList[i].IsDelete" name="@Model.RolePermissionList[i].IsDelete"></td>*@
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td colspan="5" style="text-align:center;">Please add page before assign permissions.....</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <a href='@Url.Action("Index", "UserRole")'>
+                        <button class="btn btn-default" id="btn-cancel" type="button">
+                            Cancel
+                        </button>
+                    </a>
+
+                    <button class="btn btn-success" id="btn-submit" type="submit">
+                        Submit
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+
+
+
+
+

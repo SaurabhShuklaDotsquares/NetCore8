@@ -1,0 +1,45 @@
+﻿@model TCP.Web.ViewModels.StaticViewModel
+@using Microsoft.Extensions.Configuration;
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@inject IConfiguration configuration;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@* <link rel="stylesheet" href="css/font-awesome.min.css">
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="css/owl.carousel.min.css">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/responsive.css"> *@
+@if (Model != null)
+{
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            <h1>@Model.Name</h1>
+        </div>
+    </div>
+
+    <div class="visa-guide-block">
+        <div class="container">
+            @Html.Raw(Model.Content)
+        </div>
+    </div>
+}
+else
+{
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            <h3>Page Not Found</h3>
+        </div>
+    </div>
+}
+<script>
+    var domain = '@configuration["SiteKeys:Domain"]';
+</script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+</script>
+<script src="~/js/custom/staticpage/static-page.js"></script>

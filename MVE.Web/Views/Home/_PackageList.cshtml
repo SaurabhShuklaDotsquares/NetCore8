@@ -1,0 +1,73 @@
+﻿@model List<PackageListViewModel>
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@using TCP.Web.ViewModels;
+
+@{
+    Layout = null;
+   
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    foreach (var item in Model)
+    {
+            var name_17_txt = item.PackageName?.Length <= 17 ? item.PackageName : CommonFileViewModel.TrimHtmlText(item?.PackageName, 15);
+        
+        <div class="item" id="pkgitem-div-@item.PackageId">
+            <div class="package-card">
+                <div class="package-img"><a href="@SiteKeys.Domain/package/@item.PackageUrl"><img src="@item.FilePath" alt="@item.PackagePrice"></a></div>
+                <div class="package-info">
+                    <div class="package-head justify-content-between">
+                        <div class="package-head-left">
+                            <h4 title="@item.PackageName"><a href="@SiteKeys.Domain/package/@item.PackageUrl">@name_17_txt</a></h4>
+                            <p>@item.PackageNoOf_DaysNight</p>
+                        </div>
+                        <div class="package-head-right">
+                            <span>$@item.PackagePriceFront</span>
+                            <p>per person</p>
+                        </div>
+                    </div>
+                    <p> @Html.Raw(WebUtility.HtmlDecode(item.PkgDesc))</p>
+                </div>
+            </div>
+        </div>
+
+    }
+    }
+
+  @*   if (Model.Count < 5)
+    {
+        for (int i = 0; i < (5 - Model.Count); i++)
+        {
+            <div class="item">
+                <div class="package-card">
+                    <div class="package-img"><img src="@SiteKeys.Domain/images/no-pic.png" alt="no-pic.png"></div>
+                    <div class="package-info">
+                        <p>No Data Found</p>
+                    </div>
+                    @if (Model.Count < 1)
+                    {
+                        <div>&nbsp;</div>
+                    }
+                </div>
+            </div>
+        }
+    } *@
+    
+
+@* else
+{
+    for (int i = 0; i < 5; i++)
+    {
+        <div class="item">
+            <div class="package-card">
+                <div class="package-img"><img src="@SiteKeys.Domain/images/no-pic.png" alt="no-pic.png"></div>
+                <div class="package-info">
+                    <p>No Data Found</p>
+                </div>
+            </div>
+        </div>
+    }
+} *@

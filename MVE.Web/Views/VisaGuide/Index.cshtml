@@ -1,0 +1,45 @@
+﻿@using System.Net;
+@using Microsoft.Extensions.Configuration;
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@inject IConfiguration configuration;
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css" rel="stylesheet" />
+}
+
+@if (Model.PageTitle != null && Model.ContentData != null)
+{
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            <h1>@Model.PageTitle</h1>
+            <p>Comprehensive guide to getting a short-stay visitor's visa for Europe, steps to apply, the visa types and FAQs.</p>
+        </div>
+    </div>
+
+    <div class="visa-guide-block">
+        <div class="container">
+            @Html.Raw(Model.ContentData)
+        </div>
+    </div>
+}else
+{
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            <h3>Record Not Found</h3>
+        </div>
+    </div>
+}
+
+<script>
+    var domain = '@configuration["SiteKeys:Domain"]';
+</script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+</script>

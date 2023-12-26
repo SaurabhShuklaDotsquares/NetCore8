@@ -1,0 +1,178 @@
+﻿@model TCP.Web.ViewModels.DestinationGuideViewModel
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@{
+    ViewData["Title"] = "Detail Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // var domain = @SiteKeys.Domain;
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css" rel="stylesheet" />
+}
+
+<style>
+    .desitnation-detail-norecord {
+        background: linear-gradient(0deg, rgba(1,4,87,1) 0%, rgba(31,33,104,1) 100%);
+        border-radius: 15px;
+        padding: 50px 0;
+        margin-top: -2px;
+    }
+</style>
+<div class="detail-page desitnation-detail">
+    <div class="container">
+        @if (Model != null)
+        {
+            <div class="desitnation-detail-banner">
+                <div class="desitnation-detail-banner-card d-lg-flex align-items-start">
+                    <div class="desitnation-detail-slider owl-carousel">
+                        @if (Model.lstImageNames != null && Model.lstImageNames.Count > 0)
+                        {
+                            foreach (var imgitem in Model.lstImageNames)
+                            {
+                                if (!string.IsNullOrEmpty(imgitem) && imgitem != SiteKeys.NoImagePath_Square)
+                                {
+                                    <div class="item"><img src="@SiteKeys.ImageDomain@imgitem" alt="logo"></div>
+
+                                }
+                                else
+                                {
+                                    <div class="item"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            <div class="item"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+                        }
+                    </div>
+                    <div class="desitnation-slider-info">
+                        <div class="travel-tag">
+                            <span>@Model.CountryName</span>
+                        </div>
+                        <h2>@Model.HeadingTitle</h2>
+                        <p>@Html.Raw(Model.HeadingContent)</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="desitnation-content-card">
+                <h3>@Model.MiddleTitle</h3>
+                <p>@Html.Raw(Model.MiddleContent)</p>
+            </div>
+
+            <div class="detail-content-img-block">
+                <div class="row">
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.MiddleImageNameMain))
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.ImageDomain@Model.MiddleImageNameMain" alt="logo"></div>
+                        }
+                        else
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        <div class="row">
+                            <div class="col-md-6 col-small-height">
+                                @if (!string.IsNullOrEmpty(Model.MiddleImageName1))
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.ImageDomain@Model.MiddleImageName1" alt="logo"></div>
+                                }
+                                else
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                                }
+                            </div>
+                            <div class="col-md-6 col-small-height">
+                                @if (!string.IsNullOrEmpty(Model.MiddleImageName2))
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.ImageDomain@Model.MiddleImageName2" alt="logo"></div>
+
+                                }
+                                else
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                                }
+                            </div>
+                            <div class="col-md-6 col-small-height">
+                                @if (!string.IsNullOrEmpty(Model.MiddleImageName3))
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.ImageDomain@Model.MiddleImageName3" alt="logo"></div>
+                                }
+                                else
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                                }
+                            </div>
+                            <div class="col-md-6 col-small-height">
+                                @if (!string.IsNullOrEmpty(Model.MiddleImageName4))
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.ImageDomain@Model.MiddleImageName4" alt="logo"></div>
+                                }
+                                else
+                                {
+                                    <div class="detail-content-img-card small-card-img"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="desitnation-content-card">
+                <h3>@Model.FooterTitle</h3>
+                <p>@Html.Raw(Model.FooterContent)</p>
+            </div>
+
+            <div class="detail-content-img-block">
+                <div class="row">
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.FooterImageName1))
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.ImageDomain@Model.FooterImageName1" alt="logo"></div>
+                        }
+                        else
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                        }
+                    </div>
+                    <div class="col-md-6">
+                        @if (!string.IsNullOrEmpty(Model.FooterImageName2))
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.ImageDomain@Model.FooterImageName2" alt="logo"></div>
+                        }
+                        else
+                        {
+                            <div class="detail-content-img-card"><img src="@SiteKeys.NoImagePath_Square" alt="logo"></div>
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="desitnation-content-card">
+                <p>@Html.Raw(Model.FooterBottomContent)</p>
+            </div>
+        }
+        else
+        {
+            <br />
+            <div class="desitnation-detail-norecord text-center">
+                <h3>Page Not Found</h3>
+            </div>
+        }
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+</script>

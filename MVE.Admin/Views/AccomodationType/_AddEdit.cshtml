@@ -1,0 +1,59 @@
+﻿@model MVE.Admin.ViewModels.AccomodationViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = String.Format("{0} Accomodation Type", @Model.Id <= 0 ? "Add" : "Edit") };
+}
+
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <form asp-action="AddEdit" asp-controller="AccomodationType" id="frm-add-edit-accomodation">
+                <partial name="_ModalHeader" model="headerModel" />
+                <input type="hidden" asp-for="Id" />
+                <div id="validation-summary"></div>
+                <div class="modal-body box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">Name<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="Name" class="form-control" placeholder="Name" autocomplete="off" maxlength="100" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Description">Description</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <textarea asp-for="Description" class="form-control" placeholder="Description" ></textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-7">
+                        </div>
+                        <div class="col-5 action-view-popup">
+                            <label for="IsActive">Active</label>
+                            <label class="switch">
+                                <input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" />
+                                <span class="slider round"></span>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+                <partial name="_ModalFooter" model="new ModalFooter { }" />
+            </form>
+
+        </div>
+    </div>
+</section>
+

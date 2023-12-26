@@ -1,0 +1,185 @@
+﻿@model MVE.Admin.ViewModels.FrontUserViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = String.Format("{0} User", @Model.Id <= 0 ? "Add" : "Edit") };
+}
+<style>
+    .input-group{
+        margin-bottom:0px;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <form asp-action="AddEditUser" asp-controller="FrontUser" id="frm-add-edit-user" enctype="multipart/form-data">
+                <partial name="_ModalHeader" model="headerModel" />
+                <input type="hidden" asp-for="Id" id="hddId" />
+                <input type="hidden" asp-for="ImageName" />
+                <div id="validation-summary"></div>
+                <div class="modal-body box-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">First Name<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="FirstName" class="form-control" placeholder="Enter First Name" autocomplete="off" maxlength="100" />
+                                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Description">Last Name</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="LastName" class="form-control" placeholder="Enter Last Name" autocomplete="off" maxlength="100" />
+                                    @*<span asp-validation-for="LastName" class="text-danger"></span>*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Description">Email<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="email" asp-for="Email" placeholder="Enter Your Email" class="form-control">
+                                    <span asp-validation-for="Email" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Description">Phone No.<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="MobilePhone" maxlength="16" oninput="this.value=this.value.replace(/[^0-9+]/g,'');" placeholder="Enter Phone No." class="form-control">
+                                    <span asp-validation-for="MobilePhone" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Description">Address<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <textarea type="text" style="padding-left:5px" asp-for="Address" maxlength="500" class="form-control" placeholder="Enter Your Address"></textarea>
+                                    <span asp-validation-for="Address" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row chkup">
+                            <div class="col-md-12">
+                                <label for="Description">Update Password</label>
+                                &nbsp;<input type="checkbox" asp-for="IsPassUpdate" class="" id="IsPassUpdate">
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="updatepass" class=" updatepass">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="Description">New Password<span class="required">*</span></label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input-group form-group log-inp astric">
+                                        <input asp-for="NewPassword" type="password" class="form-control" placeholder="Enter Password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fa fa-eye-slash" id="front_toggle_pwd"></span>
+                                            </div>
+                                        </div>
+                                        @*<i class="fa fa-eye-slash user-toggle_pwd"></i>*@
+                                    </div>
+                                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <label for="Description">Confirm Password<span class="required">*</span></label>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input-group form-group log-inp astric">
+                                        <input type="password" asp-for="ConfirmPassword" class="form-control" placeholder="Re Enter Password">
+                                        <div class="input-group-append">
+                                            <div class="input-group-text">
+                                                <span class="fa fa-eye-slash" id="front_toggle_Confirmpwd"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row hidden">
+                            <div class="col-5 action-view-popup">
+                                <label for="IsActive">Active</label>
+                                @* <label class="switch">
+                                <input type="checkbox" asp-for="IsActive" class="form-checkbox" data-on-text="Yes" data-off-text="No" />
+                                <span class="slider round"></span>
+                                </label>*@
+                                <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                    <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                                    <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+                    <button data-dismiss="modal" id="btn-cancel" class="btn btn-default" type="button">Cancel</button>
+                    <button class="btn btn-success" id="btn-submit" type="submit">
+                        Add Customer
+                    </button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</section>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script>
+    $(document).ready(function () {
+        var id = $("#hddId").val();
+        if (id == "0") {
+            $('.chkup').hide();
+            $("#updatepass").show();
+            $("#IsPassUpdate").attr('checked', 'checked');
+        }
+        else {
+           // $("#Email").prop("readonly", true);
+            $('.chkup').show();
+            $("#updatepass").hide();
+        }
+    });
+</script>
+<script>
+    $("#front_toggle_pwd").click(function () {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var type = $(this).hasClass("fa-eye-slash") ? "password" : "text";
+        $("#NewPassword").attr("type", type);
+    });
+</script>
+<script>
+    $("#front_toggle_Confirmpwd").click(function () {
+        $(this).toggleClass("fa-eye fa-eye-slash");
+        var type = $(this).hasClass("fa-eye-slash") ? "password" : "text";
+        $("#ConfirmPassword").attr("type", type);
+    });
+</script>

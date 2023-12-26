@@ -1,0 +1,224 @@
+﻿@model MVE.Admin.ViewModels.AdminUserManageViewModel
+@{
+    ViewData["Title"] = "Manage";
+}
+
+@section Styles{
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                @*<h1>Manage Users</h1>*@
+                <div id="settingMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+            </div>
+            @if (!string.IsNullOrEmpty(Model.TypeMode) && Model.TypeMode == "edit")
+            {
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Profile</li>
+                    </ol>
+                </div>
+            }
+            else
+            {
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                        <li class="breadcrumb-item">Manage Sub-Admin</li>
+                        <li class="breadcrumb-item active">Admin User</li>
+                    </ol>
+                </div>
+            }
+
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-sm-6 col-xs-12"></div>
+            <div class="col-md-8 col-sm-6 col-xs-12">
+                <div class="box">
+                    <div class="card dashboardDatatables">
+                        <div class="card-body">
+                            <p class="form-sub-heading">
+
+                                @if (!string.IsNullOrEmpty(Model.TypeMode) && Model.TypeMode == "edit")
+                                {
+                                    <strong>Edit Profile</strong>
+                                }
+                                else
+                                {
+                                    <strong>Manage Users</strong>
+                                }
+                            </p>
+                            <form class="form-horizontal" asp-action="Manage" asp-controller="AdminUser" id="frm-adminuser" enctype="multipart/form-data">
+                                <input type="hidden" asp-for="Id" />
+                                <input type="hidden" asp-for="TypeMode" />
+                                <div id="validation-summary"></div>
+                                <div class="card-body">
+                                    @if (Model.TypeMode != "edit" && Model.RoleId != 1)
+                                    {
+                                        if (Model.Id==0)
+                                        {
+                                            <div class="form-group">
+                                                <label for="RoleId">Role</label>
+                                                @Html.DropDownListFor(model => model.RoleId, Model.roleDropDownList, htmlAttributes: new { @class = "form-control" })
+                                                <span asp-validation-for="RoleId" class="text-danger"></span>
+                                            </div>
+                                        }else
+                                        {
+                                            <input type="hidden" asp-for="RoleId"/>
+                                            <div class="form-group">
+                                                <label for="RoleId">Role</label>
+                                                @Html.DropDownListFor(model => model.RoleId, Model.roleDropDownList, htmlAttributes: new { @class = "form-control",@disabled="disabled" })
+                                                <span asp-validation-for="RoleId" class="text-danger"></span>
+                                            </div>
+                                        }
+                                    }
+
+                                    <div class="form-group">
+                                        <label for="FName">First Name</label>
+                                        <input asp-for="FName" class="form-control" placeholder="First Name" type="text" maxlength="50" />
+                                        <span asp-validation-for="FName" class="text-danger"></span>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="LastName">Last Name</label>
+                                        <input asp-for="LastName" class="form-control" placeholder="Last Name" type="text" maxlength="50" />
+                                        <span asp-validation-for="LastName" class="text-danger"></span>
+
+                                    </div>
+                                    @if (Model.Id > 0)
+                                    {
+                                        <div class="form-group">
+                                            <label for="Email">Email</label>
+                                            <input asp-for="Email" class="form-control" placeholder="Email" type="email" maxlength="200" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="form-group">
+                                            <label for="Email">Email</label>
+                                            <input asp-for="Email" class="form-control" placeholder="Email" type="email" maxlength="200" />
+                                            <span asp-validation-for="Email" class="text-danger"></span>
+
+                                        </div>
+                                    }
+
+                                    <div class="form-group">
+                                        <label for="MobilePhone">Mobile Number</label>
+                                        <input type="text" asp-for="MobilePhone" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control hotelphonevalidation" placeholder="Mobile Number" autocomplete="off" maxlength="16" />
+                                        <span asp-validation-for="MobilePhone" class="text-danger" id="mobilenumber"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Address">Description</label>
+
+                                        <textarea asp-for="Description" maxlength="200" class="form-control" rows="3" placeholder="Enter Some Description"></textarea>
+                                        <span asp-validation-for="Description" class="text-danger"></span>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="Address">Address</label>
+
+                                        <textarea asp-for="Address" class="form-control" rows="3" placeholder="Enter Address"></textarea>
+                                        <span asp-validation-for="Address" class="text-danger"></span>
+                                    </div>
+                                    @if (Model.Id > 0 &&Model.TypeMode != "edit")
+                                    {
+                                        <div class="row chkup">
+                                            <div class="col-md-12">
+                                                <label for="Description">Update Password</label>
+                                                &nbsp;<input type="checkbox" asp-for="IsPassUpdate" class=""  id="IsPassUpdate">
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                   @*  @if (Model.TypeMode != "edit" && Model.Id == 0)
+                                    { *@
+                                        <div id="updatepass" class="updatepass">
+                                            <div class="form-group">
+                                                <label for="Password">Password</label>
+                                                <div class="input-group">
+                                                    <input asp-for="Password" class="form-control" placeholder="Password" type="password" />
+                                                    <div class="input-group-append">
+                                                        <div class="input-group-text">
+                                                            <span class="fa fa-eye-slash" id="toggle_pwd"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            <span asp-validation-for="Password"></span>
+
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="ConfirmPassword">Confirm Password</label>
+                                                <input asp-for="ConfirmPassword" class="form-control" placeholder="Confirm Password" type="password" />
+                                                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                                            </div>
+                                        </div>
+                                    @* } *@
+                                </div>
+                                <!-- /.card-body -->
+                                <div class="card-footer">
+                                    <div class="row">
+                                        <div class="col-md-12 col-sm-12 col-lg-12 col-xs-12" style="text-align:right;">
+                                            <button class="btn btn-success" id="btn_submit" type="submit">
+                                                Submit
+                                            </button>
+                                            @if (Model.TypeMode != "edit")
+                                            {
+                                                <a href="/Admin/AdminUser/Index" class="btn btn-default ml-1">Cancel</a>
+                                            }
+                                            else
+                                            {
+                                                <a href="/Admin/Dashboard/Index" class="btn btn-default ml-1">Cancel</a>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2 col-sm-6 col-xs-12"></div>
+            <!-- left column -->
+
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+@section scripts{
+    <script src="~/js/custom/adminuser/AddAdminUser.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+}
+@* <script>
+    alert('ckncbkj');
+    $(document).ready(function () {
+        
+        if ('@Model.Id' == "0" && '@Model.TypeMode' != "edit") {
+            $('.chkup').hide();
+            $("#updatepass").show();
+            $("#IsPassUpdate").attr('checked', 'checked');
+        }
+        else {
+            $("#Email").prop("readonly", true);
+            $('.chkup').show();
+            $("#updatepass").hide();
+        }
+    });
+</script> *@
+

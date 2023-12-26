@@ -1,0 +1,52 @@
+﻿<div class="access-denied-popup">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+    </div>
+    <div class="error-page">
+        <h4 class="headline text-yellow"> Access Denied</h4>
+        <div class="error-content">
+            <h3><i class="fa fa-warning text-yellow"></i> Oops! Not authorised.</h3>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <h4 class="modal-title"> Sorry you are not authorised to perform this activity, please contact to system administrator.</h4>
+    </div>
+</div>
+<style>
+    /*.modal-dialog < .modal-content < .access-denied-popup {*/
+    .modal-dialog {
+        width: 725px;
+    }
+
+    .access-denied-popup {
+        text-align: center;
+    }
+
+        .access-denied-popup .error-page > .error-content {
+            margin-left: 0;
+        }
+
+        .access-denied-popup .error-page > .headline {
+            margin-top: 0px;
+            margin-bottom: 0px;
+            line-height: 100px;
+            margin-right: 46px;
+        }
+
+        .access-denied-popup .modal-footer {
+            padding-top: 10px;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .access-denied-popup h3.headline.text-yellow {
+            margin-bottom: 25px;
+            font-size: 80px;
+            width: 100%;
+            line-height: 58px;
+        }
+
+        .access-denied-popup .error-page > .error-content > h3 {
+            padding-bottom: 13px;
+        }
+</style>

@@ -1,0 +1,173 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using TCP.Core.Code.LIBS;
+@inject IConfiguration configuration;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Dashboard";
+
+}
+<div class="inner-hd-block">
+    <div class="container text-center">
+        <h1 id="h1Tag">Dashboard</h1>
+        <ul class="breadcrumb">
+            <li><a>My Account</a></li>
+            <li id="lidashboard">Dashboard</li>
+        </ul>
+    </div>
+</div>
+<div class="dashboard-pages-block">
+    <div class="container">
+        <div class="dashboard-info-block">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="dashboard-menu">
+                        <div class="user-block">
+                            <i class="user-img-dsh">
+                                <div class="edit-img-block">
+                                    <input type="file" name="">
+                                </div>
+                                <img src="@SiteKeys.Domain/images/dashboard-user.png" align="dashboard-user">
+                            </i>
+                            <span>Andrew Philip</span>
+                            <p>Personal Profile</p>
+                        </div>
+                        <div class="dash-link">
+                            <ul class="nav nav-tabs">                               
+                                <li>
+                                    <a class='active' data-toggle='tab' href='#Dashboard' id="btnDashboard"><i><img src="@SiteKeys.Domain/images/dash-icon.png" align="dash-icon"></i> Dashboard</a>
+                                </li>
+                                <li>
+                                    <a class='' data-toggle='tab' href='#MyBookings' id="btnMyBooking"><i><img src="@SiteKeys.Domain/images/dash-icon1.png" align="dash-icon"></i> My Bookings</a>
+                                </li>
+                                <li>
+                                    <a class='' data-toggle='tab' href='#MyProfile' id="btnMyProfile"><i><img src="@SiteKeys.Domain/images/dash-icon2.png" align="dash-icon"></i> My Profile</a>
+                                </li>
+                                <li>
+                                    <a class='' data-toggle='tab' href='#ContactUs' id="btnContactUs"><i><img src="@SiteKeys.Domain/images/dash-icon3.png" align="dash-icon"></i> Contact Us</a>
+                                </li>
+                                <li>
+                                    <a class='' data-toggle='tab' href='#ChangePassword' id="btnChangePassword"><i><img src="@SiteKeys.Domain/images/dash-icon4.png" align="dash-icon"></i> Change Password</a>
+                                </li>
+                                <li><a href="/Account/SignOut"><i><img src="@SiteKeys.Domain/images/dash-icon5.png" align="dash-icon"></i> Sign Out</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8">
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class='tab-pane container fade in show active' id='Dashboard'>
+                            <partial name="~/Views/MyDashboard/_Dashboard.cshtml" />
+                        </div>
+                        <div class='tab-pane container fade' id='MyBookings'>
+                            <div class="dashboard-col">
+                                <div id="dvBooking">
+                                    @*<partial name="~/Views/MyDashboard/_MyBooking.cshtml" />    *@
+                                </div>
+                            </div>                           
+                        </div>
+                        <div class='tab-pane container fade' id='MyProfile'>
+                            <div class="dashboard-col">
+                                <partial name="~/Views/MyDashboard/_MyProfile.cshtml" />
+                            </div>                            
+                        </div>
+                        <div class='tab-pane container fade' id='ContactUs'>
+                            <partial name="~/Views/MyDashboard/_Dashboard.cshtml" />
+                        </div>
+                        <div class='tab-pane container fade' id='ChangePassword'>
+                            <div class="dashboard-col">
+                                <div id="dvChangePassword">
+                                    <partial name="~/Views/MyDashboard/_ChangePassword.cshtml" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+
+        $("#btnDashboard").click(function () {
+            $('#h1Tag').html('Dashboard');
+            $('#lidashboard').html('Dashboard');
+            getfilterdata('dashboard');
+        });
+        $("#btnMyBooking").click(function () {
+            $('#h1Tag').html('My Bookings');
+            $('#lidashboard').html('My Bookings');
+            getfilterdata('mybooking');
+        });
+        $("#btnMyProfile").click(function () {
+            $('#h1Tag').html('My Profile');
+            $('#lidashboard').html('My Profile');
+            getfilterdata('myprofile');
+        });
+         $("#btnChangePassword").click(function () {
+            $('#h1Tag').html('Change Password');
+            $('#lidashboard').html('Change Password');
+            getchangepassword();
+        });
+
+        $(document).off("click", ".paginglogic").on("click", ".paginglogic", function () {
+            var data = $(this).data('indexcurrentpage');
+            getfilterpaginationdata(data);
+        });
+         $(document).off("click", ".pagingupcoming").on("click", ".pagingupcoming", function () {
+            var data = $(this).data('indexcurrentpage');
+            getfilterpaginationupcomingdata(data);
+        });
+    });
+
+    function getchangepassword() {
+        //$('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/MyDashboard/ChangePassword")';
+
+        $.get(url, function (data) {
+            $('#dvChangePassword').html(data);
+           // $('#front_loader').hide();
+        });
+
+    }
+
+    function getfilterdata(values) {
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/MyDashboard/BindPartialData")?_type=' + values;
+
+        $.get(url, function (data) {
+            if (values == 'mybooking') {
+                $('#dvBooking').html(data);
+
+            }
+            $('#front_loader').hide();
+        });
+
+    }
+    function getfilterpaginationdata(values) {
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/MyDashboard/BindPartialFilterPagination")?currentpage=' + values + "&_type=all";
+
+        $.get(url, function (data) {
+            $('#dvBooking').html(data);
+            $('#profile-tab').trigger('click');
+            //$("#myTab").find(".nav-link").removeClass("active");
+            $('#front_loader').hide();
+        });
+
+    }
+    function getfilterpaginationupcomingdata(values) {
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/MyDashboard/BindPartialFilterPagination")?currentpage=' + values + "&_type=upcoming";
+
+        $.get(url, function (data) {
+            $('#dvBooking').html(data);
+            $('#front_loader').hide();
+        });
+
+    }
+</script>

@@ -1,0 +1,43 @@
+﻿@model TCP.Web.ViewModels.BillingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = null;
+}
+
+
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">Address 1</div>
+            <div class="col-md-8">@Model.Address1</div>
+        </div>
+    </div>
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">Address 2</div>
+        <div class="col-md-8">@Model.Address2</div>
+        </div>
+    </div>
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">Town</div>
+        <div class="col-md-8">@Model.TownorCity</div>
+        </div>
+    </div>
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">County/State</div>
+        <div class="col-md-8">@Model.StateName</div>
+        </div>
+    </div>
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">Country</div>
+        <div class="col-md-8">@Model.CountryName</div>
+        </div>
+    </div>
+    <div class="info-loop">
+        <div class="row">
+            <div class="col-md-4">Zip Code</div>
+        <div class="col-md-8">@Model.ZipCode</div>
+        </div>
+    </div>

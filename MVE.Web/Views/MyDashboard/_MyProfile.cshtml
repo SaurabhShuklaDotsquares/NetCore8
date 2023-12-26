@@ -1,0 +1,112 @@
+﻿@model TCP.Web.ViewModels.MyBookingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = null;
+}
+
+<div class="profile-block">
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item">
+            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                <img src="images/calendar-icon.png" alt="">
+                <strong>Personal</strong><span>Detail</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                <img src="images/billing-dtl-icon.png" alt="">
+                <strong>Billing</strong><span>Detail</span>
+            </a>
+        </li>
+    </ul>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="tab-hd">
+                <h4>Personal Detail</h4>
+                <a class="edit-btn" href="#"><i class="fa fa-pencil-alt"></i> Edit</a>
+            </div>
+            <div class="tab-info">
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Name</div>
+                        <div class="col-md-8">Andrew Philip</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Email</div>
+                        <div class="col-md-8">andrew.philip@email.com</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Phone No.</div>
+                        <div class="col-md-8">000 12345 67890</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Date of Birth</div>
+                        <div class="col-md-8">12/10/1986</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Gender</div>
+                        <div class="col-md-8">Male</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Address</div>
+                        <div class="col-md-8">68 Exning Road, Harbledown, CT2 6LR, UK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="tab-hd">
+                <h4>Billing Detail</h4>
+                <a class="edit-btn" href="#"><i class="fa fa-pencil-alt"></i> Edit</a>
+            </div>
+            <div class="tab-info">
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Address Line1</div>
+                        <div class="col-md-8">48 Marlborough Crescent</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Address Line2</div>
+                        <div class="col-md-8">Osborne Road</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Town</div>
+                        <div class="col-md-8">Ellingham</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">County/State</div>
+                        <div class="col-md-8">Staverton</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Country</div>
+                        <div class="col-md-8">United Kingdom</div>
+                    </div>
+                </div>
+                <div class="info-loop">
+                    <div class="row">
+                        <div class="col-md-4">Zip Code</div>
+                        <div class="col-md-8">CT2 6LR, UK</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

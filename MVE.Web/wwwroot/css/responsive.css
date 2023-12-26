@@ -1,0 +1,417 @@
+@media screen and (max-width: 1650px){
+.package-price-slider.owl-carousel .owl-nav .owl-prev{left:5%;}
+.package-price-slider.owl-carousel .owl-nav .owl-next {right: 5%;}
+.plan-my-holiday-right {padding: 40px;}
+.plan-holiday-block label{font-size: 14px;}
+.logo {margin-right:30px;}
+.navigation ul li {margin-right: 20px;}
+}
+
+@media screen and (max-width: 1440px){  
+h1{font-size:54px;}
+h2 {font-size:40px;}
+h3 {font-size:30px;}
+h4 {font-size:20px;}
+.destinations-slider.owl-carousel .owl-nav .owl-next, .destinations-slider.owl-carousel .owl-nav .owl-prev, .package-price-slider.owl-carousel .owl-nav .owl-next, .package-price-slider.owl-carousel .owl-nav .owl-prev{width:35px;height:35px;} 
+.container {max-width: 1200px;}
+.logo {margin-right:20px;width: 120px;}
+.navigation ul li {margin-right:15px;font-size: 14px;}
+.sub-menu-card {padding: 15px;}
+.sub-menu-links ul li { margin: 0 0 15px;}
+.sub-menu-links {width: 70%;}
+.header-medial-right ul li {margin-right:20px;}
+.search-form {bottom:60px;}
+.destinations-card {padding:12px 12px 28px;}
+.package-price-slider .package-card {width:320px;}
+.package-card {padding: 15px;}
+.destinations-slider.owl-carousel .owl-nav .owl-next, 
+.destinations-slider.owl-carousel .owl-nav .owl-prev {background-color: rgba(255,255,255,0.1);}
+.package-price-slider.owl-carousel .owl-nav .owl-prev{left:15px;}
+.package-price-slider.owl-carousel .owl-nav .owl-next {right: 15px;}
+.destinations-slider.owl-carousel .owl-nav .owl-next {right:-40px;}
+.destinations-slider.owl-carousel .owl-nav .owl-prev{left:-40px;}
+
+
+/**detail-page**/
+.tariff-block ul li {margin-right: 15px;}
+.tariff-block ul li span {font-size: 13px;}
+.description-content-btn .btn-custom.outline-btn {padding:0;}
+.description-content-btn .btn-custom {padding:0;}
+.description-price-col span {font-size: 32px;}
+/**detail-page end**/
+
+
+/*plan my holiday Css */
+.plan-holiday-info {padding:30px;}
+.plan-holiday-info .logo {top: 30px;left: 30px;}
+.plan-holiday-step h2 {font-size: 46px;}
+.plan-holiday-step ul li i {height: 84px;margin-bottom:10px;width: 70px;}
+.plan-holiday-step ul li {margin-right: 30px;width: 30%;flex: 0 0 30%;}
+.plan-holiday-step ul li p {font-size: 22px;line-height: 34px;}
+.callInfoBox small {font-size: 20px;}
+.callInfoBox {font-size: 40px;}
+.plan-my-holiday-right {padding:30px;}
+/*plan my holiday Css */
+.destinations-card i {width:80px; height:80px;}
+}
+
+@media screen and (max-width: 1199px){
+body{font-size: 15px;}
+h1 {font-size: 46px;}
+h2 {font-size: 32px;}
+h4 {font-size: 20px;}
+.padding-top {padding-top: 50px;}
+.padding-bottom {padding-bottom: 50px;}
+.heading-block {padding-bottom: 20px;}
+.destinations-price-block {padding-top: 0;}
+.heading-block span {font-size: 24px;}
+.header-top {padding: 10px 0;}
+.header-info ul li {font-size: 14px;}
+.header-info ul li i {margin-right:6px;width: 15px;}
+.logo {margin-right:10px;width:60px;}
+.navigation ul li {margin-right:5px;font-size:12px;}
+.sub-menu-card{background-image:inherit !important;}
+.sub-menu-links {width: 100%;}
+.sub-menu-links ul li {margin: 0 0 15px;}
+.navigation .btn-custom {padding: 0px 10px;height: 40px;line-height: 40px;font-size: 14px;}
+.navnewclass .header {top: -41px;}
+.destinations-card {padding: 12px 12px 50px;}
+.destinations-card i {width:60px; height:60px;}
+.destinations-card span {font-size: 15px;}
+.package-head-right span {font-size: 20px;}
+.direction-info img {width: 100px;}
+.direction-block,.our-experts-block {padding-bottom: 0;}
+.destinations-slider .owl-nav {position: absolute;left: 0;right: 0;bottom:-10px;display: flex !important;justify-content: space-between;width:90px;margin:0 auto;}
+.destinations-slider .owl-nav button {position: static !important;transform: inherit !important;}
+.direction-info .btn-custom {padding: 0 25px;font-size: 14px;}
+.experts-info h2 {font-size: 44px;}
+.experts-info p{font-size: 18px;}
+.map-icon img {width: 80px;}
+.experts-form {border-radius: 35px 35px 35px 0;padding: 30px;}
+.experts-info {border-radius: 38px;padding: 30px;margin-top: 70px;}
+.graphic1,.graphic2{display: none;}
+.price-tab ul li a:after {bottom: -32px;}
+.price-tab ul li a.active:after {bottom: -30px;}
+.package-price-slider .package-card {width:240px;}
+.package-img {height: 200px;margin-bottom:20px;}
+.package-card {padding: 10px;}
+.custom-popup .modal-dialog {max-width: 880px;}
+.custom-popup-big .modal-dialog { max-width: 100%;margin: 20px;}
+/* Listing page css */
+.inner-hd-block h1 {font-size: 34px;}
+.listing-block-outer h3 {font-size: 18px;}
+.accordion-block {font-size: 14px;}
+.chk-list li label.customcheckBox small {font-size: 13px;top: 2px;}
+.accordion-block {padding: 12px;}
+.range-slider-box b {font-size: 14px;}
+.range-slider-box b span {font-size: 12px;}
+/* Listing page css */
+
+/**detail-page**/
+.detail-description{background-image:none;}
+.detail-description:before{display: none;}
+.detail-slider-block{margin-bottom:30px;}
+.itinerary-tab ul li {padding-left: 15px;}
+.itinerary-tab ul li a {padding: 2px 10px;}
+.itinerary-tab ul li a:before {left: -19px;}
+/**detail-page end**/
+
+/****dashboard*****/
+.user-block {padding: 30px 0;}
+.user-img-dsh {width: 80px;height: 80px;}
+.user-block span {font-size: 16px;}
+.dash-link ul li a {padding:10px 20px;}
+.dash-link ul li a i {margin-right: 10px;width: 22px;}
+/****dashboard end*****/
+
+/* Profile Css */
+.profile-block .nav-tabs .nav-link {font-size: 20px;min-width: 200px;padding: 10px 0 10px 65px;line-height: 1.2;}
+.profile-block .nav-tabs .nav-link img {left: 25px;top: 16px;height: 30px;}
+.profile-block .nav-tabs .nav-link span {font-size: 14px;}
+/* Profile Css */
+
+/*checkout Css */
+.checkout-packages {border-radius: 10px;padding: 15px;margin-bottom: 20px;}
+.checkout-packages-inst {padding: 15px;}
+.checkout-accordion .card {border-radius: 10px;padding: 0 15px;margin-bottom: 20px;}
+.checkout-accordion .card-header .card-link {font-size: 20px;padding: 10px 0;}
+.checkout-accordion .card-header .card-link:after {top: 20px;right: 20px;}
+.checkout-accordion .itinerary-body {margin-top: 15px;}
+.tcs-block {padding: 15px;border-radius: 10px;margin-bottom: 20px;}
+.checkout-price-accordion {padding: 0;margin: 0 -15px 15px;}
+.checkout-block-right {border-radius: 10px;padding: 15px;}
+.checkout-price-accordion .filter-btn {padding: 10px 15px;font-size: 15px;}
+.checkout-price-accordion .filter-btn::after {right: 15px;top: 8px;}
+.pay-book {padding: 10px 15px;}
+.fare-breakup .amount-list {padding: 0 15px;}
+.travellers-tag {padding: 0 15px;}
+.offer-tag {font-size: 12px;top: 15px;right: 15px;}
+/*checkout Css */
+
+
+
+/*plan my holiday Css */    
+.plan-holiday-info .logo {top: 30px;left: 30px;}
+.plan-holiday-step h2 {font-size: 36px;}
+.plan-holiday-step ul li i {height:60px;margin-bottom:10px;width:50px;}
+.plan-holiday-step ul li {margin-right: 0;padding-right:20px;width: 33.333%;flex: 0 0 33.333%;}
+.plan-holiday-step ul li:last-child{padding-right:0;}
+.plan-holiday-step ul li p {font-size: 18px;line-height: 24px;}
+.callInfoBox small {font-size:18px;}
+.callInfoBox {font-size:34px;}
+.plan-my-holiday-right {padding:20px;}
+.mrgBot{margin-bottom:15px;}
+/*plan my holiday Css */
+
+
+.plan-holiday-info {
+    min-height: auto;
+}
+.plan-my-holiday-block{display: block !important;}
+.plan-my-holiday-left {
+    width:100%;
+    min-height: auto;
+}
+.plan-my-holiday-right {
+    width:100%;
+    padding:20px;
+    min-height: auto;
+}
+}
+
+@media screen and (max-width: 991px){
+body{font-size: 14px;}
+h1 {font-size: 40px;}
+h2 {font-size: 30px;}
+.menuImage{float:none;height:auto;margin:0;position:absolute;right:15px;top:9px;z-index:999;}
+.iphon_navigation{background:#ffd201;bottom: 0;display:flex!important;left: -260px;overflow-y: auto;margin: 0 !important;position: fixed;top:0;transition: all 0.3s ease;-moz-transition: all 0.3s ease;;width: 260px;z-index: 9999;padding:15px !Important; height: 100% !important;flex-direction: column;justify-content: space-between;}
+.nav-open {left: 0!important;}
+.iphon_navigation ul{overflow: scroll;}
+.iphon_navigation ul li{display:block;margin-bottom:10px;position: inherit;}
+.iphon_navigation ul li a{color:#000;display:block;font-size:15px;}
+.sub-menu.dropdown-menu {position: fixed !important;padding: 15px;top: 0 !important;bottom:0 !important;}
+.sub-menu-card {border-radius: 10px;padding: 15px;background-image:inherit;padding-top: 30px;} 
+.sub-menu-card .close {top: 5px;right: 5px;}
+.sub-menu-card .close img {width: 16px;display: block;} 
+.sub-menu-links {width: 100%;}
+.sub-menu-links h3 {padding-bottom: 5px;}
+.sub-menu-links h3:after {width: 50px;height: 3px;}
+.sub-menu-links ul li {width: 25%;flex: 0 0 25%;margin: 0 0 10px;}
+.sub-menu-links ul li a {display: flex !important;align-items: self-start;font-size: 14px !important;line-height: 1.2;}
+.sub-menu-links ul li a i {width: 20px;flex: 0 0 20px;margin-right: 8px;}
+.sub-menu-links ul li a i img {width: 100%;display: block;}
+.navnewclass .header {top: 0;}
+.header-info ul li {display: flex !important;margin-right:0;}
+.header-info ul li i img {filter: invert(1);}
+.scroll-hidden .holiday-btn{display:block;}
+.holiday-btn .btn-custom {background-color: #02066f;display: block;color: #fff;text-align: center;height: 40px;line-height: 40px;border-radius: 5px;}
+.header {top: 0; background-color: #404392;position: sticky; position: -webkit-sticky; box-shadow: none;}
+.header-top {display: none;}
+.header-medial {padding: 10px 0;}
+.logo {margin-right:0;width: 80px;display: block;}
+.banner-slider:before {display: none;}
+.banner-slider:after {height: 100%;opacity:1;}
+.navigation-left {display: block;}
+.footer h4 {font-size: 18px;}
+.search-form {left: 15px;right: 15px;}
+.destinations-card {padding: 12px 12px 55px;}
+.price-tab {margin: 0 15px 60px;width: auto;max-width: inherit;}
+.price-tab ul li:first-child {margin-left: 0;}
+.price-tab ul li:last-child {margin-right: 0;}
+.our-experts-block .container {display: block !important;}
+.experts-info img {margin: 30px 0 0;width: 150px;}
+.experts-info {border-radius: 20px;margin: 0;width: 100%;padding: 20px;}
+.experts-form {border-radius: 50px;margin: 30px 0 0;}
+.direction-info .btn-custom {padding: 0px 15px;height: 40px;line-height: 38px;}
+.custom-popup .modal-dialog {max-width:700px;}
+.search-form .heading-block {padding-bottom: 15px;}
+.search-form {bottom: 20px;}
+.package-price-slider .package-card {filter: inherit;}
+.nav-open.destinationmodalshow{width:100%;}
+
+/* Listing page css */
+.inner-hd-block h1 {font-size: 28px;}
+.wd1,.wd2 {flex: 0 0 100%;-ms-flex: 0 0 100%;max-width: 100%;}
+.wd2 {margin: 20px 0 0;}
+.accordion-block {margin: 0 0 15px;}
+/* Listing page css */
+
+/****dashboard*****/
+.dashboard-menu {padding-bottom:30px;margin-right: 0;}
+.dashboard-col {margin-left: -30px;padding: 15px;}
+.total-card-block {padding: 15px;}
+.total-card {padding: 15px;height: auto;margin-bottom: 15px;}
+.count {font-size: 30px;}
+.book-card.border-left {padding-left: 0;border: none !important;}
+/****dashboard end*****/
+
+/*checkout Css */
+.checkout-block-right {margin-bottom:0;}
+.checkout-price-accordion {padding: 0;margin: 0 -15px 15px;}
+/*checkout Css */
+
+/*desitnation-detail Css */
+.desitnation-detail-banner-card {padding:15px;margin-left:0;border-radius: 10px;}
+.desitnation-detail-slider {width:100%;margin-left:0;border-radius: 10px;margin-bottom:15px;}
+.desitnation-slider-info {padding: 0;}
+.desitnation-detail-slider.owl-carousel .owl-nav .owl-prev{left:15px;}
+.desitnation-detail-slider.owl-carousel .owl-nav .owl-next{right:15px;}
+.detail-content-img-card{margin-bottom:15px;}
+.col-small-height {margin-bottom: 0;}
+/*desitnation-detail Css */
+.tcs-heading i {width: 25px;flex: 0 0 25px;margin-top: 6px;}
+
+
+/*plan my holiday Css */
+.plan-holiday-info {padding: 20px;}   
+.plan-holiday-info .logo {top:20px;left:20px;}
+.plan-holiday-step h2 {font-size: 30px;}
+.plan-holiday-step h2:after {width: 50px;height: 4px;}
+.plan-holiday-step ul li i {height: 48px;margin-bottom: 10px;width: 40px;}
+.plan-holiday-step ul li {margin-right: 0;padding-right:10px;width: 33.333%;flex: 0 0 33.333%;}
+.plan-holiday-step ul li:last-child{padding-right:0;}
+.plan-holiday-step ul li p {font-size: 15px;line-height: normal;}
+.callInfoBox small {font-size:16px;}
+.callInfoBox {font-size:30px;}
+.form-group-date .label-radio label {padding-left: 10px;padding-right: 10px;margin-right: 10px;}
+/*plan my holiday Css */
+.custom-popup-big .modal-dialog { max-width: 100%;}
+
+.flex-direction-nav a {
+    opacity: 1;
+}
+.flex-direction-nav .flex-prev {
+    left: 20px;
+}
+.flex-direction-nav .flex-next {
+    right: 20px;
+}
+}
+
+@media screen and (max-width: 767px){
+h1 {font-size:34px;}
+h2 {font-size:26px;}
+h3 {font-size:22px;}
+h4 {font-size:20px;}
+
+.sub-menu-links ul li {width: 50%;flex: 0 0 50%;margin: 0 0 10px;}
+.banner-slider:after {height: 170%;opacity: 1;}
+.banner-slider img {display: block;width: 100%;height: 500px;object-fit: cover;}
+.banner-slider:before {background: linear-gradient(180deg, rgba(0,2,63,1) 0%, rgba(0,2,63,0) 100%);opacity: 1;}
+.heading-block span {font-size: 18px;}
+.heading-block h1 {padding-bottom: 0;}
+.search-form .heading-block p {font-size: 14px;}
+.search-form {bottom: 15px;}
+.search-card .form-group {width: 100%;border-bottom: 1px solid #d1d1d1;}
+.search-card .btn-custom {width: 100%;border-radius: 0 0 10px 10px;}
+.search-card .form-group:after{display: none;}
+.destinations-slider .owl-nav {bottom: -44px;}
+.destinations-card span {padding-bottom: 0;}
+.destinations-card {width: 212px;height: 212px;margin: auto; display: flex; align-items: center;justify-content: center;flex-direction: column;padding:10px;}
+.price-tab {margin: 0 15px 35px;border: none;}
+.price-tab ul li {height: auto;border-bottom: dashed 1px #7a7cb1;padding: 10px 0;text-align: center;}
+.price-tab ul li:first-child a:after,.price-tab ul li:last-child a:after {margin: 0 auto;right: 0;left: 0;}
+.price-tab ul li a:after {bottom: -20px;}
+.price-tab ul li a span{position: relative;bottom: auto;}
+.package-price-slider .package-card{width: 340px;}
+.package-img {margin-bottom: 20px;}
+.heading-block {padding-left: 15px;padding-right: 15px;}
+.heading-block h2 br{display: none;}
+.experts-info h2 {font-size: 40px;}
+.map-icon{display: none;}
+.experts-form {border-radius: 15px;padding: 20px;}
+.experts-form-block h4 {font-size: 21px;}
+.label-radio label{margin-right: 0;}
+.footer h4 {margin: 15px 0;}
+.price-tab ul li a.active:after {bottom: -18px;}
+.bg-block{display: none;}
+.form-block {padding: 15px;}
+.custom-popup .close {right: 15px;top: 15px;}
+.footer {padding: 40px 0;}
+
+/**detail-page**/
+.owl-carousel-thumbs-block {padding: 5px;}
+.owl-carousel-thumbs-block .slider-card {height:50px;}
+
+.detail-description {padding: 30px 0;}
+.highlight-block ul li {width: 100%;}
+.itinerary-detail {padding: 30px 0;}
+.itinerary-accordion .card {margin-bottom: 15px;}
+.itinerary-info {padding-top: 0;}
+.itinerary-detail h3{margin:0 0 1rem !important;}
+.itinerary-tab p {margin-bottom: 10px;}
+.highlight-block {padding-bottom: 20px;}
+.highlight-info-block {padding: 15px;}
+.highlight-content ul li {width: 100%;margin-bottom: 15px;}
+.package-destinations h3{margin-bottom:1.5rem!important;}
+.package-destinations {margin-bottom: 20px;}
+.highlight-tab ul li a {padding: 6px 0;}
+.itinerary-tab ul {display: flex;align-items: center;overflow: auto;margin: 0 -15px 10px;padding: 0 15px;} 
+.itinerary-tab ul li {padding-left:0;white-space: nowrap;margin-right:5px;}
+.itinerary-tab ul li:last-child{margin-right:0;}
+.itinerary-tab ul li a {padding:2px 6px 2px 18px;min-width: auto;}
+.itinerary-tab ul li a:before {left: 5px;}
+.itinerary-tab ul:before{display: none;}
+.itinerary-accordion .card-header .card-link {padding: 10px 15px;}
+.itinerary-heading {padding: 10px 15px;}
+.itinerary-card-block {padding: 15px;}
+.itinerary-card-img {margin-right: 0;width: 100%;margin-bottom: 15px;}
+.itinerary-body {margin-top: 15px;}
+.description-price-block {padding: 15px;margin-bottom: 20px;}
+.description-price-col span {font-size: 24px;}
+.tariff-block ul li {margin-right: 8px;margin-bottom: 8px;}
+.description-content-btn .btn-custom.outline-btn {width: 60%;flex: 0 0 60%;}
+.description-content-btn .btn-custom {width: 36%;flex: 0 0 36%;}
+/**detail-page end**/
+
+/****dashboard*****/
+.dashboard-col {margin-left:0;}
+.profile-block .nav-tabs li {margin-right: 10px;}  
+.profile-block .nav-tabs li:last-child{margin-right: 0;}
+.profile-block .nav-tabs .nav-link img {left: 10px;top: 50%;height:16px;transform: translateY(-50%);}
+.profile-block .nav-tabs .nav-link {font-size: 15px;min-width: 125px;padding: 6px 0 6px 35px;}
+/****dashboard end*****/
+
+
+/*checkout Css */
+.checkout-packages {padding: 0;}
+.checkout-packages-inst {background-color: #fff;}
+.checkout-packages-inst h3{margin-bottom:10px;}
+.book-from ul{flex-wrap: wrap;}
+.book-from-hd {margin-right: 0;padding-bottom: 10px;}
+.book-from ul li {padding-right: 20px;}
+.book-from ul li:after {right: 5px;width: 10px;}
+.customcheckradio {margin-right: 0;margin-bottom: 10px;}
+/*checkout Css */
+
+
+/*plan my holiday Css */ 
+.plan-my-holiday-block {min-height: auto;}
+.plan-my-holiday-left {width:100%;min-height: auto;}
+.plan-my-holiday-right {width:100%;padding:15px;min-height: auto;}
+.plan-holiday-info {padding:15px;min-height: auto;}
+.plan-holiday-step {padding-top:70px;} 
+.plan-holiday-info .logo {top:15px;left:15px;}
+.plan-holiday-step h2 {font-size:26px;}
+.plan-holiday-step h2:after {width:40px;height:3px;}
+.plan-holiday-step ul li i {height: 36px;width: 30px;margin: 0 auto 10px;}
+.plan-holiday-step ul li {margin-right: 0;padding-right:5px;padding-left:5px;width: 33.333%;flex: 0 0 33.333%;text-align: center;}
+.callInfoBox small {font-size:14px;}
+.callInfoBox {font-size:24px;}
+.plan-holiday-step ul {margin-bottom: 30px;}
+.plan-my-holiday-form .map-icon {display: block;width: 60px;margin: 0 auto 20px;}
+.plan-holiday-block .form-group-date .label-radio {margin-right:10px;}
+.plan-holiday-block .form-group-date .label-radio label {display: inline-block;}
+/*plan my holiday Css */
+.custom-popup-big .modal-dialog {margin: 0;}
+.custom-popup .close {z-index: 9;}
+.package-price-slider .item, .package-price-slider .package-card {height:auto;}
+.destinations-block{padding-bottom:70px;}
+.destinations-card {min-height: 166px;}
+.inputIcon {left: 10px;width:16px;}
+.inputFildBlock .form-control {padding-left:30px;}
+.form-control {font-size: 12px;padding: 0px 10px;}
+.detail-slider-block {height:300px;} 
+.footer-about {max-width: 100%;}
+.pagination-outer .page-link {padding: 0 5px;line-height: 20px;height: 20px;border-radius: 2px;font-size: 13px;}
+}

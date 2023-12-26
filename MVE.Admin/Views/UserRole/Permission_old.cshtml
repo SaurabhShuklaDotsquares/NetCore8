@@ -1,0 +1,66 @@
+﻿@model MVE.Admin.ViewModels.UserRoleViewModel
+@{
+    ViewData["Title"] = "Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Permission (@Model.Name)</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Permission</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <div class="card">
+
+        <form asp-action="Permission" asp-controller="UserRole" id="frm-add-edit-permission">
+            <div class="card-body">
+                <partial name="_Notification" />
+                <div id="permissionMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="Name" />
+                <input type="hidden" asp-for="PermissionSelectedIds" />
+                <div class="box">
+                    <div class="box-body">
+                        <div id="jstreediv"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <div class="pull-right">
+                    <a href='@Url.Action("Index", "UserRole")'>
+                        <button class="btn btn-default" id="btn-cancel" type="button">
+                            Cancel
+                        </button>
+                    </a>
+
+                    <button class="btn btn-success" id="btn-submit" type="submit">
+                        Submit
+                    </button>
+
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+@section scripts{
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+    <script src="~/js/custom/userrole/permission.js"></script>
+}
+
+
+
+
+

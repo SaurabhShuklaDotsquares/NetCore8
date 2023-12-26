@@ -1,0 +1,57 @@
+﻿@using TCP.Core.Code.LIBS;
+<script type="text/javascript">
+    var dateFormat = "M'/'dd'/'yyyy hh:mm tt";
+    var dateFormatCalenderWithoutTime = '@SiteKeys.DateFormatCalenderWithoutTime';
+    var domain = '@SiteKeys.Domain';
+    var imageDomain = '@SiteKeys.ImageDomain';
+    //var languages = JSON.parse('@(Html.Raw(TempData.Peek("Languages")))');
+    //alert(languages);
+    var miscellaneousPageType = [];
+
+
+    function AllowFileExtension(obj) {
+        var textmsg = "";
+        var maxFileSize = 5 * 1024 * 1024;
+        var fileInfo = document.getElementById($(obj).attr('id')).files[0];
+        var exByName = fileInfo.name.split(".")[1];
+        if (fileInfo != undefined && fileInfo.type == "" && exByName.toUpperCase() != "PNG" && exByName.toUpperCase() != "JPG" && exByName.toUpperCase() != "JPEG") {
+            textmsg = "Only .pdf, .jpg, .jpeg, .png images are allowed*";
+        }
+        if (fileInfo != undefined && fileInfo.type != "" && fileInfo.type.split("/")[1].toUpperCase() != "PDF" && fileInfo.type.split("/")[1].toUpperCase() != "PNG" && fileInfo.type.split("/")[1].toUpperCase() != "JPG" && fileInfo.type.split("/")[1].toUpperCase() != "JPEG") {
+            textmsg = "Only .pdf, .jpg, .jpeg, .png images are allowed*";
+        }
+
+        if (fileInfo.size > maxFileSize) {
+            textmsg += '<br/> File size exceeds the maximum limit (5MB)';
+        }
+        $("#" + $(obj).attr('id')).closest('div').find('span').html(textmsg);
+        if (textmsg != "") {
+            document.getElementById($(obj).attr('id')).value = '';
+        }
+        return false;
+
+    }
+
+    function Imagefancyboxbuttons() {
+        $('.fancybox-buttons').fancybox({
+            openEffect: 'elastic',
+            closeEffect: 'swing',
+            prevEffect: 'changeOut',
+            nextEffect: 'changeIn',
+            closeBtn: true,
+            helpers: {
+                title: {
+                    type: 'inside'
+                },
+                buttons: {}
+            },
+            afterLoad: function () {
+                this.title = 'Image ' + (this.index + 1) + ' of ' + this.group.length + (this.title ? ' - ' + this.title : '');
+            }
+        });
+    }
+
+    function reverseString(str) {
+        return str.split("").reverse().join("");
+    }
+</script>

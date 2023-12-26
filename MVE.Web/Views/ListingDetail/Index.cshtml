@@ -1,0 +1,827 @@
+﻿@*@model TCP.Web.ViewModels.PackageViewModel*@
+@model TCP.Web.ViewModels.PackageDetailsViewModel
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@{
+    ViewData["Title"] = "Detail Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    // var domain = @SiteKeys.Domain;
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css" rel="stylesheet" />
+}
+
+<div class="detail-page">
+    <div class="detail-description">
+        <div class="container">
+            <input type="hidden" asp-for="Id" />
+            <div class="row">
+                <div class="col-md-12 col-lg-7 col-xl-8">
+                    <div class="detail-slider-block">
+                      
+
+                        <div id="slider" class="flexslider big-flexslider-block">
+                            <ul class="slides">
+                                @if (Model.FilePathList != null)
+                                {
+                                    if (Model.FilePathList.Count() > 0)
+                                    {
+                                        int i = 0;
+                                        foreach (var files in Model.FilePathList)
+                                        {
+                                            if (!string.IsNullOrEmpty(files))
+                                            {
+                                                if (i == 0)
+                                                {
+                                                    <li><div class="slider-card"><img src="@(string.IsNullOrEmpty(files)?(SiteKeys.Domain+"/Images/no-pic.png"):files)" alt="No Image" /></div></li>
+
+                                                }
+                                                else
+                                                {
+                                                    <li><div class="slider-card"><img src="@(string.IsNullOrEmpty(files)?(SiteKeys.Domain+"/Images/no-pic.png"):files)" alt="No Image" /></div></li>
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><div class="slider-card"><img src="@(SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image"></div></li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li><div class="slider-card"><img src="@(SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image"></div></li>
+                                }
+                            </ul>
+                        </div>
+                        <div id="carousel" class="flexslider thumbnail-slider-block">
+                            <ul class="slides">
+                                @if (Model.FilePathList != null)
+                                {
+                                    if (Model.FilePathList.Count() > 0)
+                                    {
+                                        int c = 0;
+                                        foreach (var files in Model.FilePathList)
+                                        {
+                                            if (!string.IsNullOrEmpty(files))
+                                            {
+                                                if (c == (Model.FilePathList.Count() - 1))
+                                                {
+                                                    <li><div class="slider-card"><img src="@(string.IsNullOrEmpty(files)?(SiteKeys.Domain+"/Images/no-pic.png"):files)" alt=""></div></li>
+                                                }
+                                                else
+                                                {
+                                                    <li><div class="slider-card"><img src="@(string.IsNullOrEmpty(files)?(SiteKeys.Domain+"/Images/no-pic.png"):files)" alt=""></div></li>
+                                                  @*  <li><div class="slider-card"><img src="@(SiteKeys.Domain+"/Images/no-pic.png")" alt=""></div></li>*@
+                                                }
+                                                
+                                            }
+
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <li><div class="slider-card"><img src="@(SiteKeys.Domain+"/Images/no-pic.png")" alt=""></div></li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li><div class="slider-card"><img src="@(SiteKeys.Domain+"/Images/no-pic.png")" alt=""></div></li>
+                                }
+                            </ul>
+                        </div>
+
+
+
+
+
+                       
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-5 col-xl-4">
+                    <div class="description-content">
+                        <div class="description-header">
+                            <div class="description-top d-flex align-items-center justify-content-between">
+                                @*<span class="reviews-block"><img src="@SiteKeys.ImageDomain/images/star1.png" alt="star"> 4.5</span>*@
+                                <span class="reviews-block">
+                                    @if (Model.Rating == 1)
+                                    {
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+
+                                    }
+                                    else if (Model.Rating == 2)
+                                    {
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+
+                                    }
+                                    else if (Model.Rating == 3)
+                                    {
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+
+                                    }
+                                    else if (Model.Rating == 4)
+                                    {
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+
+                                    }
+                                    else if (Model.Rating == 5)
+                                    {
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+
+                                    }
+                                </span>
+                                <div class="description-info-btn">
+                                    @* <a href="#" class="active">8-12 Days</a>
+                                    <a href="#">Customizable</a>*@
+                                </div>
+                            </div>
+                            <h3>@Model.PackageName</h3>
+                        </div>
+                        <div class="description-price-block">
+                            <div class="description-price-header d-flex justify-content-between">
+                                <div class="description-price-col">
+                                    <span>$@Model.PackagePriceFront</span>
+                                    <p>Approx @Model.PackageNoOf_DaysNight trip</p>
+                                </div>
+                                <div class="description-price-col-right">
+                                </div>
+                            </div>
+                            <div class="tariff-block">
+                                <ul class="d-flex">
+                                    @if (Model.IsHotelIncluded)
+                                    {
+
+                                        <li>
+                                            <img src="@SiteKeys.ImageDomain/images/hotel.png" alt="">
+                                            <span>Hotels</span>
+                                        </li>
+                                    }
+                                    @if (Model.IsMealIncluded)
+                                    {
+                                        <li>
+                                            <img src="@SiteKeys.ImageDomain/images/food.png" alt="">
+                                            <span>Meals</span>
+                                        </li>
+                                    }
+                                    @if (Model.IsTransferIncluded)
+                                    {
+                                        <li>
+                                            <img src="@SiteKeys.Domain/images/transfers-icon.png" alt="">
+                                            <span>Transfers</span>
+                                        </li>
+                                    }
+                                    @if (Model.IsTransportIncluded)
+                                    {
+                                        <li>
+                                            <img src="@SiteKeys.Domain/images/transports-icon.png" alt="">
+                                            <span>Transports</span>
+                                        </li>
+                                    }
+                                    @if (Model.IsCruseIncluded)
+                                    {
+                                        <li>
+                                            <img src="@SiteKeys.Domain/images/cruise-icon.png" alt="">
+                                            <span>Cruise</span>
+                                        </li>
+                                    }
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="description-content-btn d-flex align-items-center justify-content-between">
+                            <a oncontextmenu="return false" data-toggle="modal" data-target="#modal-add-edit-customquote" asp-action="CustomQuote" asp-controller="CustomQuote" id="customquote_btn" style="flex: 0 0 60%;" class="btn-custom outline-btn text-center">Customize &amp; Get Quote</a>
+                            @if (CurrentFrontUser.Id > 0)
+                            {
+                                <a href="@SiteKeys.Domain/Checkout/Index?packageUrl=@Model.PackageUrl" style="flex: 0 0 39%;" class="btn-custom text-center">Book Now</a>
+                            }
+                            else
+                            {
+                                <a href="@SiteKeys.Domain/Checkout/Index?packageUrl=@Model.PackageUrl" style="flex: 0 0 39%;" class="btn-custom text-center" disabled>Book Now</a>
+
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <------------------ Day wise details section-------------------------> *@
+    <div class="itinerary-detail">
+        <div class="container">
+            <div class="itinerary-content-card">@Html.Raw(Model.Description)</div>
+            <h3 class="mt-5 mb-5">Itinerary</h3>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="itinerary-accordion" id="accordion">
+                        @if (Model.PackageNoOfDays != null)
+                        {
+                            for (int days = 1; days <= Model.PackageNoOfDays; days++)
+                            {
+                                var _NoActivity = new TCP.Dto.PackageDetailDTO();
+                                if (Model.IsHotelIncluded)
+                                {
+                                    _NoActivity = Model.PackageDetails.Where(x => x.DayIndex == days).FirstOrDefault();
+                                }
+                                else
+                                {
+                                    _NoActivity = Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == false).FirstOrDefault();
+                                }
+                                <div class="card">
+                                    <div class="card-header">
+                                        @if (_NoActivity == null)
+                                        {
+                                            <a class="card-link card-link-arrowhide" data-toggle="collapse" href="#collapseActivity_@days">
+                                                Day @days <p style="font-size: 13px;"> &nbsp;(No Activity)</p>
+                                            </a>
+                                        }
+                                        else
+                                        {
+                                            <a class="card-link" data-toggle="collapse" href="#collapseActivity_@days">
+                                                Day @days
+                                            </a>
+                                        }
+                                    </div>
+                                    <div id="collapseActivity_@days" class="collapse @(days==1?"show":"")" data-parent="#accordion">
+
+                                        @if (Model.PackageDetails != null && Model.PackageDetails.Count > 0)
+                                        {
+                                            var _packagess = Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == true).FirstOrDefault();
+
+                                            if (_packagess != null)
+                                            {
+                                                if (Model.IsHotelIncluded)
+                                                {
+                                                    var hotels = _packagess.PackageHotels.FirstOrDefault();
+                                                    if (hotels != null)
+                                                    {
+                                                        if (hotels.Hotel != null)
+                                                        {
+                                                            <div class="itinerary-body">
+                                                                <div class="itinerary-detail-card">
+                                                                    <div class="itinerary-heading">Hotel Details</div>
+                                                                    <div class="itinerary-card-block d-md-flex">
+                                                                        <div class="itinerary-card-img">
+                                                                            <img src="@(hotels.Hotel.HotelImages!=null&&hotels.Hotel.HotelImages.Count>0?hotels.Hotel.HotelImages.FirstOrDefault().FilePath:SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image">
+                                                                        </div>
+
+                                                                        <div class="itinerary-card-left">
+                                                                            <span class="itinerary-card-heading">@hotels.Hotel.Name</span>
+                                                                            <span class="loc-heading"><img src="@SiteKeys.ImageDomain/images/location2.png" alt="img1"> @hotels.Hotel.Address</span>
+                                                                            <ul>
+                                                                                <li class="reviews-block">
+                                                                                    @* <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star"> 5.0 ( Based on 2278 reviews)*@
+                                                                                    @if (hotels.Hotel.Rating == 1)
+                                                                                    {
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                    }
+                                                                                    else if (hotels.Hotel.Rating == 2)
+                                                                                    {
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                    }
+                                                                                    else if (hotels.Hotel.Rating == 3)
+                                                                                    {
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                    }
+                                                                                    else if (hotels.Hotel.Rating == 4)
+                                                                                    {
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                    }
+                                                                                    else if (hotels.Hotel.Rating == 5)
+                                                                                    {
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                        <img src="@SiteKeys.ImageDomain/images/star1.png" alt="star">
+                                                                                    }
+                                                                                </li>
+                                                                            </ul>
+                                                                            <p>@hotels.Hotel.Description</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+                                                    }
+                                                }
+                                            }
+                                            foreach (var detail in Model.PackageDetails.Where(x => x.DayIndex == days && x.IsDefaultAct == false))
+                                            {
+                                                <div class="itinerary-body">
+                                                    <div class="itinerary-detail-card">
+                                                        <div class="itinerary-heading">Activity Date & Time <span>@detail.ActivityDate @detail.ActivityTime</span></div>
+                                                        <div class="itinerary-card-block d-md-flex">
+                                                            <div class="itinerary-card-img">
+                                                                <div id="demo" class="carousel slide" data-ride="carousel">
+
+                                                                    <!-- Indicators -->
+                                                                    <ul class="carousel-indicators">
+                                                                        <li data-target="#demo" data-slide-to="0" class="active"></li>
+                                                                        @if (detail.PackageDetailActivityVideos != null && detail.PackageDetailActivityVideos.Count > 0)
+                                                                        {
+                                                                            <li data-target="#demo" data-slide-to="1"></li>
+                                                                        }
+                                                                    </ul>
+                                                                    <!-- The slideshow -->
+                                                                    <div class="carousel-inner">
+                                                                        <div class="carousel-item active">
+                                                                            <img src="@(detail.PackageDetailActivityImages!=null&&detail.PackageDetailActivityImages.Count>0?detail.PackageDetailActivityImages.FirstOrDefault().FilePath:SiteKeys.Domain+"/Images/no-pic.png")" alt="No Image">
+
+                                                                        </div>
+                                                                        @if (detail.PackageDetailActivityVideos != null && detail.PackageDetailActivityVideos.Count > 0)
+                                                                        {
+                                                                            <div class="carousel-item">
+                                                                                <iframe height="235" src="@(detail.PackageDetailActivityVideos.FirstOrDefault().FilePath)"></iframe>
+                                                                            </div>
+                                                                        }
+
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+
+                                                            @* <div class="itinerary-card-img">
+                                            <img src="@(detail.PackageDetailActivityImages!=null&&detail.PackageDetailActivityImages.Count>0?detail.PackageDetailActivityImages.FirstOrDefault().FilePath:"")" alt="">
+                                            </div>
+                                            @if (detail.PackageDetailActivityVideos != null && detail.PackageDetailActivityVideos.Count > 0)
+                                            {
+                                            <iframe width="400" height="290" src="@(detail.PackageDetailActivityVideos.FirstOrDefault().FilePath)"></iframe>
+                                            }*@
+                                                            <div class="itinerary-card-left">
+                                                                <span class="itinerary-card-heading">@detail.ActivityName</span>
+                                                                <span class="loc-heading"><img src="@SiteKeys.ImageDomain/images/location2.png" alt="img1"> @detail.LocationAddress</span>
+                                                                <div class="meals-block">
+                                                                    @if (Model.IsMealIncluded)
+                                                                    {
+                                                                        if (detail.IsMealIncludedAct)
+                                                                        {
+                                                                            <ul>
+                                                                                @if (@detail.IsBreakfastAct)
+                                                                                {
+                                                                                    <li><img src="@SiteKeys.ImageDomain/images/breakfast-icon.png" alt="Breakfast"> <span><strong>Breakfast</strong></span></li>
+
+                                                                                }
+                                                                                @if (@detail.IsLunchAct)
+                                                                                {
+                                                                                    <li><img src="@SiteKeys.ImageDomain/images/meals-icon.png" alt="Lunch"> <span><strong>Lunch</strong></span></li>
+
+                                                                                }
+                                                                                @if (@detail.IsDinnerAct)
+                                                                                {
+                                                                                    <li><img src="@SiteKeys.ImageDomain/images/dinner.png" alt="Dinner"> <span><strong>Dinner</strong></span></li>
+
+                                                                                }
+                                                                            </ul>
+                                                                        }
+                                                                    }
+
+                                                                </div>
+                                                                <span class="itinerary-card-heading">Inclusion</span>
+                                                                <ul>
+                                                                    @if (detail.ActivityInclusionlst != null && detail.ActivityInclusionlst.Count > 0)
+                                                                    {
+                                                                        foreach (var incl in detail.ActivityInclusionlst)
+                                                                        {
+                                                                            <li>@incl</li>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li>No inclusion found.</li>
+                                                                    }
+                                                                </ul>
+                                                                <span class="itinerary-card-heading">Exclusion</span>
+                                                                <ul>
+                                                                    @if (detail.ActivityExclusionlst != null && detail.ActivityExclusionlst.Count > 0)
+                                                                    {
+                                                                        foreach (var excl in detail.ActivityExclusionlst)
+                                                                        {
+                                                                            <li>@excl</li>
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <li>No exclusion found.</li>
+                                                                    }
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            }
+                                            @*if (_NoActivity == null)
+                                {
+                                <div class="itinerary-body">
+                                <div class="itinerary-detail-card">
+                                <div class="itinerary-card-block d-md-flex">
+                                <div class="itinerary-card-left">
+                                <span class="itinerary-card-heading">No Activity.</span>
+                                </div>
+                                </div>
+                                </div>
+                                </div>
+                                }*@
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+
+            @* <------------------ Inclusions/Exclusions section-------------------------> *@
+            <div class="">
+
+                <div class="highlight-info-block">
+                    <div class="highlight-tab">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="inclusion-tab" data-toggle="tab" href="#inclusion" role="tab" aria-controls="inclusion" aria-selected="true">
+                                    Inclusions
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="exclusion-tab" data-toggle="tab" href="#exclusion" role="tab" aria-controls="exclusion" aria-selected="false">
+                                    Exclusions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-content" id="myTabContent">
+                        <div class="tab-pane fade show active" id="inclusion" role="tabpanel" aria-labelledby="inclusion-tab">
+                            <div class="highlight-content">
+                                <ul class="d-md-flex">
+                                    @if (Model.PackageInclusions != null && Model.PackageInclusions.Count > 0)
+                                    {
+                                        foreach (var inclusion in Model.PackageInclusions)
+                                        {
+                                            <li>@inclusion.Name </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="exclusion" role="tabpanel" aria-labelledby="exclusion-tab">
+                            <div class="highlight-content">
+                                <ul class="d-md-flex">
+                                    @if (Model.PackageExclusions != null && Model.PackageExclusions.Count > 0)
+                                    {
+                                        foreach (var exclusion in Model.PackageExclusions)
+                                        {
+                                            <li>@exclusion.Name </li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+            <br />
+            @* <------------------ rating-review section-------------------------> *@
+            @if (Model.ReviewViewModel.Count > 0)
+            {
+                <div class="rating-review-block">
+
+                    @*@for (int k = 0; k < Model.ReviewViewModel.Count(); k++)*@
+                    @foreach (var item in Model.ReviewViewModel)
+                    {
+
+                        <div class="rating-review-list d-flex">
+
+                            <i class="rating-img"><img src="@Model.FilePath" alt="img"></i>
+                            <div class="rating-review-list-info">
+                                <span class="rating-review-list-hd">@item.Username</span>
+                                <div class="review-rating">
+                                    @{
+                                        int count = 0;
+                                    }
+
+
+
+                                    @for (int i = 1; i <= item.UserRating; i++)
+                                    {
+                                        <span class="fa fa-star checked"></span>
+                                        count++;
+                                    }
+
+                                    @for (int j = 1; j <= 5 - count; j++)
+                                    {
+
+                                        <span class="fa fa-star"></span>
+                                    }
+
+
+                                </div>
+                                <p>@item.ReviewText</p>
+
+                            </div>
+
+
+                        </div>
+                        <br />
+                    }
+                </div>
+
+            }
+        </div>
+    </div>
+
+    <div class="destinations-price-block">
+        <div class="package-destinations">
+            <div class="container">
+                <h3 class="mb-5">Similar Packages</h3>
+            </div>
+            <div class="price-col-block">
+                @if (Model.SimilarPackages != null && Model.SimilarPackages.Count > 0)
+                {
+                    <div class="package-price-slider owl-carousel">
+                        @if (Model.SimilarPackages != null && Model.SimilarPackages.Count > 0)
+                        {
+                            foreach (var item in Model.SimilarPackages)
+                            {
+                                <div class="item">
+                                    <div class="package-card">
+                                        <div class="package-img">
+                                            <a href="@SiteKeys.Domain/package/@item.PackageUrl" title="@item.PackageName"><img src="@(string.IsNullOrEmpty(item.FilePath)?(SiteKeys.Domain+"/Images/no-pic.png"):item.FilePath)" alt="@item.PackageName" style="opacity: 1;"></a>
+                                        </div>
+                                        <div class="package-info">
+                                            <div class="package-head justify-content-between">
+                                                <div class="package-head-left">
+                                                    <h4><a href="@SiteKeys.Domain/package/@item.PackageUrl" title="@item.PackageName">@item.PackageName</a></h4>
+                                                    <p>@item.PackageNoOf_DaysNight</p>
+                                                </div>
+                                                <div class="package-head-right">
+                                                    <span>$@item.PackagePriceFront</span>
+                                                    <p>per person</p>
+                                                </div>
+                                            </div>
+                                            <p>@Html.Raw(item.PkgDesc)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="container">
+                        <p>No package are available. </p>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="our-experts-block pb-3">
+        <div class="container d-md-flex align-items-start justify-content-between">
+            <div class="experts-info">
+                <h2>Our experts</h2>
+                <p>would love to create a package just for you!</p>
+                <img src="@SiteKeys.Domain/images/graphic-img.png" alt="graphic-img">
+            </div>
+            <div class="experts-form">
+                <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer.png" alt="map-pointer"></i>
+                <div class="experts-form-block" id="index-experts-form">
+                    <h4>Where do you want to go?</h4>
+
+
+                    <div class="form-group">
+                        @if (Model != null && Model.DestinationList != null)
+                        {
+                            <select asp-for="where_To" class="form-control select2" placeholder="To">
+                                <option value="">Select</option>
+                                @foreach (var destination in Model.DestinationList)
+                                {
+                                    <option value="@destination.Value">@destination.Text</option>
+                                }
+                            </select>
+                        }
+                        @*<input type="text" class="form-control" name="To" id="where_To" placeholder="To">*@
+                    </div>
+                    <span id="where_To-error" class="text-danger"></span>
+                    <div class="form-group">
+                        <label class="customcheckBox">
+                            I am exploring destinations
+                            <input type="checkbox">
+                            <span class="checkmarkhd"></span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        @if (Model != null && Model.DestinationList != null)
+                        {
+                            <select asp-for="where_From" class="form-control select2" placeholder="From">
+                                <option value="">Select</option>
+                                @foreach (var destination in Model.DestinationList)
+                                {
+                                    <option value="@destination.Value">@destination.Text</option>
+                                }
+                            </select>
+                        }
+                        @* <input type="text" class="form-control" name="From" id="where_From" placeholder="From">*@
+                        <span id="where_From-error" class="text-danger"></span>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Departure Date</label>
+                        <div class="form-group-date d-md-flex align-items-center" id="datetype-div">
+                            <div class="label-radio">
+                                <input type="radio" id="Fixed" name="DepartureDateType" value="Fixed" />
+                                <label for="Fixed">Fixed</label>
+                            </div>
+                            <div class="label-radio">
+                                <input type="radio" id="Flexible" name="DepartureDateType" value="Flexible" />
+                                <label for="Flexible">Flexible</label>
+                            </div>
+                            <div class="label-radio">
+                                <input type="radio" id="Anytime" name="DepartureDateType" value="Anytime" />
+                                <label for="Anytime">Anytime</label>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="DepartureDateType-err" class="text-danger"></span>
+                    <button class="btn-custom" onclick="SetNextToPlanMyHoliday(this)">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Book Now Popup -->
+<div class="modal fade custom-popup" id="modal-add-edit-booknow" tabindex="-1" role="dialog" aria-labelledby="modal-add-edit-booknow-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+
+
+<script>
+
+    $(document).ready(function () {
+        updateCarousel2();
+        $('#search-button').click(function () {
+            triggerSearch();
+        });
+
+        $('#where_To').select2({
+            placeholder: "To",
+            allowClear: true
+        });
+        $('#where_From').select2({
+            placeholder: "From",
+            allowClear: true
+        });
+        function triggerSearch() {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            var selectedDestination = $('#Destination').val();
+            var budget = $('#Budget').val();
+            var duration = $('#Duration').val();
+
+            budget = budget.replace(/\s+/g, '').replace(/Less than/g, '').replace('Above', '');
+
+            duration = duration.replace(/\s+/g, '').replace(/Days/g, '').replace('ormore', '');
+
+            if (!selectedDestination) {
+                // alert('Please select a Destination.');
+                Global.ShowMessage("Please select a Destination.", Global.MessageType.Error);
+                return false;
+            }
+            if (!budget) {
+                // alert('Please enter a Budget.');
+                Global.ShowMessage("Please select a Budget.", Global.MessageType.Error);
+                return false;
+            }
+            if (!duration) {
+                // alert('Please enter a Duration.');
+                Global.ShowMessage("Please select a Duration.", Global.MessageType.Error);
+                return false;
+            }
+            window.location.href = '@SiteKeys.Domain/Listing/Index?budget=' + budget + '&destination=' + selectedDestination + '&duration=' + duration;
+        }
+    });
+
+    function updateCarousel2() {
+        var obj = $("#dtlList");
+        obj.owlCarousel("destroy"); // Destroy the existing carousel
+        obj.owlCarousel({
+            items: 7, // Number of items to display
+            loop: true, // Enable loop
+            margin: 30, // Spacing between items
+            nav: true, // Display navigation arrows
+            autoWidth: true
+        });
+    }
+    function SetNextToPlanMyHoliday(obj) {
+        var from_err = $("#where_From-error");
+        var to_err = $("#where_To-error");
+        var datetype_err = $("#DepartureDateType-err");
+
+        if (Global.IsNullOrEmptyString($("#index-experts-form").find("#where_From").val())) {
+            from_err.html("Please select city name");
+            return false;
+        }
+        else {
+            from_err.html('');
+        }
+        if (Global.IsNullOrEmptyString($("#index-experts-form").find("#where_To").val())) {
+            to_err.html("Please select city name");
+            return false;
+        }
+        else {
+            to_err.html('');
+        }
+
+
+        if ($("#index-experts-form").find('#datetype-div input[type="radio"][name="DepartureDateType"]:checked').length == "0") {
+            datetype_err.html("Select any one date-type");
+            return false;
+        } else {
+            datetype_err.html('');
+        }
+        var indexdatetype = $("#index-experts-form").find('#datetype-div input[type="radio"][name="DepartureDateType"]:checked')
+
+        $("#planholiday_btn").click();
+        setTimeout(function () {
+
+
+            var planholidayMOdal = $("#modal-add-edit-planmyholiday");
+            planholidayMOdal.find("#From").val($("#where_From").val());
+            planholidayMOdal.find("#To").val($("#where_To").val());
+
+            var departureRadio = planholidayMOdal.find('#datetype-div input[type="radio"][name="DepartureDateType"]');
+            if (indexdatetype.val() == "Fixed") {
+                $(departureRadio[0]).val(indexdatetype.val());
+                $(departureRadio[0]).click();
+            } else if (indexdatetype.val() == "Flexible") {
+                $(departureRadio[1]).val(indexdatetype.val());
+                $(departureRadio[1]).click();
+            } else if (indexdatetype.val() == "Anytime") {
+                $(departureRadio[2]).val(indexdatetype.val());
+                $(departureRadio[2]).click();
+            }
+
+
+        }, 1000)
+
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+
+    @* alert($(".owl-stage-outer").find(".owl-item").length());
+
+
+        if ($(".owl-stage-outer").find(".owl-item").length() == 2) {
+        $(".owl-stage-outer").find(".owl-item").eqch(function () {
+        $(this).removeClass("active");
+        });
+
+        $(".owl-stage-outer").find(".owl-item").eq(0).addClass("active");
+        $(".owl-stage-outer").find(".owl-item").eq(0).trigger('click');
+        }*@
+
+
+
+
+</script>
+@section Scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    
+}

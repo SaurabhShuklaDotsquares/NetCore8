@@ -1,0 +1,312 @@
+﻿@model MVE.Admin.ViewModels.DashboardViewModel
+@using MVE.Core.Code.LIBS;
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h1>Dashboard </h1>
+            </div>
+            <div class="col-md-6">
+                <ol class="breadcrumb justify-content-md-end">
+                    @* <li class="breadcrumb-item"><a href="/Admin/Dashboard">Dashboard</a></li>*@
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<section class="content">
+    <!-- Info boxes -->
+    <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="ion ion-pie-graph"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Revenue</span>
+                    <span class="info-box-number">@Model.TotalRevenue</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-yellow"><i class="fa fa-user-o"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total No. of Users</span>
+                    <span class="info-box-number">@Model.TotalUser</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+        <!-- /.col -->
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-green"><i class="fa fa-shopping-cart"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Bookings</span>
+                    <span class="info-box-number">@Model.TotalBookings</span>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <div class="row">
+        <!-- /.col -->
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-blue"><i class="ion ion-ios-people-outline"></i></span>
+
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Active Categories</span>
+                    <span class="info-box-number">@Model.TotalActiveCategories</span>
+                </div>
+                <!-- /.info-box-content -->
+            </div>
+            <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="info-box">
+                <span class="info-box-icon bg-aqua"><i class="fa fa-ticket"></i></span>
+                <div class="info-box-content">
+                    <span class="info-box-text">Total Upcoming Bookings</span>
+                    <span class="info-box-number">@Model.TotalUpcomingBookings</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /.row -->
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="card">
+                            <div class="card-body">
+                                <p>Total Enquiries for Customized packages</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-home"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Pending Enquiries</span>
+                            <span class="info-box-number">@Model.CTotalPendingEnquiries</span>
+                        </div>
+                        <a href="@SiteKeys.Domain/ManageEnqCustomPkg/Index?status=pending">View</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-thumbs-up"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Completed Enquiries</span>
+                            <span class="info-box-number">@Model.CTotalCompletedEnquiries</span>
+                        </div>
+                        <a href="@SiteKeys.Domain/ManageEnqCustomPkg/Index?status=complated">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="box">
+                        <div class="card">
+                            <div class="card-body">
+                                <p>Total General Enquiries</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-yellow"><i class="fa fa-home"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Pending Enquiries</span>
+                            <span class="info-box-number">@Model.GTotalPendingEnquiries</span>
+                        </div>
+                        <a href="@SiteKeys.Domain/ManageContactUs/Index?status=pending">View</a>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-12">
+                    <div class="info-box">
+                        <span class="info-box-icon bg-green"><i class="fa fa-thumbs-up"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-text">Total Resolved Enquiries</span>
+                            <span class="info-box-number">@Model.GTotalResolvedEnquiries</span>
+                        </div>
+                        <a href="@SiteKeys.Domain/ManageContactUs/Index?status=resolved">View</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="box">
+                <div class="card dashboardDatatables">
+                    <div class="card-body">
+                        <p class="form-sub-heading">
+                            <strong>Sold Most Countries Sales List</strong>
+                        </p>
+                        <div class="table-responsive">
+                            <table id="gridWebUsers" class="table custom-grid-table table-bordered"></table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box">
+                <!-- Default box -->
+                <div class="card">
+                    <div class="card-body">
+                        <select class="form-control" style="width: 125px;" id="ddlChartBooking">
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                        <div id="divBookingAndEnquiryChart" class="whitebox radius4 pad10 marB3 clearfix">
+                            <div class="graph-lead-hk">
+                                <div class="ChartBookingsAndEnquiry">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+                <!-- /.box-footer -->
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-6 col-xs-12">
+            <div class="box">
+                <div class="card">
+                    <div class="card-body">
+                        <select class="form-control" style="width: 125px;" id="ddlchartEarning">
+                            <option value="weekly">Weekly</option>
+                            <option value="monthly">Monthly</option>
+                            <option value="yearly">Yearly</option>
+                        </select>
+                        <div id="divEarningChart" class="whitebox radius4 pad10 marB3 clearfix">
+                            <div class="graph-lead-hk">
+                                <div class="ChartEarning">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <div class="row" style="display:none;">
+        <div class="col-md-12">
+            <div class="box">
+                <!-- Default box -->
+                <div class="card dashboardDatatables">
+                    <div class="card-header">
+                        <div class="card-title">
+                            <select id="ddlTimeFilter" class="form-control btn btn-info btn-sm " style="width:125px">
+                                <option value="1">Today</option>
+                                <option value="2">Current Week</option>
+                                <option value="3">Current Month</option>
+                                <option value="4">Current Year</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 right-align">
+
+                                <p class="form-sub-heading">
+                                    <strong>Customers</strong>
+                                </p>
+                                <table id="gridWebUsers" class="table custom-grid-table table-bordered"></table>
+                            </div>
+                            <div class="col-md-6 right-align">
+                                <p class="form-sub-heading">
+                                    <strong>Owner Users</strong>
+                                </p>
+                                <table id="gridOwnerUsers" class="table custom-grid-table table-bordered"></table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 right-align">
+                                <p class="form-sub-heading">
+                                    <strong>Payment Received</strong>
+                                </p>
+                                <table id="gridPaymentReceiveds" class="table custom-grid-table table-bordered"></table>
+                            </div>
+                            <div class="col-md-6 right-align">
+                                <p class="form-sub-heading">
+                                    <strong>Get Listed</strong>
+                                </p>
+                                <table id="gridNewOwnerProperty" class="table custom-grid-table table-bordered"></table>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!-- /.card-footer-->
+                </div>
+                <!-- /.card -->
+                <!-- /.box-footer -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+
+
+</section>
+@section Scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <!-- dataTables -->
+    <script src="~/lib/datatables-1.10.20/js/jquery.datatables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/plugins/chartjs/Chart.min.js"></script>
+    <script src="~/js/plugins/chartjs/jquery.knob.js"></script>
+    <script src="~/js/plugins/chartjs/custom-chart-js-file.js"></script>
+    <script src="~/js/view/dashboard/dashboard.js" asp-append-version="true"></script>
+}

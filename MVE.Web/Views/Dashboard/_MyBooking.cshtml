@@ -1,0 +1,363 @@
+﻿@model TCP.Web.ViewModels.MyBookingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    var domain = @SiteKeys.Domain;
+    Layout = null;
+}
+
+<div id="dvBooking">
+    <div class="profile-block my-bookings-block">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                    <img src="@domain/images/calendar-icon.png" alt="">
+                    <strong>Upcoming</strong><span>Bookings</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">
+                    <img src="@domain/images/billing-dtl-icon.png" alt="">
+                    <strong>All</strong><span>Bookings</span>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="bookings-card-list bookings-block-dashboard">
+                    <h4>Bookings</h4>
+                    @if (Model.UpcomingBooking != null && Model.UpcomingBooking.Count > 0)
+                    {
+                        int counter = 1;
+                        foreach (var upcoming in Model.UpcomingBooking)
+                        {
+
+                            <div class="bookings-card-list">
+                                <p><strong>Booking No :</strong> @upcoming.BookingNo</p>
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-6 col-xl-6">
+                                        <div class="book-card d-flex">
+                                            <div class="book-card-img">
+                                                @*<img src="@SiteKeys.Domain/images/img11.jpg" alt="img1">*@
+                                                <img src="@upcoming.PackageImage" alt="@upcoming.PackageName">
+                                            </div>
+                                            <div class="book-info">
+                                                @*<span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>*@
+                                                <div class="book-package">
+                                                    <a href="/package/@upcoming.PackageUrl" target="_blank"><span>@upcoming.PackageName</span></a>
+                                                    <p>@upcoming.PackageDuration</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-6 col-xl-6">
+                                        <div class="book-card border-left">
+                                            <div class="book-info">
+                                                <div class="package-head-right">
+                                                    <span>$@(upcoming.PackagePriceFront)</span>
+                                                    <p>(Including tax)</p>
+                                                   @*  <p>@upcoming.BookingPerson</p> *@
+                                                </div>
+                                                <div class="book-package">
+                                                    <p>Start Date: @upcoming.PackageStartDate</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-12 col-xl-12">
+                                        <div class="book-card">
+                                            <p>@Html.Raw(upcoming.PkgDesc)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            counter++;
+                        }
+
+                        int pageSize = 3;
+                        Decimal getRemainderVal = Decimal.Remainder(Model.TotalUpcomingItem, pageSize);
+                        if (getRemainderVal > 0)
+                        {
+                            <div class="pagination-outer">
+                                <ul class="pagination">
+                                    @{
+                                        if (Model.CurrentPageIndexUpcoming == 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(Model.CurrentPageIndexUpcoming - 1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                                        }
+                                    }
+
+                                    @for (int i = 0; i <= (Model.TotalUpcomingItem / pageSize); i++)
+                                    {
+                                        @if ((@i + 1) != Model.CurrentPageIndexUpcoming)
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                                        }
+                                    }
+                                    @{
+                                        var countTotl = Model.TotalUpcomingItem / pageSize;
+                                        if ((countTotl + 1) == Model.CurrentPageIndexUpcoming)
+                                        {
+                                            <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(Model.CurrentPageIndexUpcoming + 1)">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            <br />
+
+                        }
+                        else
+                        {
+                            <div class="pagination-outer">
+                                <ul class="pagination">
+                                    @{
+                                        if (Model.CurrentPageIndexUpcoming == 1)
+                                        {
+                                            <li class="page-item disabled">
+                                                <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(Model.CurrentPageIndexUpcoming - 1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                                        }
+                                    }
+
+                                    @for (int i = 0; i < (Model.TotalUpcomingItem / pageSize); i++)
+                                    {
+                                        var pageUrl = ViewBag.URLs;
+                                        @if ((@i + 1) != Model.CurrentPageIndexUpcoming)
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                                        }
+                                    }
+                                    @{
+                                        var countTotl = Model.TotalUpcomingItem / pageSize;
+                                        if ((countTotl) == Model.CurrentPageIndexUpcoming)
+                                        {
+                                            <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link pagingupcoming" data-indexcurrentpage="@(Model.CurrentPageIndexUpcoming + 1)">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                            <br />
+
+                        }
+                    }
+                    else
+                    {
+
+                        <div class="row bookings-block-dashboard no-record-section">
+                            <div class="col-sm-12">
+                                <span>No record found</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                @if (Model.AllBooking != null && Model.AllBooking.Count > 0)
+                {
+                    int counter = 1;
+                    foreach (var upcoming in Model.AllBooking)
+                    {
+                        <input type="hidden" asp-for="@upcoming.PackageId"/>
+                        <div class="bookings-card-list bookings-block-dashboard">
+                            <div class="rating-heading d-flex align-items-center justify-content-between">
+                                <p><strong>Booking No :</strong> @upcoming.BookingNo</p>                               
+                                @if (upcoming.EndDate <= DateTime.Now)
+                                {
+                                    <a oncontextmenu="return false" id="rating_btn_@upcoming.BookingNo" asp-action="RatingReview" asp-controller="Dashboard" asp-route-packageid="@upcoming.PackageId"
+                                       asp-route-ratingid="@upcoming.RatingId" asp-route-bookingid="@upcoming.BookingNo" bookingid="@upcoming.BookingNo" data-toggle="modal" data-target="#rating-popup-@upcoming.BookingNo" class="btn-custom rating-btn-cls">Rating</a>
+                                }
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-6 col-xl-6">
+                                    <div class="book-card d-flex">
+                                        <div class="book-card-img">
+                                            @*<img src="@SiteKeys.Domain/images/img11.jpg" alt="img1">*@
+                                            <img src="@upcoming.PackageImage" alt="@upcoming.PackageName">
+                                        </div>
+                                        <div class="book-info">
+                                            @*<span class="rating-book"><img src="images/star1.png" alt="star"> 5.0</span>*@
+                                            <div class="book-package">
+                                                <a href="/package/@upcoming.PackageUrl" target="_blank"><span>@upcoming.PackageName</span></a>
+                                                <p>@upcoming.PackageDuration</p>
+                                                @*<p>France | @upcoming.PackageDuration</p>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-6 col-xl-6">
+                                    <div class="book-card border-left">
+                                        <div class="book-info">
+                                            <div class="package-head-right">
+                                                <span>$@(upcoming.PackagePriceFront)</span>
+                                                <p>(Including tax)</p>
+                                                @* <p>@upcoming.BookingPerson</p> *@
+                                                @*<p>per person</p>*@
+                                            </div>
+                                            <div class="book-package">
+                                                <p>Start Date: @upcoming.PackageStartDate</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12 col-xl-12">
+                                    <div class="book-card">
+                                        <p>@Html.Raw(upcoming.PkgDesc)</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Rating Popup -->
+                            <div class="modal fade custom-popup rating-custom-popup" id="rating-popup-@upcoming.BookingNo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Rating Popup -->
+                        </div>
+                        counter++;
+                    }
+                    int pageSize = 3;
+                    Decimal getRemainderVal = Decimal.Remainder(Model.TotalItem, pageSize);
+                    if (getRemainderVal > 0)
+                    {
+                        <div class="pagination-outer">
+                            <ul class="pagination">
+                                @{
+                                    if (Model.CurrentPageIndex == 1)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex - 1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                                    }
+                                }
+
+                                @for (int i = 0; i <= (Model.TotalItem / pageSize); i++)
+                                {
+                                    @if ((@i + 1) != Model.CurrentPageIndex)
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                                    }
+                                }
+                                @{
+                                    var countTotl = Model.TotalItem / pageSize;
+                                    if ((countTotl + 1) == Model.CurrentPageIndex)
+                                    {
+                                        <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex + 1)">Next <i class="fa fa-angle-right"></i></a></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <br />
+                    }
+                    else
+                    {
+                        <div class="pagination-outer">
+                            <ul class="pagination">
+                                @{
+                                    if (Model.CurrentPageIndex == 1)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex - 1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                                    }
+                                }
+
+                                @for (int i = 0; i < (Model.TotalItem / pageSize); i++)
+                                {
+                                    var pageUrl = ViewBag.URLs;
+                                    @if ((@i + 1) != Model.CurrentPageIndex)
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(i + 1)">@(i + 1)</a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item active"><span class="page-link">@(i + 1)</span></li>
+                                    }
+                                }
+                                @{
+                                    var countTotl = Model.TotalItem / pageSize;
+                                    if ((countTotl) == Model.CurrentPageIndex)
+                                    {
+                                        <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link paginglogic" data-indexcurrentpage="@(Model.CurrentPageIndex + 1)">Next <i class="fa fa-angle-right"></i></a></li>
+                                    }
+                                }
+                            </ul>
+                        </div>
+                        <br />
+
+                    }
+                }
+                else
+                {
+
+                    <div class="row bookings-block-dashboard no-record-section">
+                        <div class="col-sm-12">
+                            <span>No record found</span>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+<script>   
+    $(document).ready(function () {
+        $(".rating-btn-cls").on("click", function () {
+            GetRatingReview($(this).attr('href'),this)
+        });               
+    });
+
+
+    function GetRatingReview(actionlink,currentobj) {
+        $.get(actionlink, {}, function (res) {
+            $("#rating-popup-" + $(currentobj).attr('bookingid') + " .modal-content").html('');
+            $("#rating-popup-" + $(currentobj).attr('bookingid') + " .modal-content").html(res);
+        })
+
+    }
+</script>

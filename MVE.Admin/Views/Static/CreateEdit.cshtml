@@ -1,0 +1,109 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.StaticViewModel
+
+@{
+    ViewData["Title"] = "ADD-EDIT";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section styles{
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Page Edit</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Edit</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+
+    <div class="card" id="frm-create-edit-page">
+
+        <form class="form-horizontal" method="post" asp-controller="Static" asp-action="CreateEdit" id="frm-staticpages" asp-route-id="@Model.StaticPageId">
+
+            <div class="card card-primary">
+                <div class="card-body">
+
+                    <div id="validation-summary"></div>
+                    <div class="form-group">
+                        @Html.HiddenFor(model => model.StaticPageId)
+                        <label class="col-sm-2 control-label" asp-for="Name"></label>
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="Name" readonly="readonly" class="form-control" />
+                            @* <span asp-validation-for="Name"></span> *@
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" asp-for="SelfUrl"></label>
+                        <div class="col-sm-10">
+                            <input type="text" readonly="readonly" asp-for="SelfUrl" class="form-control" />
+                            @* <span asp-validation-for="SelfUrl"></span> *@
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="Content">Content<span class="required">*</span></label>
+                        <div class="col-sm-10">
+                            <textarea id="Content" maxlength="4000" name="Content">@Model.Content</textarea>
+                            <span asp-validation-for="Content"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="PageTitle">Page Title<span class="required">*</span></label>
+
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="PageTitle" maxlength="50" class="form-control" />
+                            <span asp-validation-for="PageTitle"></span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MetaKeyword">Meta Keyword<span class="required">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="MetaKeyword" maxlength="50" class="form-control" />
+                            <span asp-validation-for="MetaKeyword"></span>
+
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="MetaDescription">Meta Description<span class="required">*</span></label>
+                        <div class="col-sm-10">
+                            <input type="text" asp-for="MetaDescription" maxlength="50" class="form-control" />
+                            <span asp-validation-for="MetaDescription"></span>
+
+                        </div>
+                    </div>
+                    <div class="card-footer text-right">
+                        <a class="btn btn-default" asp-action="index" asp-controller="Static">
+                            <span>Cancel</span>
+                        </a>&nbsp;&nbsp;
+                        @*  <input type="submit" class="btn btn-info submit" value="Save" /> *@
+                        <button class="btn btn-success" id="btn-submit" type="submit">
+                            Save
+                        </button>
+                        @*<button class="btn btn-primary" type="submit">Save</button>&nbsp;*@
+
+                    </div>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+</section>
+
+@section scripts{
+    <script src="~/js/plugins/ckeditor/ckeditor.js"></script>
+    <script src="~/js/custom/static/static-createedit.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+}

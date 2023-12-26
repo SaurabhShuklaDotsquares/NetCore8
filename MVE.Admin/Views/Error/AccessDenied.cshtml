@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "AccessDenied";
+}
+
+<section class="content">
+    <div class="error-page">
+        <h2 class="headline text-yellow"> Access Denied</h2>
+        <div class="error-content">
+            <h3><i class="fa fa-warning text-yellow"></i> Oops! Not authorized.</h3>
+            <p>
+                Sorry you are not authorized to access this page.
+                Meanwhile, you may <a oncontextmenu="return false" href='@Url.Action("Index","Dashboard")'>return to dashboard</a>.
+            </p>
+        </div>
+    </div>
+</section>

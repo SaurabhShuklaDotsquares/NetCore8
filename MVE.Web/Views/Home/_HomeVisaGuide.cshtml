@@ -1,0 +1,24 @@
+﻿@using TCP.Core.Code.LIBS;
+@model TCP.Web.ViewModels.VisaGuide.VisaGuideViewModel
+@{
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Visa Guide";
+}
+
+@if (Model != null && Model.CountryMasterslst != null && Model.CountryMasterslst.Count > 0)
+{
+    foreach (var item in Model.CountryMasterslst)
+    {
+        <li>
+            <a href="/visa-guide/@item.ShortUrl">
+                <i>
+                    <img src="@item.FileName" alt="@item.Name+flag">
+                </i> @item.Name
+            </a>
+        </li>
+    }
+}
+
+<!-- /.content -->
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/account/contact-us.js" asp-append-version="true"></script>

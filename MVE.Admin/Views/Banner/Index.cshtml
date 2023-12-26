@@ -1,0 +1,109 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.StaticContentBanner.StaticContentBannerViewModels
+@{
+    ViewData["Title"] = "Banner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Banner</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item">Manage Content</li>
+                    <li class="breadcrumb-item active">Banner</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content">
+    <div class="card">
+        <partial name="_Notification" />
+        <input type="hidden" asp-for="Id" />
+
+        <div id="countryMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">
+                                <option value="" selected="selected">All</option>
+                                <option value="true">Active</option>
+                                <option value="false">InActive</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-tools">
+                    <a oncontextmenu="return false" id="AddEditbanner" data-toggle="modal" asp-action="AddEditBanner" asp-controller="Banner" data-target="#modal-add-edit-banner" class="btn btn-block bg-gradient-success">
+                        <i class="fa fa-plus"></i> Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="grid-banner-details" class="table table-bordered custom-grid-table table-condensed">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th width="2%">S.No.</th>
+                            <th width="15%">Image For</th>
+                            <th width="15%">Image</th>
+                            <th width="15%">Created Date</th>
+                            <th width="10%">Status</th>
+                            <th width="20%">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                    <tfoot></tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer">
+        </div>
+    </div>
+    @* <div id="divConfirm"></div> *@
+</section>
+
+
+
+
+@{
+    var addEditbannerModel = new Modal { ID = "modal-add-edit-banner", AreaLabeledId = "modal-add-edit-banner-label", Size = ModalSize.Medium };
+    var viewbannerModel = new Modal { ID = "modal-view-banner", AreaLabeledId = "modal-view-banner-label", Size = ModalSize.Medium };
+    var deletebannerModel = new Modal { ID = "modal-delete-banner", AreaLabeledId = "modal-delete-banner-label", Size = ModalSize.Medium };
+    var updatebannerModel = new Modal { ID = "modal-update-banner", AreaLabeledId = "modal-update-banner-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="addEditbannerModel" />
+<partial name="_Modal" model="deletebannerModel" />
+<partial name="_Modal" model="viewbannerModel" />
+<partial name="_Modal" model="updatebannerModel" />
+@section scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/banner/banner-index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+
+
+}

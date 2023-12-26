@@ -1,0 +1,180 @@
+﻿@using Microsoft.Extensions.Configuration;
+@inject IConfiguration configuration;
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>@ViewData["Title"]</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <environment include="Production">
+        @* <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" /> *@
+        <link rel="stylesheet" href="~/lib/bootstrap-4.1/css/bootstrap.min.css" /> @* khushboo- 17-11-23 (slider issue) *@
+        <link rel="stylesheet" href="~/lib/alertifyjs/css/alertify.min.css" />
+        <link rel="stylesheet" href="~/lib/alertifyjs/css/themes/bootstrap.min.css" />
+    </environment>
+
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous"
+              integrity="sha256-eSi1q2PG6J7g7ib17yAaWMcrr5GrtohYChqibrV7PBE=" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/alertify.min.css"
+              asp-fallback-href="~/lib/alertifyjs/css/alertify.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute"
+              crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/alertifyjs@1.11.4/build/css/themes/bootstrap.min.css" crossorigin="anonymous"
+              asp-fallback-href="~/lib/alertifyjs/css/alertify.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+    </environment>
+    <!-- Font Awesome -->
+    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous" />
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- overlayScrollbars -->
+    <link href="~/lib/overlayscrollbars/css/overlayscrollbars.min.css" rel="stylesheet" />
+    <link href="~/lib/admin-lte/css/adminlte.css" rel="stylesheet" />
+    <!-- Google Font: Source Sans Pro -->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link href="~/lib/icheck-bootstrap/icheck-bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/custom/custom-style.css" rel="stylesheet" />
+    @RenderSection("Styles", required: false)
+    <style>
+        .alert.alert-danger.alert-dismissable {
+            position: absolute;
+            top: 0;
+            z-index: 99999999999999;
+            width: 100%;
+            background: rgba(217, 92, 92, .95);
+            color: white;
+        }
+
+        .alert.alert-success.alert-dismissable {
+            position: absolute;
+            top: 0;
+            z-index: 99999999999999;
+            width: 100%;
+            background: rgba(91, 189, 114, .95);
+            color: white;
+        }
+    </style>
+</head>
+
+<body class="hold-transition sidebar-mini layout-fixed ">
+    <!-- Site wrapper -->
+    <div class="wrapper">
+        @* <div class="loader" id="startloader"></div> *@
+        @await Html.PartialAsync("_Header")
+        @await Html.PartialAsync("_SideBar")
+        <!-- Content Wrapper. Contains page content -->
+        <div class="content-wrapper">
+            @* <partial name="~/Views/Shared/_Notification.cshtml" /> *@
+            @RenderBody()
+        </div>
+        <!-- /.content-wrapper -->
+        <!-- Page footer. -->
+        @await Html.PartialAsync("_Footer")
+        <div class="loader">
+            <div class="loader-inner">
+                @*<img src="@SiteKeys.Domain/images/logo-icon.svg" />*@
+                <img src="@SiteKeys.Domain/images/loader_icon.gif" />
+            </div>
+        </div>
+    </div>
+    @await Html.PartialAsync("_ScriptData")
+    <!-- ./wrapper -->
+    <!-- jQuery -->
+    <script src="~/lib/jquery/jquery-3.3.1.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/popper.min.js"></script>
+    <script src="~/lib/bootstrap-4.1/js/bootstrap.min.js"></script> @* khushboo- 17-11-23 (slider issue) *@
+    @*  <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script> *@
+
+    <script src="~/lib/alertifyjs/alertify.min.js"></script>
+
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+    <script type="text/javascript">
+        $(function () {
+            Global.AdminPageLimit = @(CurrentUser.SiteSettings?.AdminPageLimit);            
+        });
+    </script>
+
+    <script src="~/lib/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+    <script src="~/lib/admin-lte/js/adminlte.min.js"></script>
+    <script src="~/js/global.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    @RenderSection("Scripts", required: false)
+
+    
+</body>
+</html>
+<script>
+    //$(document).ready(function(){
+    $(document).ready(function () {
+        Chk();
+        AjaxNotification();
+
+    });
+    function AjaxNotification() {
+        var url = "";
+        $.ajax({
+            url: '/Admin/ManageNotifications/GetUnvisitedNotification',
+            type: 'POST',
+            success: function (result) {
+
+                if (result.isSuccess == true) {
+
+                   
+                    $("#lblcNotificationCount").text("(" + result.data + ")");
+
+                }
+            },
+            error: function (result) {
+                Global.ShowMessage(result.data == null ? "Undefiend request" : Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+
+    function Chk() {
+        var url = "";
+        $.ajax({
+            url: '/Admin/Account/CheckUserStatus',
+            type: 'POST',
+            success: function (result) {
+                if (result.isSuccess == false) {
+                     $.ajax({
+            url: '/Admin/Account/SignOut',
+            type: 'POST',
+            success: function (result) {
+                window.location.reload();
+            },
+            error: function (result) {
+                //Global.ShowMessage(result.data == null ? "Undefiend request" : Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+
+
+
+
+                }
+            },
+            error: function (result) {
+                //Global.ShowMessage(result.data == null ? "Undefiend request" : Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+</script>

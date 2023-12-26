@@ -1,0 +1,107 @@
+﻿@model MVE.Admin.ViewModels.ViewRatingViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "View Rating & Review" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    .imgsize {
+        width: 100%;
+        max-width: 250px;
+        height: auto;
+    }
+
+    #viewRatingReview tr td:nth-child(2) {
+        white-space: normal;
+        word-break: break-all;
+        width: 63%;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <partial name="_ModalHeader" model="headerModel" />
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="table-responsive">
+                        <table class="table table-striped" id="viewRatingReview">
+                            <tbody>
+                                <tr>
+                                    <td> <label class="bold">Customer Image</label></td>
+
+                                    <td><img class="d-block  imgsize" src="@Model.CustomerImage" alt="No Image"></td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Package Image</label></td>
+
+                                    <td> <img class="d-block  imgsize" src="@Model.PackageImage" alt="No Image"></td>
+                                </tr>
+
+                                <tr>
+                                    <td> <label class="bold">Customer Name</label></td>
+                                    <td> @Model.CustomerName</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Package Name</label></td>
+                                    <td> @Model.PackageName</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Rating</label></td>
+                                    <td> @Model.Rating</td>
+                                </tr>
+
+                                <tr>
+                                    <td> <label class="bold">Rating Date</label></td>
+                                    <td> @Model.RatingDate</td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Review Description</label></td>
+                                    <td><span>@Html.Raw(Model.ReviewDescription)</span></td>
+                                </tr>
+                                <tr>
+                                    <td> <label class="bold">Review Date</label></td>
+                                    <td> @Model.ReviewDate</td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        </div>
+
+                        @* <div class="sliderCardAdmin">
+                        <div class="row align-item-center">
+                        <div class="col-md-6">
+                        <span><strong>Customer Image</strong></span>
+                        <img class="d-block w-100" src="@Model.CustomerImage" alt="No Image" style="max-height: 250px;">
+                        <span><strong>Package Image</strong></span>
+                        <img class="d-block w-100" src="@Model.PackageImage" alt="No Image" style="max-height: 250px;">
+                        </div>
+                        <div class="col-md-6">
+                        <div class="cardInfoAdmin">
+                        <span>Customer Name : @Model.CustomerName</span>
+                        <span>Package Name: @Model.PackageName</span>
+                        <span>Rating: @Model.Rating</span>
+                        <span>Rating Date: @Model.RatingDate</span>
+                        <span>Review Date: @Model.ReviewDate</span>
+                        <span>@Html.Raw(Model.ReviewDescription)</span>
+                        </div>
+                        </div>
+                        </div>
+                        </div> *@
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+</section>
+

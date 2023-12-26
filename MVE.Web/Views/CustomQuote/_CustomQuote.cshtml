@@ -1,0 +1,69 @@
+﻿@model TCP.Web.ViewModels.CustomQuoteViewModel
+@using TCP.Core.Code.LIBS;
+@inject Microsoft.Extensions.Configuration.IConfiguration Configuration
+
+@{
+    ViewData["Title"] = "Custom Quote";    
+}
+
+<form method="post" asp-action="CustomQuote" asp-controller="CustomQuote" id="form-customquote">
+    <div class="row no-gutters">
+        <div class="col-md-5">
+            <div class="bg-block text-center">
+                <h3>Welcome to</h3>
+                <img src="@SiteKeys.Domain/images/login-logo.png" alt="">
+            </div>
+        </div>
+        <div class="col-md-7">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="@SiteKeys.Domain/images/close-btn.png" alt=""></button>
+            <br>
+            <div class="form-block" id="customquote-div-formblock">
+                <div class="form-group">
+                    <label class="req">Package URL</label>
+                    @if (ViewBag.flagfrom != null && ViewBag.flagfrom == "DashboardReq")
+                    {
+                        <input type="text" asp-for="packageUrl" value="" class="form-control name-icon" placeholder="Enter Your package URL">
+                    }
+                    else
+                    {
+                        <input type="text" asp-for="packageUrl" readonly="readonly" class="form-control name-icon" placeholder="Enter Your package URL">
+
+                    }
+                    <span asp-validation-for="packageUrl" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Requirement</label>
+                    <textarea type="text" style="padding-left:5px" asp-for="Requirement" maxlength="500" class="form-control" placeholder="Enter Your Requirement"></textarea>
+                    <span asp-validation-for="Requirement" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Email</label>
+                    <input asp-for="Email" type="email" class="form-control email-icon" placeholder="Enter Your Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label class="req">Phone No.</label>
+                    <input type="text" asp-for="PhoneNumber" oninput="this.value=this.value.replace(/[^0-9+]/g,'');" class="form-control ph-icon" placeholder="Enter Your Phone No">
+                    <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                </div>
+                <div class="form-group text-center">
+                    <button type="submit" class="btn-custom">Customizable & Get Quote</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/customquote/customquote-index.js" asp-append-version="true"></script>
+<script>
+    $(document).ready(function () {
+        
+        if ('@ViewBag.flagfrom' != null && '@ViewBag.flagfrom' == "DashboardReq") {
+            $("#packageUrl").val("");
+        }
+        else {
+            $("#packageUrl").val(window.location.href);
+        }
+    })
+</script>

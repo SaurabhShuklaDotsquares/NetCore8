@@ -1,0 +1,57 @@
+﻿@using TCP.Core.Code.LIBS;
+@model TCP.Web.ViewModels.ContactUsViewModel
+@{
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Contact Us";   
+}
+
+<form method="post" asp-controller="Dashboard" asp-action="ContactUs" id="frm-user-contactus">  
+        <div class="contactdtls-block text-dark">
+        <h4>Support Contact</h4>
+        <ul>
+            <li>
+                <i><img src="@domain/images/envelop-icon.png" /></i>
+                <span><p>Support Email :</p> <strong>@Model.SupportEmail</strong></span>
+            </li>
+            <li>
+                <i><img src="@domain/images/phone-call.png" /></i>
+                <span><p>Support Mobile :</p> <strong>@Model.SupportMobile</strong></span>
+            </li>
+        </ul>
+        </div>
+        <div class="form-group">
+            <label class="req">Name</label>
+            <input type="text" asp-for="FullName" maxlength="100" class="form-control name-icon" placeholder="Enter Your Full Name">
+            <span asp-validation-for="FullName" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="req">Email Address</label>
+        <input asp-for="EmailAddress" maxlength="50" type="email" class="form-control email-icon" placeholder="Enter Your Email Address">
+            <span asp-validation-for="EmailAddress" class="text-danger"></span>
+        </div>
+    @*     <div class="form-group">
+            <label class="req">Subject</label>
+            <input type="text" asp-for="Subject" maxlength="100" class="form-control name-icon" placeholder="Enter Subject">
+            <span asp-validation-for="Subject" class="text-danger"></span>
+        </div> *@
+        <div class="form-group">
+            <label class="req">Phone Number</label>
+            <input type="text" asp-for="PhoneNumber" maxlength="16" oninput="this.value=this.value.replace(/[^0-9+]/g,'');" class="form-control ph-icon" placeholder="Enter Your Phone Number">
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label class="req">Message</label>
+        <textarea type="text" style="padding-left:5px" maxlength="350" asp-for="Message" class="form-control" placeholder="Enter Your Message"></textarea>
+
+            <span asp-validation-for="Message" class="text-danger"></span>
+        </div>       
+
+        <div class="form-group text-center m-0">
+            <button type="submit" class="btn-custom">Send</button>
+        </div>
+</form>
+
+
+<!-- /.content -->
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/dashboard/contact-us.js" asp-append-version="true"></script>

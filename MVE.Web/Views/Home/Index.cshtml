@@ -1,0 +1,633 @@
+﻿@model TCP.Web.ViewModels.IndexViewModel
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+
+@{
+    ViewData["Title"] = "Home Page";
+   
+}
+@section Styles{
+    <link rel="stylesheet" href="~/lib/select2/css/select2.css" rel="stylesheet" />
+}
+
+<partial name="~/Views/Shared/_Notification.cshtml" />
+<style>
+    .imgiconsize {
+        height: 105px;
+        width: 105px;
+        border-radius: 50%
+    }
+</style>
+
+
+<div class="banner-block">
+    <div class="banner-slider">
+        @if (Model.Imagename!=null)
+        {
+            <img src="@SiteKeys.ImageDomain/UploadFiles/Banner/@Model.Imagename" alt="bannner-img">
+        }else
+        {
+            <img src="@SiteKeys.ImageDomain/images/banner-img.jpg" alt="bannner-img">
+        }
+    </div>
+    <div class="search-form">
+        <div class="heading-block">
+            <span>Explore and Book</span>
+            <h1>Best Holiday Packages</h1>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div class="search-card d-md-flex justify-content-between">
+            <div class="search-card-left d-md-flex">
+                @if (Model != null && Model.DestinationList != null)
+                {
+                    <div class="form-group">
+                        <i style="z-index:1"><img src="@SiteKeys.ImageDomain/images/location1.png" alt="location"></i>
+                        @* <input type="text" class="form-control" asp-for="Destination" placeholder="Destination"> *@
+                        @*   @Html.DropDownListFor(model => model.ShortUrl, Model.DestinationList, "Destination", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.ShortUrl, "", new { @class = "text-danger" }) *@
+
+                        <select asp-for="Destination" class="form-control select2" placeholder="Destination">
+                             <option value="">Select</option>
+                            @foreach (var destination in Model.DestinationList)
+                            {
+                                <option value="@destination.Value">@destination.Text</option>
+                            }
+                        </select>
+                    </div>
+                }
+                @if (Model != null && Model.DurationList != null)
+                {
+                    <div class="form-group">
+                        <i style="z-index:1"><img src="@SiteKeys.ImageDomain/images/watch.png" alt="watch"></i>
+                        @*  <input type=" number" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" asp-for="Duration" placeholder="Duration">
+                    <span asp-validation-for="Duration" class="text-danger"></span> *@
+
+                        <select asp-for="Duration" class="form-control select2" placeholder="Duration">
+                            <option value="">Select</option>
+                            @foreach (var item in Model.DurationList)
+                            {
+                                <option value="@item.Name">@item.Name</option>
+                            }
+                        </select>
+                    </div>
+                }
+                @if (Model != null && Model.BudgetList != null)
+                {
+                    <div class="form-group">
+                        <i style="z-index:1"><img src="@SiteKeys.ImageDomain/images/budget-icon.png" alt="date"></i>
+                        @*  <input type="number" oninput="this.value=this.value.replace(/[^0-9]/g,'');" class="form-control" asp-for="Budget" placeholder="Budget">
+                    <span asp-validation-for="Budget" class="text-danger"></span> *@
+
+                        <select asp-for="Budget" class="form-control select2" placeholder="Budget">
+                            <option value="">Select</option>
+                            @foreach (var item in Model.BudgetList)
+                            {
+                                <option value="@item.Name">
+                                    @if (@item.Id == (int)PricedPkgInBudget.LessThan1K)
+                                    {
+                                        <span>Less than  @item.Name</span>
+                                    }
+                                    else if (@item.Id == (int)PricedPkgInBudget.GreaterThan9K)
+                                    {
+                                        <span>Above  @item.Name</span>
+                                    }
+                                    else
+                                    {
+                                        @item.Name
+                                    }
+                                </option>
+                            }
+                        </select>
+                    </div>
+                }
+            </div>
+            @*<a class="btn-custom" href="/Home/Index?budget=@Model.Budget&destination=@Model.Destination&duration=@Model.Duration">Search</a>*@
+            @*   <a class="btn-custom" href="@SiteKeys.Domain/Listing/Index?budget=@Model.Budget&destination=@Model.CountryId&duration=@Model.Duration">Search</a> *@
+           
+            <a class="btn-custom" tabindex="0" id="search-button">Search</a>
+        </div>
+    </div>
+</div>
+
+<div class="destinations-block padding-top padding-bottom">
+    <div class="container">
+        <div class="heading-block">
+            <div class="graphic1"><img src="@SiteKeys.ImageDomain/images/img12.png" alt=""></div>
+            <h2 id="theme-heading">Explore Destinations by Theme</h2>
+        </div>
+        <div class="destinations-slider owl-carousel" tabindex="1">
+            <partial name="~/Views/Home/_ThemeList.cshtml" model="@Model.ThemeList" />
+        </div>
+    </div>
+</div>
+
+<div class="destinations-price-block padding-top-60 padding-bottom">
+    <div class="package-destinations">
+        <div class="container">
+            <div class="heading-block">
+                <div class="graphic2"><img src="@SiteKeys.ImageDomain/images/img11.png" alt=""></div>
+                <h2>Choose Your Destination by 4 Simple Filters</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+            </div>
+            <div class="heading-block">
+                <h3>Best priced packages within your BUDGET</h3>
+            </div>
+        </div>
+        <div class="price-tab">
+            <ul class="d-md-flex justify-content-between" id="lst_package-budget-div">
+                @if (Model != null && Model.BudgetList != null)
+                {
+                    foreach (var item in Model.BudgetList)
+                    {
+                        <li>
+                            <a class="package-duration @item.Active" id="budget_a_@item.Id" callfrom="budgetSection" href="/Home/PackageList?budget=@item.Id">
+                                @item.Name
+                                @if (@item.Id == (int)PricedPkgInBudget.LessThan1K)
+                                {
+                                    <span>Less than</span>
+                                }
+                                else if (@item.Id == (int)PricedPkgInBudget.GreaterThan9K)
+                                {
+                                    <span>Above</span>
+                                }
+                            </a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+        <div class="price-col-block ">
+            <div class="package-budget-div">
+                <div class="package-price-slider owl-carousel">
+                    @if (Model != null && Model.PackagesList != null)
+                    {
+                        <partial name="~/Views/Home/_PackageList.cshtml" model="@Model.PackagesList" />
+                    }
+                </div>
+                <div class="btn-block">
+                    <a class="btn-custom text-center" id="budgetviewbtn" href="@SiteKeys.Domain/Listing/Index?budget=$4000-$6000">View All</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="package-destinations m-0">
+        <div class="container">
+            <div class="heading-block">
+                <h3>Best priced packages for your holiday DURATION</h3>
+            </div>
+        </div>
+        <div class="price-tab">
+            <ul class="d-md-flex justify-content-between" id="lst_package-duration-div">
+                @if (Model != null && Model.DurationList != null)
+                {
+                    foreach (var item in Model.DurationList)
+                    {
+                        <li>
+                            <a class="@item.Active package-duration" id="duration_a_@item.Id" href="/Home/PackageList?duration=@item.Id">
+                                @item.Name
+                            </a>
+                        </li>
+                    }
+                }
+
+            </ul>
+        </div>
+        <div class="price-col-block">
+            <div class="package-duration-div">
+                <div class="package-price-slider owl-carousel">
+                    @if (Model != null && Model.PackagesList != null)
+                    {
+                        <partial name="~/Views/Home/_PackageList.cshtml" model="@Model.PackagesList" />
+                    }
+                </div>
+                <div class="btn-block"><a class="btn-custom text-center" id="durationviewbtn" href="@SiteKeys.Domain/Listing/Index?duration=7-9">View All</a></div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@if (Model != null && Model.PackagesList != null)
+{
+    var SailTheCruise = Model.PackagesList.Where(x => x.IsCruseIncluded == true).ToList();
+    @if (SailTheCruise != null && SailTheCruise.Count > 0)
+    {
+        <div class="sail-cruise-block padding-top padding-bottom">
+            <div class="container">
+                <div class="heading-block">
+                    <h2>Sail the Cruise</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis.</p>
+                </div>
+                <div class="row">
+
+                    <partial name="~/Views/Home/_PackageSailTheCruiseList.cshtml" model="SailTheCruise" />
+
+                </div>
+
+                <div class="btn-block mt-4">
+                    <a class="btn-custom text-center" href="@SiteKeys.Domain/Listing/Index?IsCruseIncluded=1">View All</a>
+
+                </div>
+            </div>
+        </div>
+    }
+}
+
+<div class="direction-block padding-top padding-bottom">
+    <div class="heading-block">
+        <h2>Choose by the direction of destinations<br>for Europe</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Quis ipsum suspendisse ultrices gravida. Risus commodo viverra maecenas accumsan lacus vel facilisis. </p>
+    </div>
+    <div class="direction-list row no-gutters">
+        @if (Model != null && Model.RegionList != null)
+        {
+            foreach (var item in Model.RegionList)
+            {
+                <div class="col-md-6 col-lg-3">
+                    <div class="direction-card">
+                        <div class="direction-img"><img src="@SiteKeys.Domain/images/img7.jpg" alt="img"></div>
+                        <div class="direction-info">
+                            @if (item.Description == "east")
+                            {
+                                <img src="@SiteKeys.Domain/images/compass.png" alt="compass">
+
+                            }
+                            @if (item.Description == "west")
+                            {
+                                <img src="@SiteKeys.Domain/images/compass_w.png" alt="compass">
+                            }
+                            @if (item.Description == "north")
+                            {
+                                <img src="@SiteKeys.Domain/images/compass_n.png" alt="compass">
+                            }
+                            @if (item.Description == "south")
+                            {
+                                <img src="@SiteKeys.Domain/images/compass_s.png" alt="compass">
+                            }
+                            <a href="@SiteKeys.Domain/Listing/Index?regionId=@item.Description" class="btn-custom">@item.Name Europe</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
+
+<div class="our-experts-block padding-top padding-bottom">
+    <div class="container d-md-flex align-items-start justify-content-between">
+        <div class="experts-info">
+            <h2>Our experts</h2>
+            <p>would love to create a package just for you!</p>
+            <img src="@SiteKeys.Domain/images/graphic-img.png" alt="graphic-img">
+        </div>
+        <div class="experts-form">
+            <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer.png" alt="map-pointer"></i>
+            <div class="experts-form-block" id="index-experts-form">
+                <h4>Where do you want to go?</h4>               
+               
+
+                <div class="form-group">
+                    @if (Model != null && Model.DestinationList != null)
+                    {
+                        <select asp-for="where_To" class="form-control select2" placeholder="To">
+                            <option value="">Select</option>
+                            @foreach (var destination in Model.DestinationList)
+                            {
+                                <option value="@destination.Value">@destination.Text</option>
+                            }
+                        </select>
+                    }
+                    @*<input type="text" class="form-control" name="To" id="where_To" placeholder="To">*@
+                </div>
+                <span id="where_To-error" class="text-danger"></span>
+                 <div class="form-group">
+                    <label class="customcheckBox">
+                        I am exploring destinations
+                        <input type="checkbox">
+                        <span class="checkmarkhd"></span>
+                    </label>
+                </div>
+                 <div class="form-group">
+                    @if (Model != null && Model.DestinationList != null)
+                    {
+                        <select asp-for="where_From" class="form-control select2" placeholder="From">
+                            <option value="">Select</option>
+                            @foreach (var destination in Model.DestinationList)
+                            {
+                                <option value="@destination.Value">@destination.Text</option>
+                            }
+                        </select>
+                    }
+                    @* <input type="text" class="form-control" name="From" id="where_From" placeholder="From">*@
+                    <span id="where_From-error" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label>Departure Date</label>
+                    <div class="form-group-date d-md-flex align-items-center" id="datetype-div">
+                        <div class="label-radio">
+                            <input type="radio" id="Fixed" name="DepartureDateType" value="Fixed" />
+                            <label for="Fixed">Fixed</label>
+                        </div>
+                        <div class="label-radio">
+                            <input type="radio" id="Flexible" name="DepartureDateType" value="Flexible" />
+                            <label for="Flexible">Flexible</label>
+                        </div>
+                        <div class="label-radio">
+                            <input type="radio" id="Anytime" name="DepartureDateType" value="Anytime" />
+                            <label for="Anytime">Anytime</label>
+                        </div>
+                    </div>
+                </div>
+                <span id="DepartureDateType-err" class="text-danger"></span>
+                <button class="btn-custom" onclick="SetNextToPlanMyHoliday(this)">Next</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    $(document).ready(function () {
+        AjaxCalling($("#duration_a_3").attr('href'), $("#duration_a_3").attr('callfrom'));
+        AjaxCalling($("#budget_a_3").attr('href'), $("#budget_a_3").attr('callfrom'));
+
+        $(".destinations-slider").find(".owl-nav").show();
+        $(".destinations-slider").find(".owl-dots").show();
+
+        //$(".package-price-slider").find(".owl-nav").show();
+        //$(".package-price-slider").find(".owl-dots").show();
+
+        $("#forgotpassword_btn").bind("click", function () {
+            $("#form-signIn").find("#login-close-btn").trigger("click");
+        });
+    });
+
+    $(document).on("click", ".package-duration", function (event) {
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        var url = this.href;
+        AjaxCalling(url, $(this).attr("callfrom"));
+        return false;
+    });
+
+    function AjaxCalling(url, callFrom) {
+        $.ajax({
+            url: url,
+            type: 'POST',
+            success: function (result) {
+                if (result != "") {
+                    if (callFrom != undefined && callFrom == "budgetSection") {
+                        $(".package-budget-div").find(".owl-carousel").html("");
+                        $(".package-budget-div").find(".owl-carousel").html(result);
+                        updateCarousel($(".package-budget-div").find(".owl-carousel"), 5)
+                    }
+                    else {
+                        $(".package-duration-div").find(".owl-carousel").html("");
+                        $(".package-duration-div").find(".owl-carousel").html(result);
+                        updateCarousel($(".package-duration-div").find(".owl-carousel"), 5)
+
+                    }
+                    //updateCarousel($(".package-budget-div"), 5)
+                }
+            },
+            error: function (result) {
+                Global.ShowMessage(result == undefined ? "Undefiend request" : result.errorMessage, Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+    $("#lst_package-budget-div li").bind("click", function () {
+        $("#lst_package-budget-div").find("a").removeClass("active");
+        $(this).find("a").addClass("active");
+    });
+
+    $("#lst_package-duration-div li").bind("click", function () {
+        $("#lst_package-duration-div").find("a").removeClass("active");
+        $(this).find("a").addClass("active");
+    });
+
+
+
+    function updateCarousel(obj, count) {
+        obj.owlCarousel("destroy"); // Destroy the existing carousel
+        obj.owlCarousel({
+            items: count, // Number of items to display
+            loop: true, // Enable loop
+            margin: 30, // Spacing between items
+            nav: true, // Display navigation arrows
+            autoWidth: true,
+            center: true,
+        });
+    }
+
+
+    function SetNextToPlanMyHoliday(obj) {
+        var from_err = $("#where_From-error");
+        var to_err = $("#where_To-error");
+        var datetype_err = $("#DepartureDateType-err");
+
+        if (Global.IsNullOrEmptyString($("#index-experts-form").find("#where_From").val())) {
+            from_err.html("Please select city name");
+            return false;
+        }
+        else {
+            from_err.html('');
+        }
+        if (Global.IsNullOrEmptyString($("#index-experts-form").find("#where_To").val())) {
+            to_err.html("Please select city name");
+            return false;
+        }
+        else {
+            to_err.html('');
+        }
+
+
+        if ($("#index-experts-form").find('#datetype-div input[type="radio"][name="DepartureDateType"]:checked').length == "0") {
+            datetype_err.html("Select any one date-type");
+            return false;
+        } else {
+            datetype_err.html('');
+        }
+        var indexdatetype = $("#index-experts-form").find('#datetype-div input[type="radio"][name="DepartureDateType"]:checked')
+
+        $("#planholiday_btn").click();
+        setTimeout(function () {
+           
+
+            var planholidayMOdal = $("#modal-add-edit-planmyholiday");
+            planholidayMOdal.find("#From").val($("#where_From").val());
+            planholidayMOdal.find("#To").val($("#where_To").val());
+
+            var departureRadio = planholidayMOdal.find('#datetype-div input[type="radio"][name="DepartureDateType"]');
+            if (indexdatetype.val() == "Fixed") {
+                $(departureRadio[0]).val(indexdatetype.val());
+                $(departureRadio[0]).click();
+            } else if (indexdatetype.val() == "Flexible") {
+                $(departureRadio[1]).val(indexdatetype.val());
+                $(departureRadio[1]).click();
+            } else if (indexdatetype.val() == "Anytime") {
+                $(departureRadio[2]).val(indexdatetype.val());
+                $(departureRadio[2]).click();
+            }
+
+
+        }, 1000)
+
+    }
+
+</script>
+
+<script>
+    $(document).ready(function () {
+        var reqid = getUrlVars()["reqid"];
+        if (reqid > 0) {
+            $('#login_btn').trigger("click");
+        }
+    });
+    function getUrlVars() {
+        var vars = [], hash;
+        var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+        for (var i = 0; i < hashes.length; i++) {
+            hash = hashes[i].split('=');
+            vars.push(hash[0]);
+            vars[hash[0]] = hash[1];
+        }
+        return vars;
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+ </script>
+
+<script>    
+
+    $(document).ready(function () {
+        $('#Destination').select2({
+            placeholder: "Destination",
+            allowClear: true
+        });
+
+        $('#Budget').select2({
+            placeholder: "Budget",
+            allowClear: true
+        });
+
+        $('#Duration').select2({
+            placeholder: "Duration",
+            allowClear: true
+        });
+
+        
+        $('#Budget').on('keydown', function (event) {
+            if (event.keyCode === 9) {
+               event.preventDefault();
+                $('#search-button').focus();
+            }
+        });
+
+       
+        $('#search-button').on('keyup', function (event) {
+            if (event.keyCode === 13) {
+                triggerSearch();
+            }
+        });
+
+        $('#search-button').click(function () {
+            triggerSearch();
+        });
+
+        $('#where_To').select2({
+            placeholder: "To",
+            allowClear: true
+        });
+        $('#where_From').select2({
+            placeholder: "From",
+            allowClear: true
+        });
+        function triggerSearch() {
+            event.preventDefault();
+            event.stopImmediatePropagation();
+            var selectedDestination = $('#Destination').val();
+            var budget = $('#Budget').val();
+            var duration = $('#Duration').val();
+            
+            budget = budget.replace(/\s+/g, '').replace(/Less than/g, '').replace('Above', '');
+
+            duration = duration.replace(/\s+/g, '').replace(/Days/g, '').replace('ormore', '');
+
+            //if (!selectedDestination) {
+            //    // alert('Please select a Destination.');
+            //    Global.ShowMessage("Please select a Destination.", Global.MessageType.Error);
+            //    return false;
+            //}
+            //if (!budget) {
+            //    // alert('Please enter a Budget.');
+            //    Global.ShowMessage("Please select a Budget.", Global.MessageType.Error);
+            //    return false;
+            //}
+            //if (!duration) {
+            //    // alert('Please enter a Duration.');
+            //    Global.ShowMessage("Please select a Duration.", Global.MessageType.Error);
+            //    return false;
+            //}
+
+            if (!selectedDestination && !budget && !duration) {
+                Global.ShowMessage("Please select at least one (Destination or Duration or Budget).", Global.MessageType.Error);
+                return false
+            }
+
+            window.location.href = '@SiteKeys.Domain/Listing/Index?budget=' + budget + '&destination=' + selectedDestination + '&duration=' + duration;
+        }
+
+        $('#lst_package-budget-div a').click(function () {
+            var budgetValue = $(this).text().trim();
+            budgetValue = budgetValue.replace(/\s+/g, '').replace(/Lessthan/g, '').replace('Above', '');
+         
+            var budgetviewURL = `@(SiteKeys.Domain)/Listing/Index?budget=${budgetValue}`;
+            $('#budgetviewbtn').attr('href', budgetviewURL);
+        });
+
+        $('#lst_package-duration-div a').click(function () {
+            var durationValue = $(this).text().trim();
+            durationValue = durationValue.replace(/\s+/g, '').replace(/Days/g, '').replace('ormore', '');
+          
+            var durationviewURL = `@(SiteKeys.Domain)/Listing/Index?duration=${durationValue}`;
+            $('#durationviewbtn').attr('href', durationviewURL);
+        });
+
+
+    });
+
+
+            ////For Drop down
+            // $(document).ready(function () {
+            //     
+            //     $("#search-button").on("click", function () {
+            //         var destinationId = $("#ShortUrl").val();
+            //         var duration = $("#Duration").val();
+            //         var budget = $("#Budget").val();
+
+            //         // Construct the URL with user-entered values
+            //         var url = "@SiteKeys.Domain/Listing/Index?budget=" + budget + "&destination=" + destinationId + "&duration=" + duration;
+
+            //         // Navigate to the new URL
+            //         window.location.href = url;
+            //     });
+            // });
+</script>
+
+
+
+
+@section Scripts{
+    <script src="~/lib/select2/js/select2.js"></script>
+}

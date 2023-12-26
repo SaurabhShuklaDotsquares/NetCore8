@@ -1,0 +1,107 @@
+﻿@model MVE.Admin.ViewModels.CountryViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = String.Format("{0} Country", @Model.Id <= 0 ? "Add" : "Edit") };
+}
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <div id="validation-summary"></div>
+            <form enctype="multipart/form-data" asp-action="AddEditCountry" asp-controller="Country" class="" id="newsLetterForm">
+                <partial name="_ModalHeader" model="headerModel" />
+
+                <div class="modal-body box-body">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="FileName" />
+                    <div class="form-group">
+                        <span id="validationmsg" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">Name<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="Name" class="form-control" placeholder="Name" autocomplete="off" maxlength="30" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row d-none">
+                            <div class="col-md-12">
+                                <label for="Description">Description</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <textarea name="Description" class="form-control" placeholder="Description" maxlength="60">@Model.Description</textarea>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Code">Code</label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" name="Code" class="form-control" placeholder="Code" value="@Model.Code" autocomplete="off" maxlength="5" />                                   
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>
+                                    Select Country Image
+                                   @*  @if (Model.Id <= 0)
+                                    { *@
+                                        <span class="required">*</span>
+                                   @*  } *@
+                                    <span style="font-size:12px;">(File size maximum limit should be 5MB)</span>
+                                </label>
+                            </div>
+                       
+                             <div class="col-md-12">
+                              @*   <input type="image" asp-for="FileName" src="/Admin/Country/Thumbnail?width=100&amp;height=80&amp;imageFile=@Model.FileName" /> *@
+                              @if(string.IsNullOrEmpty(Model.FileName))
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@(SiteKeys.Domain+"/images/upload-image.png")" width=100&amp height=80&amp />
+                                }
+                                else
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@SiteKeys.Domain@Model.FileName" href="@SiteKeys.Domain@Model.FileName" width=100&amp height=80&amp />
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input asp-for="FlagImage" type="file" id="country_file" class="form-control" onchange="AllowFileExtension(this)" />
+                                    <span asp-validation-for="FlagImage" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 action-view-popup">
+                            <label for="IsActive">Active</label>
+                       
+
+                            <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                                <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                                <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                        </div>
+                    </div>
+
+                </div>
+                <partial name="_ModalFooter" model="new ModalFooter { }" />
+            </form>
+
+        </div>
+    </div>
+</section>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+
+
+
+

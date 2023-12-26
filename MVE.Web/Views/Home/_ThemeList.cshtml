@@ -1,0 +1,32 @@
+﻿@model List<ThemeViewModel>
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@using TCP.Web.ViewModels;
+
+@{
+    Layout = null;
+}
+
+
+@if (Model != null && Model != null)
+{
+    foreach (var item in Model)
+    {
+        <div class="item">
+            <div class="destinations-card">
+                <i> <a href="@SiteKeys.Domain/Listing/Index?category=@item.ShortName"><img class="imgiconsize" src="@SiteKeys.ImageDomain/UploadFiles/Theme/@item.ImageName" href="@SiteKeys.Domain@item.FileName" id="@item.Id"></a></i>
+                <span>@item.Name</span>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="item">
+        <div class="destinations-card">
+            <i><img class="imgiconsize" src="Image/no-image-icon-4.png" href="@SiteKeys.Domain+Image/no-image-icon-4.png" id="0"></i>
+            <span>No Data Found</span>
+        </div>
+    </div>
+}

@@ -1,0 +1,114 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@{
+    ViewData["Title"] = "Manage Rating-Reviews";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Manage Rating & Reviews</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Manage Rating & Reviews</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <partial name="_Notification" />
+
+        <div id="roleMessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="d-flex justify-content-between flex-wrap">
+                <div class="card-flex">
+                    <div class="row">
+                        <div class="prop-col-1">
+                            <input type="text" class="form-control no-maxlength" placeholder="Search by name" autocomplete="off" maxlength="80" id="txtSearchFilter">
+                        </div>
+                        <div class="prop-col-2">
+                            <select id="ddlItemStatus" class="form-control btn btn-info btn-sm ddlFltr">    
+                                <option value="" selected="selected">Sorting</option>
+                                <option value="true">New to Old</option>
+                                <option value="false">Old to New</option>
+                            </select>
+                        </div>
+                        <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrStartDate" placeholder="Start Date" class="form-control fltrSDate" />
+                            </div>
+                        </div>
+                        <div class="prop-col-2">
+                            <div class="input ltr calendar-field">
+                                <label class="fa fa-calendar">&nbsp;</label>
+                                <input type="text" id="fltrEndDate" placeholder="End Date" class="form-control fltrEDate" />
+                            </div>
+                        </div>
+                        <div class="prop-col-2">
+                            <button id="btnReset" class="btn btn-info submit"> Reset </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-tools">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="grid-details" class="table table-bordered custom-grid-table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th width="2%">S.No.</th>
+                        <th width="10%">Customer Image</th>
+                        <th width="15%">Customer Name</th>
+                        <th width="10%">Package Image</th>
+                        <th width="20%">Package Name</th>
+                        <th width="10%">Rating</th>
+                        @* <th width="13%" style="padding-left: 30px;">Date</th> *@
+                        <th width="10%">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+
+@{
+    var deleteModel = new Modal { ID = "modal-delete", AreaLabeledId = "modal-delete-label", Size = ModalSize.Medium };
+    var viewModel = new Modal { ID = "modal-view", AreaLabeledId = "modal-view-label", Size = ModalSize.Large };
+}
+<partial name="_Modal" model="deleteModel" />
+<partial name="_Modal" model="viewModel" />
+@section scripts{
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/ratingReview/index.js" asp-append-version="true"></script>
+
+}

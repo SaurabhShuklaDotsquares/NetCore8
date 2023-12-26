@@ -1,0 +1,62 @@
+﻿@model List<PackageListViewModel>
+@using TCP.Core.Models.Others;
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@using TCP.Web.ViewModels;
+
+@{
+    var domain = @SiteKeys.Domain;
+    Layout = null;
+}
+<style>
+    .pkgname-cls {
+        color: #02066f;
+    }
+</style>
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    if (i < 5)
+    {
+        var name_17_txt = @Model[i].PackageName?.Length <= 30 ? @Model[i].PackageName : CommonFileViewModel.TrimHtmlText(@Model[i]?.PackageName, 27);
+
+        <div class="bookings-card-list ">
+             <p><strong>Booking No : </strong>@Model[i].BookingNo</p> 
+            <div class="row" id="booked-pkg-@Model[i].PackageId">
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card d-flex">
+                        <div class="book-card-img"><a href="/package/@Model[i].PackageUrl"><img src="@Model[i].FilePath" alt="@Model[i].FileOriginalName"></a></div>
+                        <div class="book-info">
+                            @* <span class="rating-book"><img src="@domain/images/star1.png" alt="star">@Model[i].Rating</span> *@
+                            <div class="book-package">
+                                <span><a class="pkgname-cls" href="/package/@Model[i].PackageUrl" title="@Model[i].PackageName">@name_17_txt</a></span>
+                                <p>@Model[i].LocationAddress | @Model[i].PackageNoOf_DaysNight</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-6 col-xl-6">
+                    <div class="book-card border-left">
+                        <div class="book-info">
+                            <div class="package-head-right">
+                                <span>$@Model[i].PackagePriceFront</span>
+                                <p>(Including tax)</p>
+                            </div>
+                            <div class="book-package">
+                                <p>Start Date: @Model[i].FromDate</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                    <div class="book-card">
+                        <p> @Html.Raw(WebUtility.HtmlDecode(@Model[i].PkgDesc))</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+}
+

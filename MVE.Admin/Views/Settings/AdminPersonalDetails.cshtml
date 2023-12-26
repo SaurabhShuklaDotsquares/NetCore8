@@ -1,0 +1,68 @@
+﻿@model MVE.Admin.ViewModels.AdminPersonalDetailsViewModel
+@{
+    ViewData["Title"] = "AdminPersonalDetails";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+               
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Personal Details</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box">
+                    <div class="card dashboardDatatables">
+                        <div class="card-body">
+                            <p class="form-sub-heading">
+                                <strong>Admin Personal Details</strong>
+                            </p>
+                            <div class="form-group">
+                                <span><strong>Full Name: </strong></span>
+                                <span>@Model.FullName</span>
+                            </div>
+                            <div class="form-group">
+                                <span><strong>Email: </strong></span>
+                                <span>@Model.Email</span>
+                            </div>
+                            <div class="form-group">
+                                <span><strong>Mobile No.: </strong></span>
+                                <span>@Model.MobileNo</span>
+                            </div>
+                            <div class="form-group">
+                                <span><strong>Description: </strong></span>
+                                <span>@Model.Description</span>
+                            </div>
+                            <div class="form-group">
+                                <span><strong>Address: </strong></span>
+                                <span>@Model.Address</span>
+                            </div>
+                            <div class="form-group">
+                                <span><strong>Last Updated on: </strong></span>
+                                <span>@Model.LastUpdateDate</span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->

@@ -1,0 +1,172 @@
+﻿@model TCP.Web.ViewModels.MyNotificationViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    var domain = @SiteKeys.Domain;
+    Layout = null;
+}
+
+<div id="dvNotification">
+    <div class="profile-block my-bookings-block">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                    <img src="@domain/images/dash-icon5.png" alt="">
+                    <strong>Notifications</strong>
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+            <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                <div class="bookings-card-list bookings-block-dashboard">
+                    @if (Model.NotificationList != null && Model.NotificationList.Count > 0)
+                    {
+                        int counter = 1;
+                        foreach (var upcoming in Model.NotificationList)
+                        {
+
+                            <div class="bookings-card-list">
+                                @* <p><strong>Type :</strong> @upcoming.notificationsTypeName</p> *@
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-9 col-xl-9">
+                                        <div class="book-card d-flex">
+                                            <div class="book-card-img">
+                                                <img src="@upcoming.FileName" alt="">
+                                            </div>
+                                            <div class="book-info">
+                                                <div class="book-package">
+                                                    <span>
+                                                        <a oncontextmenu="return false" asp-action="GetNotificationDetails" asp-controller="Dashboard"
+                                                   asp-route-notificationid="@upcoming.NotificationId" data-toggle="modal" data-target="#notification-details-popup"
+                                                   class="notificationdetail_btn">@upcoming.Title</a>
+                                                    </span>
+                                                    <p> Date: @upcoming.CreatedDate</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-3 col-xl-3">
+                                        <div class="book-card bor der-left">
+                                            <div class="book-info">
+                                                <div class="package-head-right">
+                                                    <a oncontextmenu="return false" id="notificationdetail_btn" asp-action="GetNotificationDetails" asp-controller="Dashboard" asp-route-notificationid="@upcoming.NotificationId" data-toggle="modal" data-target="#notification-details-popup" class="btn-custom notificationdetail_btn">View</a>
+                                                </div>
+                                                <div class="book-package">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*  <div class="col-md-12 col-lg-12 col-xl-12">
+                            <div class="book-card">
+                            <p>@Html.Raw(upcoming.Description)</p>
+                            </div>
+                            </div> *@
+                                </div>
+                            </div>
+                            counter++;
+                        }
+
+                        @if (Model.TotalItem > 2)
+                        {
+                            <div class="pagination-outer">
+                                <ul class="pagination">
+
+                                    <!--prev.-->
+                                    @if (Model.CurrentPageIndex == 1)
+                                    {
+                                        <li class="page-item disabled">
+                                            <span class="page-link"><i class="fa fa-angle-left"></i> Prev</span>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="page-item"><a class="page-link pagingnotification" data-indexcurrentpage="@(Model.CurrentPageIndex - 1)"><i class="fa fa-angle-left"></i> Prev</a></li>
+                                    }
+                                    <!--pages-->
+                                    @{
+                                        var pageStart = 1;
+                                        var pageEnd = Model.TotalPages;
+                                        // divided into page blocks
+                                        if (Model.TotalPages > Model.TotalPagesBlockSize)
+                                        {
+                                            pageStart = Model.PageNo;
+                                            pageStart = pageStart - 1;
+                                            if ((Model.TotalPages - pageStart) < Model.TotalPagesBlockSize)
+                                            {
+                                                pageStart = pageStart - (Model.TotalPagesBlockSize - (Model.TotalPages - pageStart));
+                                            }
+                                            pageEnd = Model.TotalPagesBlockSize + pageStart;
+                                            pageStart = pageStart == 0 ? 1 : pageStart;
+                                        }
+                                        // create page no.
+                                        while (pageStart <= pageEnd)
+                                        {
+                                            var activePageNo = Model.PageNo == pageStart ? "active" : "";
+                                            <li class="page-item @activePageNo"><a class="page-link pagingnotification " href="javascript:void(0)" data-indexcurrentpage="@pageStart">@pageStart</a></li>
+
+                                            pageStart = pageStart + 1;
+                                        }
+                                    }
+                                    <!--next-->
+                                    @{
+                                        var countTotl = Model.TotalItem / 3;
+                                        if ((countTotl) == Model.CurrentPageIndex)
+                                        {
+                                            <li class="page-item disabled"><a class="page-link">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item"><a class="page-link pagingnotification" data-indexcurrentpage="@(Model.CurrentPageIndex + 1)">Next <i class="fa fa-angle-right"></i></a></li>
+                                        }
+                                    }
+                                </ul>
+                            </div>
+                        }
+
+
+
+
+                    }
+                    else
+                    {
+
+                        <div class="row bookings-block-dashboard no-record-section">
+                            <div class="col-sm-12">
+                                <span>No record found</span>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+        <!-- notification details Popup -->
+        <div class="modal fade custom-popup rating-custom-popup" id="notification-details-popup" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                </div>
+            </div>
+        </div>
+        <!-- notification details Popup -->
+
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $(".notificationdetail_btn").on("click", function () {
+            GetNotificationDetails($(this).attr('href'), this)
+        });
+
+    });
+
+    function GetNotificationDetails(actionlink, currentobj) {
+        $.get(actionlink, {}, function (res) {
+            $("#notification-details-popup .modal-content").html('');
+            $("#notification-details-popup .modal-content").html(res);
+            //-----get notification count-----------------------------------
+            $.get('@(SiteKeys.Domain + "/Dashboard/GetNotificationCount")', function (data) {
+                $('#notificationCount').html(data != "0" ? data : "");
+            });
+        })
+    }
+</script>

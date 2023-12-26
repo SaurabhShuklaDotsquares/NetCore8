@@ -1,0 +1,226 @@
+﻿@using TCP.Core.Code.LIBS;
+@using TCP.Web.ViewModels;
+@{
+    var domain = @SiteKeys.Domain;
+}
+<div class="dashboard-menu">    
+    <div class="user-block">
+        <form enctype="multipart/form-data">
+            <i class="user-img-dsh">
+                <div class="edit-img-block">
+                    <input type="file" name="formfiles" id="user-file-id">
+                </div>
+                @if (@CurrentFrontUser.ImageName != null && @CurrentFrontUser.ImageName != "/images/demo_user.jpg")
+                {
+                    <img src="@CurrentFrontUser.ImageName" id="user-profile-img" align="dashboard-user">
+                }
+                else
+                {
+                    <img src="@SiteKeys.ImageDomain@CurrentFrontUser.ImageName" id="user-profile-img" align="dashboard-user">
+
+                }
+            </i>
+            <span>@CommonFileViewModel.GetFullName(CurrentFrontUser.FirstName??"",CurrentFrontUser.LastName??"") </span>
+            <p>Personal Profile</p>
+
+        </form>
+    </div>
+
+    <div class="dash-link">
+        <ul id="user-dash-ul-link">
+            <li class="active" linkname="Dashboard"><a href="/Dashboard/Index"><i><img src="@domain/images/dash-icon.png" align="dash-icon"></i> Dashboard</a></li>
+            <li><a href="javascript:void(0);" id="mynotifications-id" linkval="/Dashboard/MyNotifications" linkname="My Notifications">
+                    <i><img src="@domain/images/dash-icon5.png" align="dash-icon"></i> My Notifications <span class="badge badge-danger ml-2" id="notificationCount"></span>
+                </a>
+            </li>
+            <li><a href="javascript:void(0);" id="mybooking-id" linkval="/Dashboard/MyBooking" linkname="My Bookings"><i><img src="@domain/images/dash-icon1.png" align="dash-icon"></i> My Bookings</a></li>
+            <li><a href="javascript:void(0);" id="myprofile-id" linkval="/Dashboard/MyProfile" linkname="My Profile"><i><img src="@domain/images/dash-icon2.png" align="dash-icon"></i> My Profile</a></li>
+            <li><a href="javascript:void(0);" id="contactus-id" linkval="/Dashboard/ContactUs" linkname="Contact Us"><i><img src="@domain/images/dash-icon3.png" align="dash-icon"></i> Contact Us</a></li>
+            <li><a id="chngpwd-id" linkval="/Dashboard/ChangePassword" href="javascript:void(0);" linkname="Change Password"><i><img src="@domain/images/dash-icon4.png" align="dash-icon"></i> Change Password</a></li>
+            <li><a href="/Account/SignOut"><i><img src="@domain/images/dash-icon5.png" align="dash-icon"></i> Sign Out</a></li>
+        </ul>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+        logout1();
+        setTimeout(function () {
+            //<---------------- Booking history and my profile redirection work from (header & footer)  ------------------------------>
+            if (localStorage.getItem("MenulinkKey") == "mybooking") {
+                GoToMyBooking_All();
+                localStorage.setItem("MenulinkKey", "");
+            }
+            if (localStorage.getItem("MenulinkKey") == "myprofile") {
+                $("#myprofile-id").click();
+                localStorage.setItem("MenulinkKey", "");
+            }
+        }, 1000)
+       
+        //<---------------- profile picture upload work ------------------------------>
+        $(document).on('change', '#user-file-id', function (e) {
+            logout1();
+            var reader = new FileReader();
+            var files = event.target.files;
+            if (files.length > 0) {
+                var extension = files[0].name.substr((files[0].name.lastIndexOf('.') + 1));
+                if (extension != "jpeg" && extension != "jpg" && extension != "png" && extension != "JPEG" && extension != "JPG" && extension != "PNG") {
+                    Global.ShowMessage('Please choose jpeg/jpg/ png file.', Global.MessageType.Error);
+                    $('#user-profile-img').val('');
+                    return false;
+                }
+
+                reader.onload = function () {
+                    var output = document.getElementById('user-profile-img');
+                    output.src = reader.result;
+
+                    //<------------ profile picture updation in DB -------------->
+                    var formData = new FormData();
+                    formData.append('formfiles', files[0]);
+                    $.ajax({
+                        url: '/Dashboard/UpdateProfileImg',
+                        type: 'POST',
+                        data: formData,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            if (!data.isSuccess) {
+                                Global.ShowMessage(data.errorMessage, Global.MessageType.Error);
+                            }
+                            else {
+                                Global.ShowMessage(data.message, Global.MessageType.Success);
+
+                            }
+                        }
+                    });
+                };
+                reader.readAsDataURL(event.target.files[0]);
+            }
+        });
+
+
+        //<----------------- Change Password work ------------------------------------------------------>
+        $(document).on("click", "#chngpwd-id", function (event) {
+            logout1();
+            SendRequest($(this).attr('linkval'), $(this).attr('linkname'), $(this).parent('li'))
+        });
+
+        //<----------------- MY PROFILE work ------------------------------------------------------>
+        $(document).on("click", "#myprofile-id", function (event) {
+            logout1();
+            SendRequest($(this).attr('linkval'), $(this).attr('linkname'), $(this).parent('li'))
+        });
+        //<----------------- Contact Us work ------------------------------------------------------>
+        $(document).on("click", "#contactus-id", function (event) {
+            logout1();
+            SendRequest($(this).attr('linkval'), $(this).attr('linkname'), $(this).parent('li'))
+        });
+        //<----------------- My Booking work ------------------------------------------------------>
+        $(document).on("click", "#mybooking-id", function (event) {
+            logout1();
+            SendRequest($(this).attr('linkval'), $(this).attr('linkname'), $(this).parent('li'))
+        });
+        //<----------------- My Notifications work ------------------------------------------------------>
+        $(document).on("click", "#mynotifications-id", function (event) {
+            logout1();
+            SendRequest($(this).attr('linkval'), $(this).attr('linkname'), $(this).parent('li'))
+        });
+
+        //-----get notification count-----------------------------------
+        $.get('@(SiteKeys.Domain + "/Dashboard/GetNotificationCount")', function (data) {
+            $('#notificationCount').html(data != "0" ? data : "");
+        });
+    });
+
+    function SetActive_Breadcrumb(linkname, activeli) {
+        
+        $("#breadcrumb-li-txt").text('');
+        $("#dash-heading").text('');
+        document.querySelectorAll('#user-dash-ul-link li.active').forEach(li => li.classList.remove('active'));
+        $("#breadcrumb-li-txt").text(linkname);
+        $("#dash-heading").text(linkname);
+        $(activeli).addClass('active');
+    }
+
+    function SendRequest(linkval, linkname, activeli) {
+        $.get(linkval, null, function (result) {
+            $(".dashboard-col").empty();
+            $(".dashboard-col").append(result);
+            SetActive_Breadcrumb(linkname, activeli);
+
+        });
+    }
+
+    //My booking Pagination
+    $(document).off("click", ".paginglogic").on("click", ".paginglogic", function () {
+        logout1();
+        var data = $(this).data('indexcurrentpage');
+        getfilterpaginationdata(data);
+    });
+    $(document).off("click", ".pagingupcoming").on("click", ".pagingupcoming", function () {
+        logout1();
+        var data = $(this).data('indexcurrentpage');
+        getfilterpaginationupcomingdata(data);
+    });
+    function getfilterpaginationdata(values) {
+        logout1();
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/Dashboard/BindPartialFilterPagination")?currentpage=' + values + "&_type=all";
+
+        $.get(url, function (data) {
+            $('#dvBooking').html(data);
+            $('#profile-tab').trigger('click');
+            //$("#myTab").find(".nav-link").removeClass("active");
+            $('#front_loader').hide();
+        });
+
+    }
+    function getfilterpaginationupcomingdata(values) {
+        logout1();
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/Dashboard/BindPartialFilterPagination")?currentpage=' + values + "&_type=upcoming";
+
+        $.get(url, function (data) {
+            $('#dvBooking').html(data);
+            $('#front_loader').hide();
+        });
+
+    }
+
+    $(document).off("click", ".pagingnotification").on("click", ".pagingnotification", function () {
+        logout1();
+        var data = $(this).data('indexcurrentpage');
+        getfilterpaginationnotificationdata(data);
+    });
+    function getfilterpaginationnotificationdata(values) {
+        $('#front_loader').show();
+        var url = '@(SiteKeys.Domain + "/Dashboard/BindPartialFilterNotificationPagination")?currentpage=' + values;
+
+        $.get(url, function (data) {
+            $('#dvNotification').html(data);
+            $('#front_loader').hide();
+        });
+        logout1();
+    }
+    function logout1() {
+        var url = "";
+        $.ajax({
+            url: "@SiteKeys.Domain" + '/Account/CheckUserStatus',
+            type: 'POST',
+            success: function (result) {
+                
+                if (result.isSuccess == false) {
+                    window.location.reload();
+                }
+            },
+            error: function (result) {
+                //Global.ShowMessage(result.data == null ? "Undefiend request" : Global.MessageType.Error);
+            },
+            cache: false,
+            contentType: false,
+            processData: false
+        });
+    }
+</script>

@@ -1,0 +1,200 @@
+﻿.align-right {
+    text-align: right;
+    margin-top: 2%;
+}
+
+.content-header, .content {
+    padding-top: 3px;
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.input-validation-error {
+    border: solid 1px #ff0000;
+}
+
+.modal-backdrop {
+    opacity: 0.5 !important;
+}
+
+
+
+.icheck-primary > input:first-child:checked + input[type="hidden"] + label::before, .icheck-primary > input:first-child:checked + label::before {
+    background-color: #29333d;
+    border-color: #29333d;
+}
+
+.login-card-body .icheck-primary label {
+    font-weight: normal;
+}
+
+    .login-card-body .icheck-primary label:focus {
+        outline: none;
+    }
+
+.login-card-body .input-group .input-group-text, .register-card-body .input-group .input-group-text {
+    color: #29333d;
+}
+
+.forgot-pass a {
+    color: #29333d;
+    font-weight: 600;
+}
+
+.btn-submit {
+    background-color: #E5422B;
+    color: #ffffff;
+    border: none;
+}
+
+    .btn-submit:hover {
+        background-color: #dc331b;
+    }
+
+.login-card-body input, .login-card-body select.form-control {
+    border-radius: 3px !important;
+    border: 1px solid rgba(96, 125, 159, 0.25);
+    border-right: 1px solid rgba(96, 125, 159, 0.25) !important;
+    background-color: #fbfcfe;
+    -webkit-box-shadow: inset 0 1px 4px -1px rgba(96, 125, 159, 0.25);
+    box-shadow: inset 0 1px 4px -1px rgba(96, 125, 159, 0.25);
+    width: 100% !important;
+    padding-right: 40px;
+}
+
+    .login-card-body input:focus, .login-card-body select:focus {
+        box-shadow: none;
+        border: 1px solid rgba(96, 125, 159, 0.50);
+    }
+
+.login-card-body .input-group .input-group-append {
+    position: absolute;
+    right: 0px;
+    top: 5px;
+    border: none;
+    z-index: 99;
+}
+
+    .login-card-body .input-group .input-group-append .input-group-text {
+        border: none;
+    }
+
+.login-card-body .input-group {
+    position: relative;
+    display: inherit;
+}
+
+#Email-error, #Password-error, .required-erro {
+    font-size: 12px;
+}
+
+.forgot-btns .btn {
+    display: inline-block;
+    vertical-align: top;
+    border-radius: 0px;
+}
+
+.forgot-btns {
+    margin: auto;
+    text-align: center;
+}
+
+    .forgot-btns .btn.btn-gray {
+        background-color: rgba(96, 125, 159, 0.35);
+        color: #3f4d5a;
+        margin-right: 10px;
+    }
+
+        .forgot-btns .btn.btn-gray:hover {
+            background-color: rgba(96, 125, 159, 0.50);
+        }
+
+.forgot-pass {
+    text-align: right;
+    font-size: 14px;
+    text-decoration: underline;
+    margin-top: 10px;
+}
+
+span.status.Active {
+    background-color: #27AB83;
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    border-radius: 100%;
+    border: 1px solid transparent;
+}
+
+span.status.Disabled {
+    background-color: #29333d;
+    display: inline-block;
+    width: 15px;
+    height: 10px;
+    border-radius: 100%;
+    border: 1px solid transparent;
+}
+
+.hidden {
+    display: none;
+}
+
+.add-minus-col.close-box a i {
+    color: #c93636;
+}
+
+.add-minus-col.close-box {
+    position: relative;
+    /* right: -14px; */
+    top: -6px;
+}
+
+.add-minus-col {
+    color: #b9bdbd;
+    float: right;
+    font-size: 21px;
+}
+
+.basicimages-box .delete-photo {
+    background-color: transparent;
+    padding: 0px;
+    width: 100% !important;
+    max-width: 100%;
+    overflow: unset !important;
+    text-overflow: ellipsis;
+    position: relative;
+    font-size: 14px;
+    padding-right: 20px;
+    text-align: left;
+    cursor: inherit;
+}
+
+.border-dark-shadow {
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.125), 0 1px 3px rgb(51, 64, 77);
+}
+
+.btn-postion {
+    position: relative;
+}
+
+    .btn-postion span {
+        background-color: #33404d;
+        border-radius: 50%;
+        color: #fff;
+        font-size: 10px;
+        line-height: 20px;
+        position: absolute;
+        left: -8px;
+        top: -8px;
+        text-align: center;
+        width: 20px;
+    }
+
+@media only screen and (max-width: 991px) {
+    .crd-mrg {
+        margin-top: 20px;
+        max-width: 100%;
+        flex: 0 0 100%;
+    }
+}

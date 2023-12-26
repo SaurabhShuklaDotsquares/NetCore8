@@ -1,0 +1,81 @@
+﻿@using MVE.Core.Models.Others;
+@using MVE.Core.Code.LIBS;
+@model MVE.Admin.ViewModels.AccomodationViewModel
+@{
+    ViewData["Title"] = "Accomodation Type";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+}
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Accomodation Type</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Accomodation Type</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <partial name="_Notification" />
+        <input type="hidden" asp-for="Id" />
+
+        <div id="MessageDiv" class="alert alert-success alert-dismissable" style="display:none"> </div>
+        <div class="card-header">
+            <div class="card-tools">
+                <a oncontextmenu="return false" id="AddEdit" data-toggle="modal" asp-action="AddEdit" asp-controller="AccomodationType" data-target="#modal-add-edit-accomodation" class="btn btn-block bg-gradient-success">
+                    <i class="fa fa-plus"></i> Add New
+                </a>
+            </div>
+        </div>
+        <div class="card-body">
+            <table id="grid-accomodation-details" class="table table-bordered custom-grid-table table-condensed">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th width="2%">Accomodation ID</th>
+                        <th width="32%">Name</th>
+                        <th width="32%">Description</th>
+                        <th width="32%">Created Date</th>
+                        <th>Status</th>
+                        <th width="15%">Action</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+                <tfoot></tfoot>
+            </table>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+        </div>
+        <!-- /.card-footer-->
+    </div>
+    <!-- /.card -->
+
+</section>
+
+
+@{
+    var addEditaccomodationModel = new Modal { ID = "modal-add-edit-accomodation", AreaLabeledId = "modal-add-edit-accomodation-label", Size = ModalSize.Medium };
+    var deleteaccomodationModel = new Modal { ID = "modal-delete-accomodation", AreaLabeledId = "modal-delete-accomodation-label", Size = ModalSize.Medium };
+}
+<partial name="_Modal" model="addEditaccomodationModel" />
+<partial name="_Modal" model="deleteaccomodationModel" />
+@section scripts{
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/custom/accomodation/accomo-index.js" asp-append-version="true"></script>
+
+}

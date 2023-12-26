@@ -1,0 +1,82 @@
+﻿@model TCP.Web.ViewModels.BillingViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = null;
+}
+<form method="post" asp-controller="Dashboard" asp-action="BillingEdit" id="frm-user-billing">
+    <input type="hidden" asp-for="BillingId" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="req">Address 1</label>
+                <input type="text" asp-for="Address1" maxlength="200" placeholder="Enter Address 1" class="form-control">
+                <span asp-validation-for="Address1" class="text-danger"></span>
+
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="form-group">
+                <label class="req">Address 2</label>
+                <input type="text" asp-for="Address2" maxlength="200" placeholder="Enter Address 2" class="form-control">
+                <span asp-validation-for="Address2" class="text-danger"></span>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="req">Town</label>
+                <input type="text" asp-for="TownorCity" maxlength="100" placeholder="Enter Your Town" class="form-control">
+                <span asp-validation-for="TownorCity" class="text-danger"></span>
+
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="req">Country</label>
+                <select asp-for="CountryId" id="CountryId" class="form-control" asp-items="@Model.CountryList"></select>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="req">County/State</label>
+                <select id="StateId" class="form-control" asp-for="StateId">
+                    <option value="0">-- Select --</option>
+                    <!-- Options for states will be loaded dynamically -->
+                </select>
+                <span asp-validation-for="StateId" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Zip Code</label>
+                <input type="text" asp-for="ZipCode" maxlength="50" placeholder="Enter Zip Code" class="form-control">
+            </div>
+        </div>
+    </div>
+    <div class="btn-block2 text-right">
+        <button type="submit" class="btn-custom" id="billing-save">Update</button>
+    </div>
+</form>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+<script src="~/js/custom/dashboard/myprofile.js" asp-append-version="true"></script>
+
+<script>
+
+    $(document).ready(function () {
+        if ($("#CountryId").val() > 0) {
+            $("#CountryId").trigger('change');
+            setTimeout(function () {
+                if ('@Model.StateId' != null && '@Model.StateId' > 0) {
+                    $("#StateId").val('@Model.StateId')
+                }
+            }, 1000)
+        }
+
+    });
+</script>

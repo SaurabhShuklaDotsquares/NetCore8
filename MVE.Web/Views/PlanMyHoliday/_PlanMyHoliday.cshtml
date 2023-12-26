@@ -1,0 +1,520 @@
+﻿@using TCP.Core.Code.LIBS;
+@model TCP.Web.ViewModels.PlanMyHolidayViewModel
+
+@{
+    ViewData["Title"] = "Plan My Holiday";
+}
+
+<style>
+    .loader {
+        border: 16px solid #f3f3f3;
+        border-radius: 50%;
+        border-top: 16px solid #3498db;
+        width: 100px;
+        height: 100px;
+        -webkit-animation: spin 2s linear infinite; /* Safari */
+        animation: spin 2s linear infinite;
+        float: right;
+        margin-top: 115px;
+    }
+
+    /* Safari */
+    @@-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @@keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+    }
+
+    #step1where .plan-holiday-block .form-group {
+        margin-bottom: 10px;
+    }
+</style>
+<script>
+    $(document).ready(function () {
+        $('#startloader').hide();
+    });
+</script>
+<form method="post" asp-action="PlanMyHoliday" asp-controller="PlanMyHoliday" id="form-planymyholiday">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><img src="@SiteKeys.Domain/images/close-btn.png" alt=""></button>
+
+    <div class="plan-my-holiday-block d-md-flex">
+
+        <div class="plan-my-holiday-left">
+            <div class="plan-holiday-info">
+                <a href="@SiteKeys.Domain" class="logo"><img src="@Model.LogoImageName" alt="logo"></a>
+                <div class="plan-holiday-step">                  
+                    <h2>How It Works</h2>
+                    <ul class="d-flex">
+                        <li>
+                            <i><img src="@SiteKeys.Domain/images/stepIcon.png" alt="logo"></i>
+                            <p>Tell us details of your holiday plan.</p>
+                        </li>
+                        <li>
+                            <i><img src="@SiteKeys.Domain/images/stepIcon1.png" alt="logo"></i>
+                            <p>Get multiple quotes from expert agents, compare & customize further.</p>
+                        </li>
+                        <li>
+                            <i><img src="@SiteKeys.Domain/images/stepIcon2.png" alt="logo"></i>
+                            <p>Select & book best deal.</p>
+                        </li>
+                    </ul>
+                    <span class="callInfoBox">
+                        <small>Call Us for details</small>
+                        @Model.SupportMobile
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="plan-my-holiday-right d-md-flex align-items-center justify-content-center">
+            <!--- step 1-------->
+            <div class="plan-my-holiday-form" id="step1where">
+                <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer.png" alt="map-pointer"></i>
+                <div class="plan-holiday-block">
+                    @if (Model != null && Model.Questionslist != null && Model.Questionslist.Count > 0)
+                    {
+                        var sec1Queslist = Model.Questionslist.Where(x => x.SectionId == 1).ToList();
+                        for (int i = 0; i < sec1Queslist.Count; i++)
+                        {
+                            if (sec1Queslist[i].QuesKey == "Where")
+                            {
+                                <h4>@sec1Queslist[i].QuestionOrOptionName</h4>
+                                foreach (var option1 in sec1Queslist[i].Optionslist)
+                                {
+                                   @* <div class="form-group">
+                                        <label class="req">@option1.Option</label>
+                                        <input type="text" name="@option1.QuesKey" id="@option1.QuesKey" class="form-control" placeholder="@option1.Option">
+
+                                        <span id="@option1.QuesKey-error" class="text-danger"></span>
+
+                                    </div>*@
+                                    <div class="form-group">
+                                        <label class="req">@option1.Option</label>
+                                        <select name="@option1.QuesKey" id="@option1.QuesKey" class="form-control select2" placeholder="@option1.Option">
+                                             <option value="">--Select--</option>
+                                            @foreach (var destination in Model.DestinationList)
+                                            {
+                                                <option value="@destination.Value">@destination.Text</option>
+                                            }
+                                        </select>
+                                        <span id="@option1.QuesKey-error" class="text-danger"></span>
+
+                                    </div>
+                                }
+                            }
+
+                            if (sec1Queslist[i].QuesKey == "DepartureDateType")
+                            {
+                                <div class="form-group">
+                                    <label class="req">@sec1Queslist[i].QuestionOrOptionName</label>
+                                    <div class="form-group-date d-flex align-items-center" id="datetype-div">
+                                        @foreach (var option2 in sec1Queslist[i].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="radio_@option2.Id" name="@sec1Queslist[i].QuesKey" onclick="DepartureTypeShowHide('@option2.QuesKey')" value="@option2.Option">
+                                                <label for="radio_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+                                        <span id="@sec1Queslist[i].QuesKey-error" class="text-danger"></span>
+                                    </div>
+
+                                </div>
+
+                                <div class="form-group fixeddiv">
+                                    <label>Departure Date</label>
+                                    <input type="text" name="DepartureDate" id="DepartureDate" class="form-control datepicker" placeholder="date" readonly>
+                                </div>
+                                <div class="form-group flexiblediv">
+                                    <label>Departure Month</label>
+                                    @* <input type="text" name="DepartureMonth" id="DepartureMonth" class="form-control" placeholder="month"> *@
+                                    <input type="text" name="DepartureMonth" id="DepartureMonth" class="form-control datepicker" placeholder="month" readonly>
+                                    @*<select name="DepartureMonth" id="DepartureMonth" class="form-control">
+                        @foreach (var month in ViewBag.Months)
+                        {
+                        <option value="@month">@month</option>
+                        }
+                        </select>*@
+                                </div>
+                                <div class="form-group flexiblediv">
+                                    <label>Departure Week</label>
+                                    @*<input type="number" name="DepartureWeek" id="DepartureWeek" class="form-control" placeholder="week">*@
+                                    <select name="DepartureWeek" id="DepartureWeek" class="form-control">
+                                        <option value="1">1 Week</option>
+                                        <option value="2">2 Week</option>
+                                        <option value="3">3 Week</option>
+                                        <option value="4">4 Week</option>
+                                        <option value="5">5 Week</option>
+                                    </select>
+                                </div>
+                                <div class="form-group anytimediv">
+                                    <label>Departure Days</label>
+                                    <input type="number" maxlength="4" min="2" max="9999" onblur="if(this.value<02||this.value<2)this.value='';" name="DepartureDays" onKeyPress="if(this.value.length==4) return false;" oninput="this.value=this.value.replace(/[^0-9]/g,'');" id="DepartureDays" class="form-control" placeholder="days" value="2">
+                                    @*<input type="number" maxlength="4" name="DepartureDays" oninput="this.value=this.value.replace(/[^0-9]/g,'');" id="DepartureDays" class="form-control" placeholder="days" value="2">*@
+                                </div>
+                                <span id="err_msg" class="text-danger"></span>
+                            }
+
+                        }
+                    }
+                    <input type="button" class="btn-custom w-100" onclick="NextManageWizard('step2contact')" value="Next" />
+                </div>
+            </div>
+
+
+            <!--- step 2-------->
+
+            <div class="plan-my-holiday-form" id="step2contact">
+                <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer1.png" alt="map-pointer"></i>
+                <div class="plan-holiday-block">
+
+                    @if (Model != null && Model.Questionslist != null && Model.Questionslist.Count > 0)
+                    {
+                        var sec2Queslist = Model.Questionslist.Where(x => x.SectionId == 2).ToList();
+                        <h4>How do we contact you?</h4>
+                        @for (int ii = 0; ii < sec2Queslist.Count; ii++)
+                        {
+                            if (sec2Queslist[ii].QuesKey == "Email")
+                            {
+                                <div class="form-group">
+                                    <label class="req">@sec2Queslist[ii].QuesKey</label>
+                                    <div class="inputFildBlock">
+                                        <i class="inputIcon"><img src="@SiteKeys.Domain/images/envelop-icon.png" alt="logo"></i>
+                                        <input type="text" name="@sec2Queslist[ii].QuesKey" id="@sec2Queslist[ii].QuesKey" class="form-control" placeholder="@sec2Queslist[ii].QuestionOrOptionName">
+                                    </div>
+                                    <span id="email_error" class="text-danger"></span>
+                                </div>
+                            }
+                            if (sec2Queslist[ii].QuesKey == "Phone")
+                            {
+                                <div class="form-group">
+                                    <label class="req">@sec2Queslist[ii].QuesKey</label>
+                                    <div class="inputFildBlock">
+                                        <i class="inputIcon"><img src="@SiteKeys.Domain/images/phone-icon3.png" alt="logo"></i>
+                                        <input type="text" maxlength="16" oninput="this.value=this.value.replace(/[^0-9+]/g,'');" name="PhoneNumber" id="PhoneNumber" class="form-control" placeholder="@sec2Queslist[ii].QuestionOrOptionName">
+                                    </div>
+                                    <span id="phone_error" class="text-danger"></span>
+                                </div>
+                            }
+                        }
+                    }
+
+                    <div class="back-next-btn d-flex align-items-center justify-content-between">
+                        <input type="button" class="btn-custom outline-btn" onclick="BackManageWizard('step1where')" value="Back" />
+                        <input type="button" class="btn-custom" onclick="NextManageWizard('step3tellus')" value="Next" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--- step 3-------->
+
+            <div class="plan-my-holiday-form" id="step3tellus">
+                <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer2.png" alt="map-pointer"></i>
+                <div class="plan-holiday-block">
+                    <h4>Great! Tell Us What You Prefer</h4>
+
+                    @if (Model != null && Model.Questionslist != null && Model.Questionslist.Count > 0)
+                    {
+                        var sec3Queslist = Model.Questionslist.Where(x => x.SectionId == 3).ToList();
+
+                        for (int j = 0; j < sec3Queslist.ToList().Count; j++)
+                        {
+                            @if (sec3Queslist[j].QuesKey == "HotelCategoryRating")
+                            {
+                                <label class="req">
+                                    @sec3Queslist[j].QuestionOrOptionName <r class="text-danger">*</r>
+                                </label>
+                                <div class="form-group">
+                                    <div class="category-check-list d-flex align-items-center" id="hotelrating-div">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            @* <label class="customcheckBox">
+                            @option2.Option
+                            <input type="checkbox" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                            <span class="checkmarkhd"></span>
+                            </label> *@
+                                            <label class="customcheckBox customcheckradio">
+                                                @option2.Option
+                                                <input type="radio" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                    <span id="rate_error" class="text-danger"></span>
+                                </div>
+                            }
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "Accommodations")
+                            {
+                                <div class="form-group">
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+                                   
+                                    <div class="form-group-date d-flex align-items-center">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="acc_@option2.Id" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                                                <label for="acc_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "DomesticFlights")
+                            {
+                                <div class="form-group">
+
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+                                    <div class="form-group mt-2 d-md-flex align-items-center">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            <label class="customcheckBox customcheckradio">
+                                                @option2.Option
+                                                <input type="radio" checked="checked" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "Budget")
+                            {
+                                <div class="form-group">
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+                                    <div class="inputFildBlock">
+                                        <i class="inputIcon"><img src="@SiteKeys.Domain/images/budget-icon.png" alt="logo"></i>
+                                        <input type="text" oninput="this.value=this.value.replace(/[^0-9]/g,'');" maxlength="10" name="BudgetWithoutAirfare" class="form-control" title="@sec3Queslist[j].QuestionOrOptionName" placeholder="@sec3Queslist[j].QuesKey">
+                                    </div>
+                                </div>
+                            }
+
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "NumberOfTravellers")
+                            {
+                                <div class="form-group">
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+
+                                    <div class="row">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            <div class="col-xl-4 col-lg-12 col-md-12">
+                                                <div class="form-group mrgBot">
+                                                    <label>@option2.Option</label>
+                                                    <select name="@option2.QuesKey" class="form-control">
+                                                        @foreach (var item in ViewBag.NoOfTravellers)
+                                                        {
+                                                            if (@option2.QuesKey == "Adults" && item > 0)
+                                                            {
+                                                                <option value="@item">@item</option>
+                                                            }
+                                                            else if (@option2.QuesKey != "Adults")
+                                                            {
+
+                                                                <option value="@item">@item</option>
+
+                                                            }
+                                                        }
+                                                    </select>
+
+                                                </div>
+
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "BookWhen")
+                            {
+                                <div class="form-group">
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+
+                                    <div class="form-group-date d-flex align-items-center">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="optionbook_@option2.Id" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                                                <label for="optionbook_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+                                    </div>
+
+                                </div>
+                            }
+                            @if (sec3Queslist[j].QuesKey?.Trim() == "CabForLocalSightseeing")
+                            {
+                                <div class="form-group">
+
+                                    <label>@sec3Queslist[j].QuestionOrOptionName</label>
+                                    <div class="form-group mt-2 d-md-flex align-items-center">
+                                        @foreach (var option2 in sec3Queslist[j].Optionslist)
+                                        {
+                                            <label class="customcheckBox customcheckradio">
+                                                @option2.Option
+                                                <input type="radio" checked="checked" name="@sec3Queslist[j].QuesKey" value="@option2.Option">
+                                                <span class="checkmarkhd"></span>
+                                            </label>
+                                        }
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                    <div class="back-next-btn d-flex align-items-center justify-content-between">
+                        <input type="button" class="btn-custom outline-btn" onclick="BackManageWizard('step2contact')" value="Back" />
+                        <input type="button" class="btn-custom" onclick="NextManageWizard('step4almost')" value="Next" />
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--- step 4-------->
+
+            <div class="plan-my-holiday-form" id="step4almost">
+                <i class="map-icon"><img src="@SiteKeys.Domain/images/map-pointer3.png" alt="map-pointer"></i>
+                <div class="plan-holiday-block">
+                    <h4>Almost Done!</h4>
+
+                    @if (Model != null && Model.Questionslist != null && Model.Questionslist.Count > 0)
+                    {
+                        Model.Questionslist = Model.Questionslist.Where(x => x.SectionId == 4).ToList();
+
+                        for (int j = 0; j < Model.Questionslist.ToList().Count; j++)
+                        {
+
+                            @if (Model.Questionslist[j].QuesKey == "TypeOfTrip")
+                            {
+                                <div class="form-group">
+                                    <label>@Model.Questionslist[j].QuestionOrOptionName</label>
+                                    <div class="form-group-date d-flex align-items-center">
+                                        @foreach (var option2 in Model.Questionslist[j].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="optiontrip_@option2.Id" name="@Model.Questionslist[j].QuesKey" value="@option2.Option">
+                                                <label for="optiontrip_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.Questionslist[j].QuesKey == "PreferredTimeToCallYou")
+                            {
+                                <div class="form-group">
+                                    <label>@Model.Questionslist[j].QuestionOrOptionName</label>
+                                    <div class="form-group-date d-flex align-items-center">
+                                        @foreach (var option2 in Model.Questionslist[j].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="Anytime_@option2.Id" name="@Model.Questionslist[j].QuesKey" value="@option2.Option">
+                                                <label for="Anytime_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Mention your Time zone</label>
+                                        <select class="form-control" id="InputTimeZone" name="InputTimeZone">                                               
+                                           @foreach (var tzone in Model.TimezoneList)
+                                           {
+                                               <option value="@tzone.Value">@tzone.Text</option>
+                                           }
+                                         </select>
+                                       @* <div class="inputFildBlock">
+                                            <input type="text" class="form-control" maxlength="40" name="InputTimeZone" placeholder="Mention your Time zone">
+                                             <select class="form-control" id="InputTimeZone" name="InputTimeZone">                                               
+                                               @foreach (var tzone in Model.TimezoneList)
+                                               {
+                                                   <option value="@tzone.Value">@tzone.Text</option>
+                                               }
+                                             </select>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.Questionslist[j].QuesKey == "YourAge")
+                            {
+                                <div class="form-group">
+                                    <label>@Model.Questionslist[j].QuestionOrOptionName</label>
+                                    <select class="form-control" id="ddl_@Model.Questionslist[j].QuesKey" name="@Model.Questionslist[j].QuesKey">
+                                        @foreach (var option2 in Model.Questionslist[j].Optionslist)
+                                        {
+                                            <option value="@option2.Option">@option2.Option</option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+
+                            @if (Model.Questionslist[j].QuesKey == "RequiredInYourLandPackage")
+                            {
+                                <div class="form-group">
+                                    <label>@Model.Questionslist[j].QuestionOrOptionName</label>
+                                    <div class="form-group-date d-flex align-items-center">
+                                        @foreach (var option2 in Model.Questionslist[j].Optionslist)
+                                        {
+                                            <div class="label-radio">
+                                                <input type="radio" id="Honeymoon_@option2.Id" name="@Model.Questionslist[j].QuesKey" value="@option2.Option">
+                                                <label for="Honeymoon_@option2.Id">@option2.Option</label>
+                                            </div>
+                                        }
+
+                                    </div>
+                                </div>
+                            }
+                            @if (Model.Questionslist[j].QuesKey == "AdditionalRequirements")
+                            {
+
+                                @* <label>@Model.Questionslist[j].QuestionOrOptionName</label> *@
+
+                                @foreach (var option2 in Model.Questionslist[j].Optionslist)
+                                {
+                                    <div class="form-group">
+                                        <label>@option2.Option</label>
+                                        @if (option2.QuesKey=="Other")
+                                        {
+                                            <textarea type="text" name="@option2.QuesKey" class="form-control" placeholder="@option2.OptionDescription"></textarea>
+
+                                        }
+                                        else
+                                        {
+                                            <input type="text" name="@option2.QuesKey" class="form-control" placeholder="@option2.OptionDescription">
+
+                                        }
+                                    </div>
+                                }
+
+                            }
+                        }
+                    }
+                    <div class="back-next-btn d-flex align-items-center justify-content-between">
+                        <input type="button" class="btn-custom outline-btn" onclick="BackManageWizard('step3tellus')" value="Back" />
+                        <button id="plan_btn_submit" class="btn-custom">Submit</button>
+                        @* <button type="button" id="plan_btn_submit" onclick="SettoSubmit('plan_btn_submit')" class="btn-custom">Submit</button> *@
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</form>
+
+
+<script src="@SiteKeys.Domain/js/custom/planmyholiday/planmyholiday-index.js" asp-append-version="true"></script>
+
+

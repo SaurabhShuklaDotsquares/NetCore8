@@ -1,0 +1,155 @@
+﻿@model MVE.Admin.ViewModels.Notifications.ManageNotificationViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+
+
+@{
+    ViewData["Title"] = "Notification";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section styles{
+    <link rel="stylesheet" href="~/lib/DataTables-1.10.20/css/dataTables.bootstrap4.min.css" />
+    <link href="~/css/jquery.fancybox.css" rel="stylesheet" />
+    <link href="~/css/bootstrap-switch.css" rel="stylesheet" />
+    <link href="~/lib/select2/css/select2.css" rel="stylesheet" />
+    <link href="~/css/datepicker/daterangepicker.css" rel="stylesheet" />
+    <link href="~/lib/alertifyjs/css/alertify.min.css" rel="stylesheet" />
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/Admin/Dashboard/Index">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Manage Notifications</li>
+                </ol>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+            <div class="col-md-6 col-sm-6 col-xs-12">
+                <div class="box">
+                    <div class="card dashboardDatatables">
+                        <div class="card-body">
+                            <p class="form-sub-heading">
+                                <strong>Manage Notifications</strong>
+                            </p>
+            @using (Html.BeginForm("SendNotification", "ManageNotifications", FormMethod.Post, new { id = "newsLetterForm" }))
+            {
+
+                <div class="modal-body box-body">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="FileName" />
+                    <div class="form-group">
+                        <span id="validationmsg" class="text-danger"></span>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">Title<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input type="text" asp-for="Title" class="form-control" placeholder="Title" autocomplete="off" maxlength="30" />
+                                    <span asp-validation-for="Title" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label for="Name">Users<span class="required">*</span></label>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                                    @Html.ListBoxFor(m => m.SelectedUsers, (IEnumerable<SelectListItem>)ViewBag.Allusers, new { @class = "form-control btn btn-info btn-sm", @id = "notificationType", multiple = "multiple" })
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label asp-for="Description">
+                                    Notifications Description<span class="red-color">*</span>
+                                </label>
+                                                <textarea rows="3" asp-for="Description" class="form-control ckeditor" placeholder="" maxlength="500" autocomplete="off" id="Description" name="Description"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>
+                                    Upload Image
+                                    <span class="required">*</span>
+                                    <span style="font-size:12px;">(File size maximum limit should be 5MB)</span>
+                                </label>
+                            </div>
+
+                            <div class="col-md-12">
+
+                                @if (string.IsNullOrEmpty(Model.FileName))
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@(SiteKeys.Domain+"/images/upload-image.png")" width=100&amp height=80&amp />
+                                }
+                                else
+                                {
+                                    <img class="imgsize" id="imgCategory" target="_blank" src="@SiteKeys.Domain@Model.FileName" href="@SiteKeys.Domain@Model.FileName" width=100&amp height=80&amp />
+                                }
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group log-inp astric">
+                                    <input asp-for="FlagImage" type="file" id="notification_file" class="form-control" onchange="AllowFileExtension(this)" />
+                                    <span asp-validation-for="FlagImage" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="modal-footer">
+
+                    <button class="btn btn-success" id="btn-submit" type="submit">
+                        Send Notification
+                    </button>
+                </div>
+
+            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 col-xs-12"></div>
+            <!-- left column -->
+
+        </div>
+        <!-- /.row -->
+    </div><!-- /.container-fluid -->
+</section>
+<!-- /.content -->
+
+@* @await Html.PartialAsync("_ValidationScriptsPartial") *@
+
+
+@section scripts{
+    <script src="https://cdn.ckeditor.com/4.12.1/basic/ckeditor.js"></script>
+    <script src="~/lib/select2/js/select2.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/jquery.dataTables.min.js"></script>
+    <script src="~/lib/DataTables-1.10.20/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/js/bootstrap-switch.js"></script>
+    <script src="~/js/jquery.fancybox.js"></script>
+    <script src="~/js/datepicker/moment.min.js"></script>
+    <script src="~/js/datepicker/daterangepicker.min.js"></script>
+    <script src="~/js/custom/notifications/notifications-index.js" asp-append-version="true"></script>
+    <script src="~/lib/alertifyjs/alertify.js"></script>
+
+
+}

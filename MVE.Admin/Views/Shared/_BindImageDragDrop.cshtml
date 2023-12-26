@@ -1,0 +1,137 @@
+﻿@model List<FileUploadDTO>
+@{
+    int sectionId = Convert.ToInt32(ViewData["FileSectionId"]);
+    string fileExtensions = ViewData["FileExtensions"] != null ? ViewData["FileExtensions"].ToString() : "image/*";//image/*,video/mp4
+    bool isHaveVideo = fileExtensions.IndexOf("video/") >= 0;
+    string modelFilePropertyName = ViewData["ModelFilePropertyName"].ToString();
+    string modelFileParentCtrlName = ViewData["ModelFileParentCtrlName"] != null ? ViewData["ModelFileParentCtrlName"].ToString() : string.Empty;
+    string modelFilePropertyId = modelFilePropertyName.Replace("[", "_").Replace("]", "_").Replace(".", "_");
+    List<FileUploadDTO> files = Model.Where(x => x.SectionId == sectionId).ToList();
+    int imageIndex = 0, titleIndex = 0;
+    string uploaderId = Guid.NewGuid().ToString().Replace("-", "");
+    bool isHaveImage = files.Any(t => !string.IsNullOrWhiteSpace(t.FilePath));
+    string imageTitlePropertyName = ((UploadSection)sectionId).GetDisplayAttrValue(EnumDisplayAttribute.Title);
+    bool isHaveTitle = !string.IsNullOrWhiteSpace(imageTitlePropertyName);
+    //List<LanguageDTO> languages = isHaveTitle && TempData.Peek("Languages") != null ? System.Text.Json.JsonSerializer.Deserialize<List<LanguageDTO>>(TempData.Peek("Languages").ToString()) : new List<LanguageDTO>();
+    //FileUploadTitleDTO fileUploadTitle = null;
+
+}
+<div class="profile-photo-section pkgvdocontainerBIDP">
+    <div class="user-photo app-upload-img">
+        <div class="uploaded-images-continer" id="sortable">
+            @if (files != null && files.Count(t => !string.IsNullOrWhiteSpace(t.FilePath)) > 0)
+            {
+                int i = 0;
+                @foreach (var file in files.OrderBy(x => x.ImageOrder).ToList())
+                {
+                    i++;
+                    imageIndex = Model.IndexOf(file);
+                    <div class="app-uploaded-img actual-uploaded">
+                        <div class="reapeat-upload-img">
+                            <input type="hidden" class="hiddenImgOrder" id="@($"{modelFilePropertyId}_{imageIndex}__ImageOrder")" value="@file.ImageOrder" name="@($"{modelFilePropertyName}[{imageIndex}].ImageOrder")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__EntityId")" value="@file.EntityId" name="@($" {modelFilePropertyName}[{imageIndex}].EntityId")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__FId")" value="@file.FId" name="@($" {modelFilePropertyName}[{imageIndex}].FId")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__SectionId")" value="@file.SectionId" name="@($" {modelFilePropertyName}[{imageIndex}].SectionId")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__Name")" value="@file.Name" name="@($" {modelFilePropertyName}[{imageIndex}].Name")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__FileSize")" value="@file.FileSize" name="@($" {modelFilePropertyName}[{imageIndex}].FileSize")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__FileOriginalName")" value="@file.FileOriginalName" name="@($" {modelFilePropertyName}[{imageIndex}].FileOriginalName")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__FileExtension")" value="@file.FileExtension" name="@($" {modelFilePropertyName}[{imageIndex}].FileExtension")" />
+                            <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__FileStreams")" value="@file.FileStreams" name="@($" {modelFilePropertyName}[{imageIndex}].FileStreams")" />
+                            @if (!string.IsNullOrEmpty(file.FilePath))
+                            {
+                                if (isHaveVideo)
+                                {
+                                    <video class="showfle" controls preload="metadata">
+                                        <source src="@file.FilePath"
+                                                type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'
+                                                data-original="@file.FilePath">
+                                    </video>
+                                }
+                                else
+                                {
+                                    <img src="@file.FilePath" alt="Photo" title="Photo" class="sort showfle" data-index="@i" />
+                                }
+                            }
+                            else
+                            {
+                                <img src="@SiteKeys.Domain/images/-upload-image.png" alt="Photo" class="sort showfle" data-index="@i" />
+                            }
+                         @*   @if (isHaveTitle)
+                            {
+                                <div class="img-title-container">
+                                    <div class="dropdown">
+                                        <button id="@($" {modelFilePropertyId}_{imageIndex}__ImageTitle")" class="dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-language"></i>
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="@($" {modelFilePropertyId}_{imageIndex}__ImageTitle")" style="z-index:9999;">
+                                            @foreach (var _language in languages)
+                                            {
+                                                titleIndex = languages.IndexOf(_language);
+                                                fileUploadTitle = file.Titles?.FirstOrDefault(x => x.LanguageId == _language.LanguageId);
+                                                <li>
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="@($" {modelFilePropertyId}_{imageIndex}__{imageTitlePropertyName}_{titleIndex}__LanguageId")" name="@($" {modelFilePropertyName}[{imageIndex}].{imageTitlePropertyName}[{titleIndex}].LanguageId")" value="@_language.LanguageId">
+                                                        <label for="@($" {modelFilePropertyId}_{imageIndex}__{imageTitlePropertyName}_{titleIndex}__Title")">@_language.Language</label>
+                                                        <input id="@($" {modelFilePropertyId}_{imageIndex}__{imageTitlePropertyName}_{titleIndex}__Title")" name="@($" {modelFilePropertyName}[{imageIndex}].{imageTitlePropertyName}[{titleIndex}].Title")" type="text" value="@fileUploadTitle?.Title" class="form-control" maxlength="250" autocomplete="off" placeholder="Alt tag" />
+                                                    </div>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            }*@
+                        </div>
+                        <div class="user-photo-controls">
+                            <div class="btn delete-photo">  @file.Name <i class="fa fa-close"></i></div>
+                        </div>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="app-uploaded-img app-no-image">
+                    <div class="reapeat-upload-img">
+                        <img src="@SiteKeys.Domain/images/upload-image.png" alt="Photo" />
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="user-photo-controls app-upload-cancel">
+            @if (((UploadSection)sectionId).GetDisplayAttrValue(EnumDisplayAttribute.Prompt) == FileUploaderType.Multiple)
+            {
+                <input type="file" onclick="ResetObject(this);" onchange="onSelectImageCallPackage(10,'pkgvdocontainerBIDP',this,'i');" id="@($" fileSection{uploaderId}_{sectionId}{imageIndex}__File")" name="@($" fileSection_{sectionId}.File")" class="d-none app-img-uploader" @(isHaveTitle ? $"data-title-property-name={imageTitlePropertyName}" : "" ) data-parent-ctrl-name="@modelFileParentCtrlName" data-property-id="@modelFilePropertyId" data-property-name="@modelFilePropertyName" data-sectionId="@sectionId" multiple="multiple" accept="@fileExtensions" />
+                <label for="@($" fileSection{uploaderId}_{sectionId}{imageIndex}__File")" class="btn upload-photo"><i class="fa fa-plus"></i> Add @(isHaveVideo?"video":"image")</label>
+            }
+            else
+            {
+                <input type="file" onclick="ResetObject(this);" onchange="onSelectImageCallPackage(10,'pkgvdocontainerBIDP',this,'i');" id="@($"fileSection{uploaderId}_{sectionId}{imageIndex}__File")" name="@($"fileSection_{sectionId}.File")" class="d-none app-img-uploader" @(isHaveTitle ? $"data-title-property-name={imageTitlePropertyName}" : "" ) data-parent-ctrl-name="@modelFileParentCtrlName" data-property-id="@modelFilePropertyId" data-property-name="@modelFilePropertyName" data-sectionId="@sectionId" accept="@fileExtensions" />
+                <label for="@($" fileSection{uploaderId}_{sectionId}{imageIndex}__File")" class="btn upload-photo">@(isHaveImage ? "Change" : "Add") @(isHaveVideo?"video":"image")</label>
+            }
+        </div>
+        <div>
+            <label style="color:#f75209;font-weight: normal;font-size: small;">Only .jpg, .jpeg, .bmp, .gif, .png images are allowed*</label>
+        </div>
+    </div>
+</div>
+<script>
+    jQuery(document).ready(function ($) {
+
+        reorderImages();
+        $('#sortable').sortable({
+            start: function (event, ui) {
+            },
+            change: function (event, ui) {
+            },
+            update: function (event, ui) {
+                reorderImages()
+            }
+        });
+    });
+
+    function reorderImages() {
+        $(".sort").each(function (i, v) {
+            $(this).parent().find(".hiddenImgOrder").val(i + 1);
+        });
+    }
+</script>

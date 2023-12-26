@@ -1,0 +1,115 @@
+﻿@model TCP.Web.ViewModels.DashboardViewModel
+@using TCP.Core.Code.LIBS;
+@{
+    Layout = "~/Views/Shared/_FrontUserLayout.cshtml";
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Dashboard";
+
+}
+
+
+<div class="total-card-block">
+    <div class="row">
+        <div class="col-md-12 col-lg-4 col-xl-4">
+            <div class="total-card sky-blue-bg text-center">
+                <span class="count">@Model.TotalBookings</span>
+                <p>Total Bookings</p>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-4 col-xl-4">
+            <div class="total-card green-bg text-center">
+                <span class="count">$@Model.TotalSpentBookings</span>
+                <p>Total Spent</p>
+            </div>
+        </div>
+        <div class="col-md-12 col-lg-4 col-xl-4" id="custom-pkg-req-div">
+            <a oncontextmenu="return false" data-toggle="modal" data-target="#modal-add-edit-customquote" asp-action="CustomQuote" asp-route-flagfrom="DashboardReq" asp-controller="CustomQuote" id="customquote_btn">
+                <div class="total-card blue-bg customize-card">
+                    <i class="customize-card-icon"><img src="@domain/images/icon12.png" alt="icon12.png"></i>
+                    <div class="customize-card-text d-flex align-items-center justify-content-between">
+                        <span><strong>Customize</strong> Package Request</span>
+                        <i><img src="@domain/images/arrow1.png" alt="arrow1.png"></i>
+
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="bookings-block-dashboard upcoming-bookings-block-dashboard">
+    <h4>Upcoming Bookings</h4>
+    @if (Model != null && Model.UpcomingBookingPkgLst != null && Model.UpcomingBookingPkgLst.Count > 0)
+    {
+        <partial name="~/Views/Dashboard/_DashboardBookView.cshtml" model="@Model.UpcomingBookingPkgLst" />
+        <br />
+        <button class="btn-custom big-paddding" id="upcomebooking_viewall-btn">View All</button>
+    }
+    else
+    {
+
+        <div class="row bookings-card-list no-record-section">
+            <div class="col-sm-12">
+                <p>No upcoming bookings avaliable</p>
+                <br />
+            </div>
+        </div>
+    }
+</div>
+
+<br />
+
+
+<div class="bookings-block-dashboard">
+    @if (Model != null && Model.BookingPkgLst != null && Model.BookingPkgLst.Count > 0)
+    {
+        <h4>Top @Model.BookingPkgLst.Count Bookings</h4>
+
+        <partial name="~/Views/Dashboard/_DashboardBookView.cshtml" model="@Model.BookingPkgLst" />
+        <br />
+        <button class="btn-custom big-paddding" id="booking_viewall-btn">View All</button>
+    }
+    else
+    {
+        <h4>Bookings</h4>
+        <div class="row bookings-card-list no-record-section">
+            <div class="col-sm-12">
+                <p>No bookings avaliable</p>
+                <br />
+            </div>
+        </div>
+    }
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#header_main").addClass("inner-header");
+    });
+
+       
+    $("#upcomebooking_viewall-btn").click(function () {
+        $("#mybooking-id").click();
+       
+    });
+    
+    $("#booking_viewall-btn").click(function () {
+        // $("#mybooking-id").click();
+        // setTimeout(function () {
+        //     $("#profile-tab").click();
+        //     document.documentElement.scrollTop = 100;
+        // },1000)
+        GoToMyBooking_All();
+    });
+    function GoToMyBooking_All() {
+
+        $("#mybooking-id").click();
+        setTimeout(function () {
+            $("#profile-tab").click();
+            document.documentElement.scrollTop = 100;
+        }, 1000)
+
+    }
+
+</script>

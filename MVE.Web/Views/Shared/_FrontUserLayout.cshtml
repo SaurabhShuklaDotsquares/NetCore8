@@ -1,0 +1,50 @@
+﻿@using Microsoft.Extensions.Configuration;
+@using TCP.Core.Code.LIBS;
+@inject IConfiguration configuration;
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var domain = @SiteKeys.Domain;
+    ViewData["Title"] = "Dashboard";
+
+}
+<style>
+    .dash-link ul li.active a:before, .dash-link ul li:hover a:before {
+        opacity: 1;
+    }
+
+    .dash-link ul li.active a, .dash-link ul li:hover a {
+        color: #fff;
+        background-color: #26285c;
+    }
+
+</style>
+
+
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            <h1 id="dash-heading">Dashboard</h1>
+            <ul class="breadcrumb">
+            <li><a>Dashboard</a></li>
+                <li id="breadcrumb-li-txt">Dashboard</li>
+            </ul>
+        </div>
+    </div>
+    <div class="dashboard-pages-block">
+        <div class="container">
+            <div class="dashboard-info-block">
+                <div class="row">
+                    <div class="col-md-4">
+                        @await Html.PartialAsync("_FrontUserSidebar")
+                    </div>
+                    <div class="col-md-8">
+                        <div class="dashboard-col">
+                        @RenderBody()
+                    </div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+

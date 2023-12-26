@@ -1,0 +1,49 @@
+﻿@model MVE.Admin.ViewModels.VisaGuideViewModels
+<input type="hidden" asp-for="Id" />
+<input type="hidden" asp-for="CountryId" />
+
+<style>
+    .cke_contents cke_reset {
+        height:225px;
+    }
+</style>
+<div class="row">
+    
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-sm-12">
+                <label asp-for="PageTitle">
+                    Title
+                    <span class="red-color">*</span>
+                </label>
+                <input type="text" asp-for="PageTitle" class="form-control" placeholder="Page Title" autocomplete="off" maxlength="100" />
+                <span asp-validation-for="PageTitle" class="text-danger"></span>
+            </div>
+            <br />
+            <br />
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label asp-for="ContentData">
+                        Description<span class="red-color">*</span>
+                    </label>
+                    <textarea asp-for="ContentData" class="form-control ckeditor" required autocomplete="off"></textarea>
+                    <span asp-validation-for="ContentData" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label asp-for="IsActive">
+                        Status<span class="red-color"></span>
+                    </label>
+                    <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
+                        <input type="checkbox" asp-for="IsActive" class="custom-control-input" id="customSwitchAddEdit" readonly>
+                        <label class="custom-control-label" for="customSwitchAddEdit"></label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@await Html.PartialAsync("_ValidationScriptsPartial")
+

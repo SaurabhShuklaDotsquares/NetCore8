@@ -1,0 +1,181 @@
+﻿@model TCP.Web.ViewModels.QuoteFeedbackViewModel
+@using TCP.Core.Code.LIBS;
+@using System.Net;
+@using TCP.Core.Models.Others
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var headerModel = new ModalHeader { Heading = "Feedback Over Quote" };
+}
+
+<style>
+    /*   .accordion-info-card-block {
+      padding: 30px 0;
+    }
+
+            .accordion-info-card-block .table label {
+                display: block;
+                margin: 0;
+            }
+            .accordion-info-card-block h3 {
+      color: #000;
+      margin: 0;
+      padding: 0 0 20px;
+    }
+
+            .accordion-info-card-block a {
+            color: #02066f;
+        } */
+    .log-inp label p {
+        color: black;
+    }
+</style>
+<form method="post" asp-action="QuoteFeedbackSubmit" asp-controller="Account" id="form-QuoteFeedbackSubmit">
+    <div class="inner-hd-block">
+        <div class="container text-center">
+            @if (Model.EnqueryTypeForQuote == 0)
+            {
+                <h1>Quote Details for Customize Packages Request Id: @Model.QuoteForEnqueryId</h1>
+                <p>&nbsp;</p>
+            }
+            else
+            {
+                <h1>Quote Details for New Packages Request Id: @Model.QuoteForEnqueryId</h1>
+                <p>&nbsp;</p>
+            }
+        </div>
+    </div>
+    <div class="visa-guide-block">
+        <div class="container">
+            <div class="itinerary-accordion checkout-accordion accordion-info-card-block" id="accordion">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link" data-toggle="collapse" href="#collapseOne">Quote Details</a>
+                        <input type="hidden" asp-for="LastQuoteFeedbackForModel.Id" />
+                        <input type="hidden" asp-for="LastQuoteFeedbackForModel.PackageId" />
+                        <input type="hidden" asp-for="LastQuoteFeedbackForModel.FeedbackForEnqueryType" />
+                        @*<input type="hidden" asp-for="LastQuoteFeedbackForModel.FeedbackDescription" />*@
+                        <input type="hidden" asp-for="LastQuoteFeedbackForModel.EmailContentForQuote" />
+                        <input type="hidden" asp-for="PackageId" />
+
+
+                        <input type="hidden" asp-for="QuoteForEnqueryId" />
+                        <input type="hidden" asp-for="QuoteVersion" />
+                        <input type="hidden" asp-for="QuoteStatusId" />
+                        <input type="hidden" asp-for="ParentPackageId" />
+                        <input type="hidden" asp-for="Email" />
+                        <input type="hidden" asp-for="UserId" />
+
+                        <input type="hidden" asp-for="PhoneNumber" />
+                        <input type="hidden" asp-for="UserName" />
+                        <input type="hidden" asp-for="EnqueryTypeForQuote" />
+                        @*<input type="hidden" asp-for="PreviousFeedbackDescriptionForQuote" />*@
+                        <input type="hidden" asp-for="PreviousEmailContentForQuote" />
+                        <input type="hidden" asp-for="IsQuoteFullfillRequirementVal" value="@Model.IsQuoteFullfillRequirementVal" />
+                        <input type="hidden" asp-for="IsItRequiredMoreChangesVal" value="@Model.IsItRequiredMoreChangesVal" />
+                        <input type="hidden" id="hdnHomeUrl" value="@SiteKeys.Domain" />
+                    </div>
+                    <div class="traveller-details">
+                        <div class="traveller-form">
+                            <br />
+                            <span class="enter-hd">Please review and submit feedback for quote</span>
+                            <div class="form-group-outer-block">
+
+                                <div class="form-group">
+                                    <span id="validationmsg" class="text-danger"></span>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="Name">New Quote Package Url:<span class="required"></span></label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group log-inp astric">
+                                                <a href="@Model.LastQuoteFeedbackForModel.PackageUrlForQuote" target="_blank">@Model.LastQuoteFeedbackForModel.PackageUrlForQuote</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="Name">New Quote Package Type:<span class="required"></span></label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group log-inp astric">
+                                                <label asp-for="@Model.FeedbackForEnqueryTypeName" autocomplete="off">@Model.FeedbackForEnqueryTypeName</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (@Model.PreviousEmailContentForQuote != null && @Model.PreviousEmailContentForQuote != "")
+                                    {
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <label for="Name">Message History:<span class="required"></span></label>
+                                            </div>
+                                            <div class="col-md-9">
+                                                <div class="form-group log-inp astric">
+
+                                                    <label class="msgfeedback" placeholder="Feedback Description" autocomplete="off">@Html.Raw(WebUtility.HtmlDecode(@Model.PreviousEmailContentForQuote))</label>
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+
+                                    @*  <div class="row">
+                                    <div class="col-md-3">
+                                    <label for="EmailContentForQuote">Message History:</label>
+                                    </div>
+                                    <div class="col-md-9">
+                                    <div class="form-group log-inp astric">
+                                    <label for="Name"> @Html.Raw(WebUtility.HtmlDecode(Model.PreviousFeedbackDescriptionForQuote))</label>
+                                    </div>
+                                    </div>
+                                    </div>*@
+
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="EmailContentForQuote">Current Status:</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="">
+                                                <input type="radio" class="confirmationstatusok" id="IsQuoteFullfillRequirement" name="confirmationstatus" checked="@Model.IsQuoteFullfillRequirement" /><label>&nbsp; Its fine now &nbsp;&nbsp;</label>
+                                                <input type="radio" class="confirmationstatusnotok" id="IsItRequiredMoreChanges" name="confirmationstatus" checked="@Model.IsItRequiredMoreChanges" value="Its required more changes" /><label>&nbsp; Its required more changes</label>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <label for="EmailContentForQuote">Your Feedback:</label>
+                                        </div>
+                                        <div class="col-md-9">
+                                            <div class="form-group log-inp astric">
+                                                @if (Model.IsQuoteFullfillRequirementVal == "1")
+                                                {
+                                                    <textarea id="EmailContentForQuote" readonly="readonly" name="EmailContentForQuote" class="form-control" placeholder="Its fine now, Let's close the deal" maxlength="500">Its fine now, Let's close the deal.</textarea>
+                                                }
+                                                else
+                                                {
+                                                    <textarea id="EmailContentForQuote" name="EmailContentForQuote" class="form-control" placeholder="Its required more changes" maxlength="500"> @Html.Raw(WebUtility.HtmlDecode(Model.EmailContentForQuote))</textarea>
+                                                }
+                                                <span asp-validation-for="EmailContentForQuote" class="text-danger clsEmailContentForQuote"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="back-next-btn d-flex align-items-center justify-content-end">
+                                        <button id="plan_btn_submit" class="btn-custom">Submit</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+    <script src="~/js/custom/quotefeedback/quotefeedback.js"></script>
+</form>
+

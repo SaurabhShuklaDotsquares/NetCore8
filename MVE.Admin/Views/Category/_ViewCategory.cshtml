@@ -1,0 +1,80 @@
+﻿@model MVE.Admin.ViewModels.CountryViewModel
+@using MVE.Core.Code.LIBS;
+@using MVE.Core.Models.Others
+@{
+    var headerModel = new ModalHeader { Heading = "Country Details" };
+}
+<style>
+
+    .bold {
+        font-weight: bold !important;
+    }
+
+    .imgsize {
+        height: 148px;
+        width: 190px;
+    }
+
+    .col-sm-4, .col-sm-8{
+        padding: 8px;
+        border:1px solid lightgray;
+    }
+
+    .col-sm-4{
+        padding-top:15px;
+        background-color: #d3d3d35c;
+    }
+</style>
+<section class="content">
+    <div class="box">
+        <div class="box-body">
+            <partial name="_ModalHeader" model="headerModel" />
+            <input type="hidden" asp-for="Id" />
+
+            <div class="card-body quality-box-set">
+                <div class="row">
+                    <div class="col-sm-12">
+                        @if (string.IsNullOrEmpty(Model.FileName))
+                        {
+                            <span>No Image</span>
+                        }
+                        else
+                        {
+                            <img class="imgsize" target="_blank" src="@SiteKeys.Domain@Model.FileName" href="@SiteKeys.Domain@Model.FileName" />
+                        }
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="bold">Name</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="" class="form-control" value="@Model.Name" placeholder="" readonly="">
+
+                    </div>
+                </div>
+                <div class="row ">
+                    <div class="col-sm-4">
+                        <label class="bold">Description</label>
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="" class="form-control" value="@Model.Description" placeholder="" readonly="">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <label class="bold">Code</label>
+
+                    </div>
+                    <div class="col-sm-8">
+                        <input type="text" id="" class="form-control" value="@Model.Code" placeholder="" readonly="">
+                    </div>
+                </div>
+               
+            </div>
+
+        </div>
+    </div>
+</section>
+
